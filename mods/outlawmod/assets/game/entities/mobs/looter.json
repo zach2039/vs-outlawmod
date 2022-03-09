@@ -1,0 +1,276 @@
+{
+	code: "looter",
+	class: "EntityHumanoid",
+	canClimb: true,
+	hitboxSize: { x: 0.6, y: 1.75 },
+	deadHitboxSize: { x: 0.75, y: 0.5 },
+	eyeHeight: 1.7,
+	attributes: { reckless: false },
+
+	drops: [
+			{
+				type: "item",
+				code: "game:knife-flint",
+				quantity: { avg: 0.65, var: 0 }
+			},
+			{
+				type: "item",
+				code: "game:poultice-reed-horsetail",
+				quantity: { avg: 0.8, var: 0 }
+			},
+			{
+				type: "item",
+				code: "game:gear-rusty",
+				quantity: { avg: 0, var: 0.2 }
+			},
+			{
+				type: "item",
+				code: "game:bread-flax-perfect",
+				quantity: { avg: 0.6, var: 0.4 }
+			},
+			{
+				type: "item",
+				code: "game:vegetable-carrot",
+				quantity: { avg: 0.8, var: 1.2 }
+			}
+	],
+	client: {
+		renderer: "Shape",
+		shape: { base: "entity/land/looter" },
+		textures: {
+			"looter": { base: "entity/bandit/looter", alternates: [ { base: "entity/bandit/looter2" }, { base: "entity/bandit/looter3" } ] },
+		},
+		behaviors: [
+			{ code: "nametag", selectFromRandomName: ["Looter"], "showtagonlywhentargeted": true }, 
+			{ code: "nametag", "showtagonlywhentargeted": true }, 
+			{ code: "repulseagents" }, 
+			{ code: "floatupwhenstuck", onlyWhenDead: true },
+			{ code: "controlledphysics", stepHeight: 1.01 }, 
+			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "harvestable" },
+			{ code: "interpolateposition" }
+		],
+		animations: [
+			{
+				code: "die",
+				animation: "die", 
+				animationSpeed: 1.75,
+				weight: 10,
+				blendMode: "Average",
+				triggeredBy: { onControls: ["dead"] }
+			},
+			{
+				code: "hurt",
+				animation: "hurt", 
+				animationSpeed: 2,
+				weight: 8,
+				blendMode: "AddAverage" 
+			},
+			{ 
+				code: "wander", 
+				animation: "walk",
+				blendMode: "Average",
+				easeOutSpeed: 1
+			},
+			{ 
+				code: "sprint",
+				animation: "sprint",
+				animationSpeed: 0.6,
+				mulWithWalkSpeed: true,
+				blendMode: "Average"  
+			},
+			{ 
+				code: "meleeattack", 
+				animation: "attack",
+				weight: 5,
+				blendMode: "AddAverage"
+			},
+			{ 
+				code: "idle", 
+				animation: "idle",
+				blendMode: "AddAverage",
+				triggeredBy: { defaultAnim: true }
+			},
+		]
+	},
+	server: {
+		attributes: {
+			pathfinder: {
+				minTurnAnglePerSec: 960,
+				maxTurnAnglePerSec: 1920
+			}
+		},
+		behaviors: [
+			{ code: "nametag", selectFromRandomName: ["Looter"], "showtagonlywhentargeted": true }, 
+			{ code: "repulseagents" }, 
+			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "controlledphysics", stepHeight: 1.01 }, 
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "drycarcass-humanoid1" },
+			{ code: "floatupwhenstuck", onlyWhenDead: true },
+			{ code: "health", currenthealth: 6, maxhealth: 6 },
+			{ code: "harvestable", drops: [
+				{
+					type: "block", 
+					code: "game:linen-normal-down", 
+					quantity: { avg: 0.25, var: 0.75 } 
+				}
+
+				]
+			},
+			{ 
+				code: "emotionstates",
+				states: [
+					{ code: "aggressiveondamage", duration: 4, chance: 0.2, slot: 0, priority: 2, accumType: "noaccum" },
+					{ code: "fleeondamage", duration: 14, chance: 0.50, slot: 2, priority: 4, accumType: "max", whenHealthRelBelow: 0.50 }
+				],
+			},
+			{ 
+				code: "taskai",
+				aitasks: [
+					{
+						code: "meleeattack",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						priority: 4.0,
+						damage: 1.5,
+						damageTier: 1,
+						damageType: "BluntAttack",
+						slot: 1,
+						mincooldown: 500, 
+						maxcooldown: 1500, 
+						attackDurationMs: 450,
+						damagePlayerAtMs: 300,
+						animation: "attack",
+						animationSpeed: 2,
+						sound: "creature/bandit/attack"
+					},
+					{
+						code: "throwatentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						priority: 3.5,
+						priorityForCancel: 9,
+						mincooldown: 1000, 
+						maxcooldown: 10000, 
+						durationMs: 550,
+						releaseAtMs: 500,
+						seekingRange: 15,
+						animationSpeed: 0.5,
+						animation: "throwlefthanded"
+					},
+					//Flee when injured.
+					{
+						code: "fleeentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						priority: 4,
+						movespeed: 0.040,
+						seekingRange: 14,
+						cancelOnHurt: false,
+						fleeingDistance: 64,
+						fleeDurationMs: 9999999,
+						animation: "sprint",
+						animationSpeed: 3,
+						executionChance: 0.5,
+						whenInEmotionState: "fleeondamage",
+						sound: "creature/bandit/flee",
+						soundStartMs: 650
+					},
+					//Agro When Damaged
+					{
+						code: "seekentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						priority: 2.5,
+						mincooldown: 1000, 
+						maxcooldown: 1500, 
+						seekingRange: 22,
+						movespeed: 0.040,
+						animation: "sprint",
+						animationSpeed: 2.0,
+						maxFollowTime: 60,
+						alarmHerd: true,
+						whenInEmotionState: "aggressiveondamage"
+					},
+					{
+						code: "getoutofwater",
+						priority: 2,
+						movespeed: 0.040,
+						animation: "swim",
+						animationSpeed: 0.3
+					},
+					//Close the distance to enemy target.
+					{
+						code: "seekentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						priority: 1.5,
+						priorityForCancel: 2.5,
+						mincooldown: 1000, 
+						maxcooldown: 1500, 
+						seekingRange: 22,
+						movespeed: 0.040,
+						animation: "sprint",
+						animationSpeed: 1.8,
+						maxFollowTime: 60,
+						alarmHerd: true,
+						sound: "creature/bandit/givemegold",
+						soundStartMs: 950
+					},
+					//Slow down to Engage the player.
+					{
+						code: "seekentity",
+						entityCodes: ["player"],
+						priority: 3.0,
+						seekingRange: 8,
+						movespeed: 0.035,
+						animation: "walk",
+						animationSpeed: 1.8,
+						maxFollowTime: 5.0,
+						soundStartMs: 950
+					},
+					{
+						code: "idle",
+						priority: 0.7,
+						minduration: 5000,
+						maxduration: 30000,
+						mincooldown: 2000,
+						maxcooldown: 120000,
+						priorityForCancel: 1.33,
+						animation: "Sit",
+						whenNotInEmotionState: "aggressiveondamage",
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopRange: 5
+					},
+					{
+						code: "wander", 
+						priority: 0.8, 
+						priorityForCancel: 1.0,
+						movespeed: 0.006,
+						animation: "Walk",
+						preferredLightLevel: 20
+					}
+				]
+			}
+		],
+		spawnconditions: {
+			runtime: {
+				group: "hostile",
+				tryOnlySurface: true,
+				chance: 0.009,
+				maxQuantity: 6,
+				"__comment": "Make them spawn away from artifical light, both day and night",
+				maxLightLevel: 7,
+				lightLevelType: "onlyBlockLight",					
+				groupSize: { dist: "verynarrowgaussian", avg: 4, var: 2 },
+				insideBlockCodes: ["game:air", "game:tallgrass-*"],
+				minTemp: -15,
+				maxTemp: 28,
+				minRain: 0,
+				minForest: 0.5,
+				companions: []
+			}
+		}
+	},
+	sounds: {
+		idle: "creature/bandit/idle1",
+		hurt: "creature/bandit/hurt",
+		death: "creature/bandit/die"
+	},
+	idleSoundChance: 0.08
+}

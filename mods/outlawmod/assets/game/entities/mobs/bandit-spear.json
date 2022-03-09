@@ -1,0 +1,216 @@
+{
+	code: "bandit-spear",
+	class: "EntityHumanoid",
+	canClimb: true,
+	hitboxSize: { x: 0.6, y: 1.75 },
+	deadHitboxSize: { x: 0.75, y: 0.5 },
+	eyeHeight: 1.7,
+	attributes: { reckless: false },
+
+	drops: [
+			{
+				type: "item",
+				code: "game:poultice-linen-horsetail",
+				quantity: { avg: 0.8, var: 0 }
+			},
+			{
+				type: "item",
+				code: "game:gear-rusty",
+				quantity: { avg: 0.33, var: 0 }
+			},
+			{
+				type: "item",
+				code: "game:axe-scrap",
+				quantity: { avg: 0.35, var: 0 }
+			},
+			{
+				type: "item",
+				code: "game:fruit-blackcurrant",
+				quantity: { avg: 3, var: 0.7 }
+			},
+			{
+				type: "item",
+				code: "game:stone-chalk",
+				quantity: { avg: 0.25, var: 0.25 }
+			}
+	],
+	client: {
+		renderer: "Shape",
+		shape: { base: "entity/land/bandit-spear" },
+		behaviors: [
+			{ code: "nametag", selectFromRandomName: ["Brigand"], "showtagonlywhentargeted": true }, 
+			{ code: "repulseagents" }, 
+			{ code: "floatupwhenstuck", onlyWhenDead: true },
+			{ code: "controlledphysics", stepHeight: 1.01 }, 
+			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "harvestable" },
+			{ code: "interpolateposition" }
+		],
+		animations: [
+			{
+				code: "die",
+				animation: "die", 
+				animationSpeed: 0.85,
+				weight: 10,
+				blendMode: "Average",
+				triggeredBy: { onControls: ["dead"] }
+			},
+			{ 
+				code: "wander", 
+				animation: "walk",
+				blendMode: "Average",
+				easeOutSpeed: 1
+			},
+			{ 
+				code: "sprint",
+				animation: "sprint",
+				animationSpeed: 0.6,
+				mulWithWalkSpeed: true,
+				blendMode: "Average"  
+			},
+			{ 
+				code: "meleeattack", 
+				animation: "attack",
+				weight: 5,
+				blendMode: "AddAverage"	
+			},
+			{
+				code: "idle",
+				animation: "idle", 
+				animationSpeed: 1,
+				blendMode: "Add"
+			}
+		]
+	},
+	server: {
+		behaviors: [
+			{ code: "nametag", selectFromRandomName: ["Brigand"], "showtagonlywhentargeted": true }, 
+			{ code: "repulseagents" }, 
+			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "controlledphysics", stepHeight: 1.01 }, 
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "drycarcass-humanoid1" },
+			{ code: "floatupwhenstuck", onlyWhenDead: true },
+			{ code: "health", currenthealth: 16, maxhealth: 16 },
+			{ code: "harvestable", drops: [
+				{
+					type: "block", 
+					code: "game:linen-normal-down", 
+					quantity: { avg: 0.25, var: 0.75 } 
+				},
+				{
+					type: "item",
+					code: "game:clothes-waist-sturdy-leather-belt",
+					quantity: { avg: 0.09, var: 0.09 }
+				}
+
+				]
+			},
+			{ 
+				code: "emotionstates",
+				states: [
+					{ code: "aggressiveondamage", duration: 7, chance: 1.00, slot: 0, priority: 2, accumType: "noaccum" },
+					{ code: "fleeondamage", duration: 3, chance: 0.50, slot: 2, priority: 5, accumType: "max", whenHealthRelBelow: 0.15 }
+				],
+			},
+			{ 
+				code: "taskai",
+				aitasks: [
+					{
+						code: "meleeattack",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
+						priority: 4.0,
+						damage: 4.0,
+						damageTier: 2,
+						damageType: "PiercingAttack",
+						slot: 1,
+						mincooldown: 500, 
+						maxcooldown: 1500, 
+						attackDurationMs: 450,
+						damagePlayerAtMs: 300,
+						animation: "attack",
+						animationSpeed: 2,
+						sound: "creature/bandit/attack",
+						soundStartMs: 150
+					},
+					//Agro When Damaged
+					{
+						code: "seekentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
+						priority: 2.5,
+						mincooldown: 1000, 
+						maxcooldown: 1500, 
+						seekingRange: 22,
+						movespeed: 0.040,
+						animation: "sprint",
+						animationSpeed: 2.0,
+						maxFollowTime: 60,
+						alarmHerd: true,
+						whenInEmotionState: "aggressiveondamage"
+					},
+					{
+						code: "getoutofwater",
+						priority: 2.2,
+						movespeed: 0.040,
+						animation: "swim",
+						animationSpeed: 0.3
+					},
+					//Close the distance to enemy target.
+					{
+						code: "seekentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
+						priority: 1.5,
+						priorityForCancel: 2.5,
+						mincooldown: 1000, 
+						maxcooldown: 1500, 
+						seekingRange: 22,
+						movespeed: 0.040,
+						animation: "sprint",
+						animationSpeed: 1.8,
+						maxFollowTime: 60,
+						alarmHerd: true,
+						sound: "creature/bandit/icanseeyou",
+						soundStartMs: 950
+					},
+					//Slow down to Engage the player.
+					{
+						code: "seekentity",
+						entityCodes: ["player"],
+						priority: 3.0,
+						seekingRange: 8,
+						movespeed: 0.035,
+						animation: "walk",
+						animationSpeed: 1.8,
+						maxFollowTime: 5.0,
+						soundStartMs: 950
+					},
+					{
+						code: "idle",
+						priority: 0.7,
+						minduration: 5000,
+						maxduration: 30000,
+						mincooldown: 2000,
+						maxcooldown: 120000,
+						priorityForCancel: 1.33,
+						animation: "Sit",
+						whenNotInEmotionState: "aggressiveondamage",
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
+						stopRange: 5
+					},
+					{
+						code: "wander", 
+						priority: 0.8, 
+						priorityForCancel: 1.0,
+						movespeed: 0.006,
+						animation: "Walk",
+						preferredLightLevel: 20
+					}
+				]
+			}
+		],
+	},
+	sounds: {
+		hurt: "creature/bandit/hurt",
+		death: "creature/bandit/die2"
+	},
+	idleSoundChance: 0.08
+}

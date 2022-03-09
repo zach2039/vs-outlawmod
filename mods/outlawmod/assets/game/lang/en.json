@@ -1,0 +1,32 @@
+{	
+	"deathmsg-banditaxe-1": "{0} was slain by a ruthless brigand.",
+	"deathmsg-banditknife-1": "{0} has been murdered by a blood-thirsty footpad.",
+	"deathmsg-banditspear-1": "{0} was skewered by a ruthless brigand.",
+	"deathmsg-looter-1": "{0} was worked-over by a desperate looter.",
+	"deathmsg-poacher-1": "{0} was killed aprehending a cornered poacher.",
+
+	"item-creature-bandit-knife": "Footpad",
+	"itemdesc-creature-bandit-knife": "<font color=\"#99c9f9\"><i>Footpads roam the hills and valleys at night, preying on unsuspecting travelers.</i></font><br>",
+	"item-dead-creature-bandit-knife": "Dead Footpad",
+	"deadcreature-eaten-bandit-knife": "Slain by human hands. Its been stabbed with a knife.",
+
+	"item-creature-bandit-axe": "Bandit with Axe",
+	"itemdesc-creature-bandit-axe": "<font color=\"#99c9f9\"><i>Brigands are outlawed men, desperate for coin. Beware as they waylay along the roads at night.</i></font><br>",
+	"item-dead-creature-bandit-axe": "Dead Brigand",
+	"deadcreature-eaten-bandit-axe": "Slain by human hands. Its been hacked appart with an axe.",
+
+	"item-creature-bandit-spear": "Brigand with Spear",
+	"itemdesc-creature-bandit-spear": "<font color=\"#99c9f9\"><i>Brigands are outlawed men, desperate for coin. Beware as they waylay along the roads at night.</i></font><br>",
+	"item-dead-creature-bandit-spear": "Dead Brigand",
+	"deadcreature-eaten-bandit-spear": "Slain by human hands. Its been run-through with a spear.",
+
+	"item-creature-looter": "Looter",
+	"itemdesc-creature-looter": "<font color=\"#99c9f9\"><i>Looters are desperate and dangerous. Beware as they waylay along the roads at night.</i></font><br>",
+	"item-dead-creature-looter": "Dead Looter",
+	"deadcreature-eaten-looter": "Slain by human hands. Someone clubbed it to death.",
+
+	"item-creature-poacher": "Poacher",
+	"itemdesc-creature-poacher": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
+	"item-dead-creature-poacher": "Dead Poacher",
+	"deadcreature-eaten-poacher": "Slain and cleaned by human hands. Looks like the work of a Poacher."
+}
