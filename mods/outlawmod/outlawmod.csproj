@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AiTaskShootProjectileAtEntity.cs" />
+    <Compile Include="src\MathUtility.cs" />
     <Compile Include="src\OutlawEntityBehaviorHarvestable.cs" />
     <Compile Include="src\Core.cs" />
   </ItemGroup>

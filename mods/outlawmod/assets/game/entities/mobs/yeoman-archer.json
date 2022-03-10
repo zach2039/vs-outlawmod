@@ -149,9 +149,14 @@
 						priority: 3.75,
 						priorityForCancel: 9,
 						mincooldown: 1000, 
-						maxcooldown: 10000, 
-						durationMs: 550,
-						releaseAtMs: 500,
+						maxcooldown: 1500, 
+						maxDist: 32,
+						minRangeDistOffTarget: 1.0,
+						maxRangeDistOffTarget: 1.50,
+						maxVelocity: 1.25,
+						projectileItem: "arrow-copper",
+						durationMs: 1000,
+						releaseAtMs: 750,
 						seekingRange: 15,
 						animationSpeed: 0.5,
 						animation: "throwlefthanded"
@@ -180,7 +185,7 @@
 						priorityForCancel: 3.0,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
-						seekingRange: 22,
+						seekingRange: 50,
 						movespeed: 0.040,
 						animation: "sprint",
 						animationSpeed: 2.0,
@@ -203,14 +208,15 @@
 						priorityForCancel: 3.0,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
-						seekingRange: 22,
+						seekingRange: 32,
 						movespeed: 0.040,
 						animation: "sprint",
 						animationSpeed: 1.8,
 						maxFollowTime: 60,
 						alarmHerd: true,
 						sound: "creature/bandit/givemegold",
-						soundStartMs: 950
+						soundStartMs: 950,
+						whenInEmotionState: "aggressiveondamage"
 					},
 					//Slow down to Engage the player.
 					{
@@ -224,7 +230,8 @@
 						animation: "walk",
 						animationSpeed: 1.8,
 						maxFollowTime: 5.0,
-						soundStartMs: 950
+						soundStartMs: 950,
+						whenInEmotionState: "aggressiveondamage"
 					},
 					{
 						code: "idle",

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using Vintagestory.API;
 using Vintagestory.API.Common;
@@ -20,7 +21,11 @@ namespace OutlawMod
         float minVertDist = 2f;
         float minDist = 3f;
         float maxDist = 15f;
+        float minRangeDistOffTarget = 0.0f; //this is the number of blocks off target a projectile will stray at min range.
+        float maxRangeDistOffTarget = 0.0f; //this is the number of blocks off target a projectile will stray at max range.
+        float maxVelocity = 1.0f;
 
+        string projectileItem = "arrow-copper";
 
         EntityPartitioning partitionUtil;
 
@@ -30,6 +35,8 @@ namespace OutlawMod
         float minTurnAnglePerSec;
         float maxTurnAnglePerSec;
         float curTurnRadPerSec;
+
+        Random rnd = new Random(420691337); //Make this use the world gen seed.
 
         public AiTaskShootProjectileAtEntity(EntityAgent entity) : base(entity)
         {
@@ -41,15 +48,15 @@ namespace OutlawMod
 
             base.LoadConfig(taskConfig, aiConfig);
 
-            //todo: add projectile item type.
-            //todo: specify a miss chance.
-            //todo: specify a projectile fire speed.
-
             this.durationMs = taskConfig["durationMs"].AsInt(1500);
             this.releaseAtMs = taskConfig["releaseAtMs"].AsInt(1000);
             this.minDist = taskConfig["minDist"].AsFloat(3f);
             this.minVertDist = taskConfig["minVertDist"].AsFloat(2f);
             this.maxDist = taskConfig["maxDist"].AsFloat(15f);
+            this.minRangeDistOffTarget = taskConfig["minRangeDistOffTarget"].AsFloat(0.0f);
+            this.maxRangeDistOffTarget = taskConfig["maxRangeDistOffTarget"].AsFloat(0.0f);
+            this.maxVelocity = taskConfig["maxVelocity"].AsFloat(1.0f);
+            this.projectileItem = taskConfig["projectileItem"].AsString("arrow-copper");
 
         }
 
@@ -126,28 +133,56 @@ namespace OutlawMod
             {
                 didThrow = true;
 
-                EntityProperties type = entity.World.GetEntityType(new AssetLocation("thrownstone-granite"));
-                Entity entitypr = entity.World.ClassRegistry.CreateEntity(type);
-                ((EntityThrownStone)entitypr).FiredBy = entity;
-                ((EntityThrownStone)entitypr).Damage = 1;
-                ((EntityThrownStone)entitypr).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation("stone-granite")));
-                ((EntityThrownStone)entitypr).NonCollectible = true;
+                EntityProperties type = entity.World.GetEntityType(new AssetLocation(projectileItem) );
+                Entity projectile = entity.World.ClassRegistry.CreateEntity(type);
+                ((EntityProjectile)projectile).FiredBy = entity;
+                ((EntityProjectile)projectile).Damage = 3; //damage; //todo: make this a confiurable thing
+                ((EntityProjectile)projectile).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation(projectileItem)));
+                ((EntityProjectile)projectile).DropOnImpactChance = 0.0f; //Shot projectiles always break so players cannot farm them.
+                ((EntityProjectile)projectile).Weight = 0.0f;
 
-                Vec3d pos = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
-                Vec3d aheadPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+                double pitchDir = 1.0;
+                double yawDir = 1.0;
 
-                double distf = Math.Pow(pos.SquareDistanceTo(aheadPos), 0.1);
-                Vec3d velocity = (aheadPos - pos).Normalize() * GameMath.Clamp(distf - 1f, 0.1f, 1f);
+                double pitchCoinToss = rnd.NextDouble();
+                double yawCoinToss = rnd.NextDouble();
 
-                entitypr.ServerPos.SetPos(
-                    entity.ServerPos.BehindCopy(0.21).XYZ.Add(0, entity.LocalEyePos.Y, 0)
-                );
+                if (pitchCoinToss > 0.5f)
+                    pitchDir = -1.0f;
 
-                entitypr.ServerPos.Motion.Set(velocity);
+                if ( yawCoinToss > 0.5f )
+                    yawDir = -1.0f;
 
-                entitypr.Pos.SetFrom(entitypr.ServerPos);
-                entitypr.World = entity.World;
-                entity.World.SpawnEntity(entitypr);
+                Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
+                Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+                
+                //Todo: Get this working with target velocity so we can lead our targets.
+                shotTargetPos = shotTargetPos.Add( targetEntity.ServerPos.Motion );
+
+                double distanceOffTarget = MathUtility.GraphClampedValue(minDist * minDist, maxDist * maxDist, minRangeDistOffTarget, maxRangeDistOffTarget, shotStartPosition.SquareDistanceTo(shotTargetPos) );
+
+                double rndPitch = (rnd.NextDouble() * distanceOffTarget) * pitchDir;
+                double rndYaw = (rnd.NextDouble() * distanceOffTarget) * yawDir;
+
+                Vec3d shotDriftDirection = new Vec3d(0.0f, rndPitch, rndYaw);
+
+
+                Vec3d shotTargetPosWithDrift = shotTargetPos.Add( shotDriftDirection.X, shotDriftDirection.Y, shotDriftDirection.Z );
+
+                double distf = Math.Pow(shotStartPosition.SquareDistanceTo(shotTargetPosWithDrift), 0.1);
+
+                Debug.WriteLine("Distance: " + distf);
+
+                Vec3d velocity = (shotTargetPosWithDrift - shotStartPosition).Normalize() * GameMath.Clamp(distf, 0.1f, maxVelocity);
+
+                projectile.ServerPos.SetPos(entity.SidedPos.BehindCopy(0.21).XYZ.Add(0, entity.LocalEyePos.Y, 0));
+                projectile.ServerPos.Motion.Set(velocity);
+
+                projectile.Pos.SetFrom(entity.ServerPos);
+                projectile.World = entity.World;
+                ((EntityProjectile)projectile).SetRotation();
+
+                entity.World.SpawnEntity(projectile);
             }
 
             return accum < durationMs / 1000f;
