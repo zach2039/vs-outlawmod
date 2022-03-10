@@ -25,6 +25,11 @@ namespace OutlawMod
         float maxRangeDistOffTarget = 0.0f; //this is the number of blocks off target a projectile will stray at max range.
         float maxVelocity = 1.0f;
 
+        float damage = 1.0f;
+        float damageFalloffPercent = 0.0f;      //Percentage reduction do base damage when falloff distance hits max.
+        float damageFalloffStartDist = -1.0f;   //Distance in blocks where damage falloff begins.
+        float damageFalloffEndDist = -1.0f;     //Distance in blocks where damage falloff hits full percent value.
+
         string projectileItem = "arrow-copper";
 
         EntityPartitioning partitionUtil;
@@ -56,8 +61,15 @@ namespace OutlawMod
             this.minRangeDistOffTarget = taskConfig["minRangeDistOffTarget"].AsFloat(0.0f);
             this.maxRangeDistOffTarget = taskConfig["maxRangeDistOffTarget"].AsFloat(0.0f);
             this.maxVelocity = taskConfig["maxVelocity"].AsFloat(1.0f);
+            this.damage = taskConfig["damage"].AsFloat(1.0f);
+            this.damageFalloffPercent = taskConfig["damageFalloffPercent"].AsFloat(0.0f);
+            this.damageFalloffStartDist = taskConfig["damageFalloffStartDist"].AsFloat(-1.0f);
+            this.damageFalloffEndDist = taskConfig["damageFalloffEndDist"].AsFloat(-1.0f);
             this.projectileItem = taskConfig["projectileItem"].AsString("arrow-copper");
 
+            //Error checking for bad json values.
+            Debug.Assert(damageFalloffPercent >= 0.0f && damageFalloffPercent <= 1.0f, "AiTaskValue damageFalloffPercent must be a 0.0 to 1.0 value.");
+            Debug.Assert(damageFalloffStartDist < damageFalloffEndDist || damageFalloffEndDist < 0.0f, "AiTaskValue damageFalloffStartDist: " + damageFalloffStartDist + " cannot be greater than damageFalloffEndDist: " + damageFalloffEndDist);
         }
 
 
@@ -133,14 +145,6 @@ namespace OutlawMod
             {
                 didThrow = true;
 
-                EntityProperties type = entity.World.GetEntityType(new AssetLocation(projectileItem) );
-                Entity projectile = entity.World.ClassRegistry.CreateEntity(type);
-                ((EntityProjectile)projectile).FiredBy = entity;
-                ((EntityProjectile)projectile).Damage = 3; //damage; //todo: make this a confiurable thing
-                ((EntityProjectile)projectile).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation(projectileItem)));
-                ((EntityProjectile)projectile).DropOnImpactChance = 0.0f; //Shot projectiles always break so players cannot farm them.
-                ((EntityProjectile)projectile).Weight = 0.0f;
-
                 double pitchDir = 1.0;
                 double yawDir = 1.0;
 
@@ -159,7 +163,9 @@ namespace OutlawMod
                 //Todo: Get this working with target velocity so we can lead our targets.
                 shotTargetPos = shotTargetPos.Add( targetEntity.ServerPos.Motion );
 
-                double distanceOffTarget = MathUtility.GraphClampedValue(minDist * minDist, maxDist * maxDist, minRangeDistOffTarget, maxRangeDistOffTarget, shotStartPosition.SquareDistanceTo(shotTargetPos) );
+                float distToTargetSqr = shotStartPosition.SquareDistanceTo(shotTargetPos);
+
+                double distanceOffTarget = MathUtility.GraphClampedValue(minDist * minDist, maxDist * maxDist, minRangeDistOffTarget, maxRangeDistOffTarget, distToTargetSqr);
 
                 double rndPitch = (rnd.NextDouble() * distanceOffTarget) * pitchDir;
                 double rndYaw = (rnd.NextDouble() * distanceOffTarget) * yawDir;
@@ -174,6 +180,23 @@ namespace OutlawMod
                 Debug.WriteLine("Distance: " + distf);
 
                 Vec3d velocity = (shotTargetPosWithDrift - shotStartPosition).Normalize() * GameMath.Clamp(distf, 0.1f, maxVelocity);
+
+                if( damageFalloffStartDist < 0.0f )
+                    damageFalloffStartDist = maxDist;
+
+                if( damageFalloffEndDist < 0.0f )
+                    damageFalloffEndDist = maxDist;
+
+                float currentFalloffPercentile = (float) MathUtility.GraphClampedValue(damageFalloffStartDist * damageFalloffStartDist, damageFalloffEndDist * damageFalloffEndDist, 0.0f, damageFalloffPercent, distToTargetSqr);
+                float projectileDamage = damage - (damage * currentFalloffPercentile);
+
+                EntityProperties type = entity.World.GetEntityType(new AssetLocation(projectileItem));
+                Entity projectile = entity.World.ClassRegistry.CreateEntity(type);
+                ((EntityProjectile)projectile).FiredBy = entity;
+                ((EntityProjectile)projectile).Damage = projectileDamage;
+                ((EntityProjectile)projectile).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation(projectileItem)));
+                ((EntityProjectile)projectile).DropOnImpactChance = 0.0f; //Todo: Make shot projectiles always break so players cannot farm them.
+                ((EntityProjectile)projectile).Weight = 0.0f;
 
                 projectile.ServerPos.SetPos(entity.SidedPos.BehindCopy(0.21).XYZ.Add(0, entity.LocalEyePos.Y, 0));
                 projectile.ServerPos.Motion.Set(velocity);
