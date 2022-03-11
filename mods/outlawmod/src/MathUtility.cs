@@ -6,19 +6,12 @@ namespace OutlawMod
 {
     public class MathUtility
     {
-        public static double GraphClampedValue( double valueMin, double valueMax, double graphMin, double graphMax, double valueToGraph )
+        public static double GraphClampedValue( double inputStart, double inputEnd, double outputStart, double outputEnd, double inputValue )
         {
-            double clampedValueToGraph = GameMath.Clamp( valueToGraph, valueMin, valueMax );
-
-            double graphValuePercentage = clampedValueToGraph / valueMax;
-
-            double graphDiffrence = graphMax - graphMin;
-
-            double graphPosition = graphDiffrence * graphValuePercentage;
-
-            double graphedValue = graphPosition + graphMin;
-
-            return graphedValue;
+            double clampedInputValue = GameMath.Clamp(inputValue, inputStart, inputEnd);
+            double slope = 1.0 * (outputEnd - outputStart) / (inputEnd - inputStart);
+            double outputValue = outputStart + slope * (clampedInputValue - inputStart);
+            return outputValue;
         }
     }
 }

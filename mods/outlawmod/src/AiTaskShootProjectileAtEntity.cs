@@ -14,23 +14,37 @@ namespace OutlawMod
 {
     public class AiTaskShootProjectileAtEntity : AiTaskBaseTargetable
     {
+        ICoreAPI api; //Stored for access to the logger for debug prints to game console.
+
         int durationMs;
         int releaseAtMs;
         long lastSearchTotalMs;
 
-        float minVertDist = 2f;
         float minDist = 3f;
         float maxDist = 15f;
+
+        //Accuracy Vars
         float minRangeDistOffTarget = 0.0f; //this is the number of blocks off target a projectile will stray at min range.
         float maxRangeDistOffTarget = 0.0f; //this is the number of blocks off target a projectile will stray at max range.
         float maxVelocity = 1.0f;
 
+        //todo: Add Accuracy Zeroing Time.
+        //todo: Add New Target Accuracy Penalty.
+        float newTargetDistOffTarget = 0.0f;
+        float newTargetZeroingTime = 0.0f;
+        //todo: Store and update target.
+        //todo: Store and update dt since target aquired.
+
+        //Damage and Damage Falloff Vars
         float damage = 1.0f;
         float damageFalloffPercent = 0.0f;      //Percentage reduction do base damage when falloff distance hits max.
         float damageFalloffStartDist = -1.0f;   //Distance in blocks where damage falloff begins.
         float damageFalloffEndDist = -1.0f;     //Distance in blocks where damage falloff hits full percent value.
 
         string projectileItem = "arrow-copper";
+
+        Entity targetLastFrame = null;
+        double dtSinceTargetAquired = 0.0f;
 
         EntityPartitioning partitionUtil;
 
@@ -49,6 +63,8 @@ namespace OutlawMod
 
         public override void LoadConfig(JsonObject taskConfig, JsonObject aiConfig)
         {
+            this.api = entity.Api; 
+
             partitionUtil = entity.Api.ModLoader.GetModSystem<EntityPartitioning>();
 
             base.LoadConfig(taskConfig, aiConfig);
@@ -56,11 +72,12 @@ namespace OutlawMod
             this.durationMs = taskConfig["durationMs"].AsInt(1500);
             this.releaseAtMs = taskConfig["releaseAtMs"].AsInt(1000);
             this.minDist = taskConfig["minDist"].AsFloat(3f);
-            this.minVertDist = taskConfig["minVertDist"].AsFloat(2f);
             this.maxDist = taskConfig["maxDist"].AsFloat(15f);
             this.minRangeDistOffTarget = taskConfig["minRangeDistOffTarget"].AsFloat(0.0f);
             this.maxRangeDistOffTarget = taskConfig["maxRangeDistOffTarget"].AsFloat(0.0f);
             this.maxVelocity = taskConfig["maxVelocity"].AsFloat(1.0f);
+            this.newTargetDistOffTarget = taskConfig["newTargetDistOffTarget"].AsFloat(0.0f);
+            this.newTargetZeroingTime = taskConfig["newTargetZeroingTime"].AsFloat(0.0f);
             this.damage = taskConfig["damage"].AsFloat(1.0f);
             this.damageFalloffPercent = taskConfig["damageFalloffPercent"].AsFloat(0.0f);
             this.damageFalloffStartDist = taskConfig["damageFalloffStartDist"].AsFloat(-1.0f);
@@ -88,6 +105,11 @@ namespace OutlawMod
             Vec3d ownPos = entity.ServerPos.XYZ;
 
             targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, range / 2f));
+
+            if ( targetEntity != targetLastFrame)
+                dtSinceTargetAquired = 0.0f;
+
+             targetLastFrame = targetEntity;
 
             return targetEntity != null;
         }
@@ -140,6 +162,9 @@ namespace OutlawMod
             }
 
             accum += dt;
+            dtSinceTargetAquired += dt;
+
+            //Extra: We should look at what it would take to have a json bool, movingResetsAccuracy. That would force an AI's accuracy to reset if it is force to move from it's firing position.
 
             if (accum > releaseAtMs / 1000f && !didThrow)
             {
@@ -163,32 +188,24 @@ namespace OutlawMod
                 //Todo: Get this working with target velocity so we can lead our targets.
                 shotTargetPos = shotTargetPos.Add( targetEntity.ServerPos.Motion );
 
-                float distToTargetSqr = shotStartPosition.SquareDistanceTo(shotTargetPos);
+                double accuracyDistOffTarget = 0.0f;
+                if (newTargetZeroingTime > 0 && newTargetDistOffTarget > 0)
+                    accuracyDistOffTarget = MathUtility.GraphClampedValue(0.0, newTargetZeroingTime, newTargetDistOffTarget, 0.0, dtSinceTargetAquired);
 
+                float distToTargetSqr = shotStartPosition.SquareDistanceTo(shotTargetPos);
                 double distanceOffTarget = MathUtility.GraphClampedValue(minDist * minDist, maxDist * maxDist, minRangeDistOffTarget, maxRangeDistOffTarget, distToTargetSqr);
 
-                double rndPitch = (rnd.NextDouble() * distanceOffTarget) * pitchDir;
-                double rndYaw = (rnd.NextDouble() * distanceOffTarget) * yawDir;
+                double rndPitch = ((rnd.NextDouble() * distanceOffTarget) + accuracyDistOffTarget) * pitchDir;
+                double rndYaw = ((rnd.NextDouble() * distanceOffTarget) + accuracyDistOffTarget) * yawDir;
 
                 Vec3d shotDriftDirection = new Vec3d(0.0f, rndPitch, rndYaw);
-
-
                 Vec3d shotTargetPosWithDrift = shotTargetPos.Add( shotDriftDirection.X, shotDriftDirection.Y, shotDriftDirection.Z );
 
                 double distf = Math.Pow(shotStartPosition.SquareDistanceTo(shotTargetPosWithDrift), 0.1);
 
-                Debug.WriteLine("Distance: " + distf);
-
                 Vec3d velocity = (shotTargetPosWithDrift - shotStartPosition).Normalize() * GameMath.Clamp(distf, 0.1f, maxVelocity);
 
-                if( damageFalloffStartDist < 0.0f )
-                    damageFalloffStartDist = maxDist;
-
-                if( damageFalloffEndDist < 0.0f )
-                    damageFalloffEndDist = maxDist;
-
-                float currentFalloffPercentile = (float) MathUtility.GraphClampedValue(damageFalloffStartDist * damageFalloffStartDist, damageFalloffEndDist * damageFalloffEndDist, 0.0f, damageFalloffPercent, distToTargetSqr);
-                float projectileDamage = damage - (damage * currentFalloffPercentile);
+                float projectileDamage = GetProjectileDamageAfterFalloff( distToTargetSqr );
 
                 EntityProperties type = entity.World.GetEntityType(new AssetLocation(projectileItem));
                 Entity projectile = entity.World.ClassRegistry.CreateEntity(type);
@@ -212,7 +229,18 @@ namespace OutlawMod
         }
 
 
+        private float GetProjectileDamageAfterFalloff( float distToTargetSqr )
+        {
+            if (damageFalloffStartDist < 0.0f)
+                damageFalloffStartDist = maxDist;
 
+            if (damageFalloffEndDist < 0.0f)
+                damageFalloffEndDist = maxDist;
+
+            float currentFalloffPercentile = (float)MathUtility.GraphClampedValue(damageFalloffStartDist * damageFalloffStartDist, damageFalloffEndDist * damageFalloffEndDist, 0.0f, damageFalloffPercent, distToTargetSqr);
+
+            return damage - (damage * currentFalloffPercentile);
+        }
 
         public override void FinishExecute(bool cancelled)
         {
