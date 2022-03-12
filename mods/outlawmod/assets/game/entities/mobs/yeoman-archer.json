@@ -38,7 +38,7 @@
 		renderer: "Shape",
 		shape: { base: "entity/land/looter" },
 		textures: {
-			"looter": { base: "entity/bandit/looter", alternates: [ { base: "entity/bandit/looter2" }, { base: "entity/bandit/looter3" } ] },
+			"looter": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" } ] },
 		},
 		behaviors: [
 			{ code: "nametag", selectFromRandomName: ["Yeoman"], "showtagonlywhentargeted": true }, 

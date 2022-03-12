@@ -1465,14 +1465,25 @@
 		},
 
 		{
-			"name": "throwlefthanded",
-			"code": "throwatentity",
+			"name": "ThrowLeftHanded",
+			"code": "throwlefthanded",
 			"quantityframes": 15,
-			"onActivityStopped": "PlayTillEnd",
+			"onActivityStopped": "EaseOut",
 			"onAnimationEnd": "Stop",
 			"keyframes": [
 				{
 					"frame": 0,
+					"elements": {
+						"LowerTorso": {  },
+						"UpperTorso": {  },
+						"UpperArmR": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
+						"LowerArmR": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
+						"UpperArmL": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
+						"LowerArmL": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 }
+					}
+				},
+				{
+					"frame": 5,
 					"elements": {
 						"LowerTorso": {  },
 						"UpperTorso": { "rotationX": 0.0, "rotationY": 12.0, "rotationZ": -8.0 },
@@ -1485,7 +1496,7 @@
 					}
 				},
 				{
-					"frame": 5,
+					"frame": 10,
 					"elements": {
 						"LowerTorso": {  },
 						"UpperTorso": { "rotationX": 0.0, "rotationY": -8.0, "rotationZ": 5.0 },
@@ -1495,6 +1506,15 @@
 						"Head": { "rotationX": 0.0, "rotationY": -5.0, "rotationZ": 0.0 },
 						"UpperArmL": { "offsetX": 1.0, "offsetY": -1.0, "offsetZ": -1.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": -90.0 },
 						"LowerArmL": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 }
+					}
+				},
+				{
+					"frame": 14,
+					"elements": {
+						"LowerTorso": {  },
+						"UpperTorso": {  },
+						"UpperArmL": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
+						"LowerArmL": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 }
 					}
 				}
 			]

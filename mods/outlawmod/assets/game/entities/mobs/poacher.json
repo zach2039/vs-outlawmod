@@ -38,7 +38,7 @@
 		renderer: "Shape",
 		shape: { base: "entity/land/poacher-spear" },
 		textures: {
-			"poacher1": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" } ] },
+			"poacher1": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" }, { base: "entity/bandit/poacher3" }, { base: "entity/bandit/poacher4" } ] },
 		},
 		behaviors: [
 			{ code: "nametag", selectFromRandomName: ["Poacher"], "showtagonlywhentargeted": true }, 
@@ -68,7 +68,7 @@
 			},
 			{ 
 				code: "wander", 
-				animation: "walk",
+				animation: "walkspearshouldered",
 				blendMode: "Average",
 				easeOutSpeed: 1
 			},
@@ -82,8 +82,20 @@
 			{ 
 				code: "meleeattack", 
 				animation: "attack",
-				weight: 5,
+				weight: 10,
 				blendMode: "AddAverage"
+			},
+			{
+				code: "look",
+				animation: "look",
+				easeOutSpeed: 1,
+				blendMode: "Add",
+				SupressDefaultAnimation: true
+			},
+			{
+				code: "walk",
+				animation: "walk",
+				SupressDefaultAnimation: true
 			},
 			{ 
 				code: "idle", 
@@ -249,7 +261,7 @@
 						code: "seekentity",
 						entityCodes: ["player"],
 						priority: 4.5,
-						seekingRange: 4,
+						seekingRange: 8,
 						movespeed: 0.035,
 						animation: "walk",
 						animationSpeed: 1.8,
@@ -259,25 +271,42 @@
 					},
 					{
 						code: "idle",
-						priority: 0.9,
+						priority: 0.8,
 						minduration: 5000,
 						maxduration: 30000,
 						mincooldown: 2000,
 						maxcooldown: 120000,
 						priorityForCancel: 1.33,
-						animation: "Sit",
+						animation: "look",
 						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
-						stopRange: 5,
 						whenNotInEmotionState: "fleeondamage",
-						whenNotInEmotionState: "aggressiveondamage"
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopRange: 5
+					},
+					{
+						code: "idle",
+						priority: 0.7,
+						minduration: 5000,
+						maxduration: 30000,
+						mincooldown: 2000,
+						maxcooldown: 120000,
+						priorityForCancel: 1.33,
+						animation: "idle",
+						whenNotInEmotionState: "aggressiveondamage",
+						whenNotInEmotionState: "fleeondamage",
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopRange: 5
 					},
 					{
 						code: "wander", 
-						priority: 1.0, 
+						priority: 0.5, 
 						priorityForCancel: 1.35,
 						movespeed: 0.006,
-						animation: "Walk",
+						minduration: 2500,
+						maxduration: 5000,
+						mincooldown: 5000,
+						maxcooldown: 10000,
+						animation: "walkspearshouldered",
 						preferredLightLevel: 20,
 						whenNotInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"

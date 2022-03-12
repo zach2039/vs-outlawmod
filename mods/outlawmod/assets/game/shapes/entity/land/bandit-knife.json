@@ -11,7 +11,8 @@
 	"textures": {
 		"headband": "entity/bandit/headband",
 		"bandit1": "entity/bandit/bandit1",
-		"blade": "entity/bandit/blade"
+		"blade": "entity/bandit/blade",
+		"copper": "item/tool/material/copper"
 	},
 	"elements": [
 		{
@@ -101,12 +102,12 @@
 											"rotationY": 3.127166227768325E-7,
 											"rotationZ": -1.2425169503048686E-6,
 											"faces": {
-												"north": { "texture": "#blade", "uv": [ 34.0, 52.0, 36.0, 54.0 ] },
-												"east": { "texture": "#blade", "uv": [ 31.5, 51.5, 32.0, 53.0 ] },
-												"south": { "texture": "#blade", "uv": [ 38.0, 51.5, 40.5, 53.0 ] },
-												"west": { "texture": "#blade", "uv": [ 36.0, 51.5, 36.5, 53.0 ] },
-												"up": { "texture": "#blade", "uv": [ 36.0, 49.0, 36.5, 51.5 ], "rotation": 90 },
-												"down": { "texture": "#blade", "uv": [ 36.0, 59.5, 36.5, 62.0 ], "rotation": 90 }
+												"north": { "texture": "#copper", "uv": [ 34.0, 52.0, 36.0, 54.0 ] },
+												"east": { "texture": "#copper", "uv": [ 31.5, 51.5, 32.0, 53.0 ] },
+												"south": { "texture": "#copper", "uv": [ 38.0, 51.5, 40.5, 53.0 ] },
+												"west": { "texture": "#copper", "uv": [ 36.0, 51.5, 36.5, 53.0 ] },
+												"up": { "texture": "#copper", "uv": [ 36.0, 49.0, 36.5, 51.5 ], "rotation": 90 },
+												"down": { "texture": "#copper", "uv": [ 36.0, 59.5, 36.5, 62.0 ], "rotation": 90 }
 											}
 										},
 										{
@@ -118,12 +119,12 @@
 											"rotationY": 3.127166227768325E-7,
 											"rotationZ": 45.0,
 											"faces": {
-												"north": { "texture": "#blade", "uv": [ 33.5, 51.5, 34.5, 52.5 ] },
-												"east": { "texture": "#blade", "uv": [ 31.5, 51.5, 32.0, 52.5 ] },
-												"south": { "texture": "#blade", "uv": [ 38.0, 51.5, 39.0, 52.5 ] },
-												"west": { "texture": "#blade", "uv": [ 36.0, 51.5, 36.5, 52.5 ] },
-												"up": { "texture": "#blade", "uv": [ 36.0, 49.0, 36.5, 50.0 ], "rotation": 90 },
-												"down": { "texture": "#blade", "uv": [ 36.0, 59.5, 36.5, 60.5 ], "rotation": 90 }
+												"north": { "texture": "#copper", "uv": [ 33.5, 51.5, 34.5, 52.5 ] },
+												"east": { "texture": "#copper", "uv": [ 31.5, 51.5, 32.0, 52.5 ] },
+												"south": { "texture": "#copper", "uv": [ 38.0, 51.5, 39.0, 52.5 ] },
+												"west": { "texture": "#copper", "uv": [ 36.0, 51.5, 36.5, 52.5 ] },
+												"up": { "texture": "#copper", "uv": [ 36.0, 49.0, 36.5, 50.0 ], "rotation": 90 },
+												"down": { "texture": "#copper", "uv": [ 36.0, 59.5, 36.5, 60.5 ], "rotation": 90 }
 											}
 										},
 										{
