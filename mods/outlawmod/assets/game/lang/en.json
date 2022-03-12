@@ -3,7 +3,9 @@
 	"deathmsg-banditknife-1": "{0} has been murdered by a blood-thirsty footpad.",
 	"deathmsg-banditspear-1": "{0} was skewered by a ruthless brigand.",
 	"deathmsg-looter-1": "{0} was worked-over by a desperate looter.",
-	"deathmsg-poacher-1": "{0} was killed aprehending a cornered poacher.",
+	"deathmsg-poacherspear-1": "{0} was killed aprehending a cornered poacher.",
+	"deathmsg-poacherarcher-1": "{0} was shot down aprehending a cornered poacher.",
+	"deathmsg-yeomanarcher-1": "{0} caught an arrow from a merry yeoman archer.",
 
 	"item-creature-bandit-knife": "Footpad",
 	"itemdesc-creature-bandit-knife": "<font color=\"#99c9f9\"><i>Footpads roam the hills and valleys at night, preying on unsuspecting travelers.</i></font><br>",
