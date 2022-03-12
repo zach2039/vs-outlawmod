@@ -25,8 +25,18 @@
 	"item-dead-creature-looter": "Dead Looter",
 	"deadcreature-eaten-looter": "Slain by human hands. Someone clubbed it to death.",
 
-	"item-creature-poacher": "Poacher",
-	"itemdesc-creature-poacher": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
-	"item-dead-creature-poacher": "Dead Poacher",
-	"deadcreature-eaten-poacher": "Slain and cleaned by human hands. Looks like the work of a Poacher."
+	"item-creature-poacher-spear": "Poacher with Spear",
+	"itemdesc-creature-poacher-spear": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
+	"item-dead-creature-poacher-spear": "Dead Poacher",
+	"deadcreature-eaten-poacher-spear": "Slain and cleaned by human hands. Looks like the work of a Poacher.",
+
+	"item-creature-poacher-archer": "Poacher with Bow",
+	"itemdesc-creature-poacher-archer": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
+	"item-dead-creature-poacher-archer": "Dead Poacher",
+	"deadcreature-eaten-poacher-archer": "Slain and cleaned by human hands. Looks like the work of a Poacher.",
+
+	"item-creature-yeoman-archer": "Yeoman Archer",
+	"itemdesc-creature-yeoman-archer": "<font color=\"#99c9f9\"><i>Yeoman are free farmers. Sometimes, when the crops fail, they have to turn to other means to make ends-meet.</i></font><br>",
+	"item-dead-creature-yeoman-archer": "Dead Poacher",
+	"deadcreature-eaten-yeoman-archer": "Slain and cleaned by human hands. It has an arrow in its side."
 }

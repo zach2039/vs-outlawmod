@@ -35,8 +35,23 @@
 			},
 			{
 				type: "item",
+				code: "game:fat",
+				quantity: { avg: 2, var: 0.5 }
+			},
+			{
+				type: "item",
 				code: "game:arrow-copper",
 				quantity: { avg: 6, var: 2 }
+			},
+			{
+				type: "item",
+				code: "game:bow-long",
+				quantity: { avg: 0.05, var: 0.0 }
+			},
+			{
+				type: "item",
+				code: "game:spear-copper",
+				quantity: { avg: 0.05, var: 0.0 }
 			}
 	],
 	client: {
@@ -185,19 +200,28 @@
 
 					//Poacher only attacks non-animals to aggro first.
 					{
-						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "looter"],
+						code: "shootatentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						priority: 5.0,
-						damage: 2.0,
-						damageTier: 1,
-						damageType: "PiercingAttack",
-						slot: 1,
-						mincooldown: 500, 
+						priorityForCancel: 9,
+						mincooldown: 1000, 
 						maxcooldown: 1500, 
-						attackDurationMs: 450,
-						damagePlayerAtMs: 300,
-						animation: "attack",
-						animationSpeed: 2,
+						maxDist: 32,
+						minRangeDistOffTarget: 0.25,
+						maxRangeDistOffTarget: 0.75,
+						maxVelocity: 1.25,
+						newTargetDistOffTarget: 0.75,
+						newTargetZeroingTime: 5.0,
+						damage: 3.0,
+						damageFalloffPercent: 0.66,
+						damageFalloffStartDist: 18,
+						damageFalloffEndDist: 28,
+						projectileItem: "arrow-copper",
+						durationMs: 2000,
+						releaseAtMs: 1000,
+						seekingRange: 15,
+						animationSpeed: 1.0,
+						animation: "bowattack",
 						whenInEmotionState: "aggressiveondamage",
 						sound: "creature/bandit/attack"
 					},
@@ -258,42 +282,12 @@
 						whenInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
 					},
-					//Agro When Damaged
-					{
-						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "looter" ],
-						priority: 4.0,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 22,
-						movespeed: 0.040,
-						animation: "sprint",
-						animationSpeed: 2.0,
-						maxFollowTime: 60,
-						alarmHerd: true,
-						whenInEmotionState: "aggressiveondamage",
-						sound: "creature/bandit/youdead",
-						soundStartMs: 950
-					},
 					{
 						code: "getoutofwater",
 						priority: 2,
 						movespeed: 0.040,
 						animation: "swim",
 						animationSpeed: 0.3
-					},
-					//Slow down to Engage the player, if the have attacked us.
-					{
-						code: "seekentity",
-						entityCodes: ["player"],
-						priority: 4.5,
-						seekingRange: 8,
-						movespeed: 0.035,
-						animation: "walk",
-						animationSpeed: 1.8,
-						maxFollowTime: 50,
-						soundStartMs: 950,
-						whenInEmotionState: "aggressiveondamage"
 					},
 					{
 						code: "idle",

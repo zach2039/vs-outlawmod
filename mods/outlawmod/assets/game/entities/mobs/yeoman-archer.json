@@ -10,38 +10,48 @@
 	drops: [
 			{
 				type: "item",
-				code: "game:knife-flint",
-				quantity: { avg: 0.65, var: 0 }
-			},
-			{
-				type: "item",
 				code: "game:poultice-reed-horsetail",
 				quantity: { avg: 0.8, var: 0 }
 			},
 			{
 				type: "item",
 				code: "game:gear-rusty",
-				quantity: { avg: 0, var: 0.2 }
+				quantity: { avg: 0.33, var: 0 }
 			},
 			{
 				type: "item",
-				code: "game:bread-flax-perfect",
-				quantity: { avg: 0.6, var: 0.4 }
+				code: "game:nugget-nativecopper",
+				quantity: { avg: 2, var: 1 }
 			},
 			{
 				type: "item",
-				code: "game:vegetable-carrot",
-				quantity: { avg: 0.8, var: 1.2 }
+				code: "game:nugget-nativesilver",
+				quantity: { avg: 0.25, var: 1 }
+			},
+			{
+				type: "item",
+				code: "game:nugget-nativegold",
+				quantity: { avg: 0.125, var: 0 }
+			},
+			{
+				type: "item",
+				code: "game:arrow-copper",
+				quantity: { avg: 6, var: 2 }
+			},
+			{
+				type: "item",
+				code: "game:bow-long",
+				quantity: { avg: 0.05, var: 0.0 }
 			}
 	],
 	client: {
 		renderer: "Shape",
-		shape: { base: "entity/land/poacher-archer" },
+		shape: { base: "entity/land/yeoman-archer" },
 		textures: {
-			"looter": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" } ] },
+			"yeoman": { base: "entity/bandit/yeoman1", alternates: [ { base: "entity/bandit/yeoman2" }, { base: "entity/bandit/yeoman3" }, { base: "entity/bandit/yeoman4" } ] },
 		},
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Yeoman"], "showtagonlywhentargeted": true }, 
+			{ code: "nametag", selectFromRandomName: ["Yeoman Archer"], "showtagonlywhentargeted": true }, 
 			{ code: "nametag", "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
@@ -124,13 +134,13 @@
 			}
 		},
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Yeoman"], "showtagonlywhentargeted": true }, 
+			{ code: "nametag", selectFromRandomName: ["Yeoman Archer"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
 			{ code: "controlledphysics", stepHeight: 1.01 }, 
 			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "drycarcass-humanoid1" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
-			{ code: "health", currenthealth: 6, maxhealth: 6 },
+			{ code: "health", currenthealth: 12, maxhealth: 12 },
 			{ code: "harvestable", drops: [
 				{
 					type: "block", 
@@ -296,7 +306,7 @@
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
-				chance: 0.009,
+				chance: 0.004,
 				maxQuantity: 6,
 				"__comment": "Make them spawn away from artifical light, both day and night",
 				maxLightLevel: 7,

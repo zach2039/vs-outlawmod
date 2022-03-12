@@ -32,6 +32,21 @@
 				type: "item",
 				code: "game:redmeat-raw",
 				quantity: { avg: 6, var: 2 }
+			},
+			{
+				type: "item",
+				code: "game:fat",
+				quantity: { avg: 2, var: 0.5 }
+			},
+			{
+				type: "item",
+				code: "game:spear-copper",
+				quantity: { avg: 0.05, var: 0.0 }
+			},
+			{
+				type: "item",
+				code: "game:hunterbackpack",
+				quantity: { avg: 0.025, var: 0.0 }
 			}
 	],
 	client: {
