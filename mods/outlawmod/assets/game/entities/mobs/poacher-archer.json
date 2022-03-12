@@ -1,9 +1,9 @@
 {
-	code: "poacher",
+	code: "poacher-archer",
 	class: "EntityHumanoid",
 	canClimb: true,
 	hitboxSize: { x: 0.6, y: 1.75 },
-	deadHitboxSize: { x: 1.5, y: 0.5 },
+	deadHitboxSize: { x: 1.0, y: 0.5 },
 	eyeHeight: 1.7,
 	attributes: { reckless: false },
 
@@ -32,11 +32,16 @@
 				type: "item",
 				code: "game:redmeat-raw",
 				quantity: { avg: 6, var: 2 }
+			},
+			{
+				type: "item",
+				code: "game:arrow-copper",
+				quantity: { avg: 6, var: 2 }
 			}
 	],
 	client: {
 		renderer: "Shape",
-		shape: { base: "entity/land/poacher-spear" },
+		shape: { base: "entity/land/poacher-archer" },
 		textures: {
 			"poacher1": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" }, { base: "entity/bandit/poacher3" }, { base: "entity/bandit/poacher4" } ] },
 		},
@@ -68,7 +73,7 @@
 			},
 			{ 
 				code: "wander", 
-				animation: "walkspearshouldered",
+				animation: "walkbowready",
 				blendMode: "Average",
 				easeOutSpeed: 1
 			},
@@ -85,11 +90,22 @@
 				weight: 10,
 				blendMode: "AddAverage"
 			},
+			{ 
+				code: "shootatentity", 
+				animation: "bowattack",
+				weight: 10,
+				blendMode: "Add"
+			},
 			{
 				code: "look",
 				animation: "look",
 				easeOutSpeed: 1,
 				blendMode: "Add",
+				SupressDefaultAnimation: true
+			},
+			{
+				code: "sneakwalk",
+				animation: "sneakwalk",
 				SupressDefaultAnimation: true
 			},
 			{
@@ -99,7 +115,7 @@
 			},
 			{ 
 				code: "idle", 
-				animation: "idle",
+				animation: "sneakidle",
 				blendMode: "AddAverage",
 				triggeredBy: { defaultAnim: true }
 			}
@@ -140,23 +156,31 @@
 			{ 
 				code: "taskai",
 				aitasks: [
+
 					{
-						code: "meleeattack",
+						code: "shootatentity",
 						entityCodes: ["wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
 							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female", "looter"],
-						priority: 2.5,
-						damage: 5.0,
-						damageTier: 1,
-						damageType: "PiercingAttack",
-						slot: 1,
-						mincooldown: 500, 
+						priority: 3.75,
+						priorityForCancel: 9,
+						mincooldown: 1000, 
 						maxcooldown: 1500, 
-						attackDurationMs: 450,
-						damagePlayerAtMs: 300,
-						animation: "attack",
-						animationSpeed: 2,
-						sound: "creature/bandit/attack",
-						whenNotInEmotionState: "saturated"
+						maxDist: 18,
+						minRangeDistOffTarget: 0.5,
+						maxRangeDistOffTarget: 0.75,
+						maxVelocity: 1.25,
+						newTargetDistOffTarget: 0.0,
+						newTargetZeroingTime: 0.0,
+						damage: 6.0,
+						damageFalloffPercent: 0.66,
+						damageFalloffStartDist: 18,
+						damageFalloffEndDist: 28,
+						projectileItem: "arrow-copper",
+						durationMs: 2000,
+						releaseAtMs: 1000,
+						seekingRange: 15,
+						animationSpeed: 1.0,
+						animation: "bowattack"
 					},
 
 					//Poacher only attacks non-animals to aggro first.
@@ -164,7 +188,7 @@
 						code: "meleeattack",
 						entityCodes: ["player", "drifter-*", "looter"],
 						priority: 5.0,
-						damage: 5.0,
+						damage: 2.0,
 						damageTier: 1,
 						damageType: "PiercingAttack",
 						slot: 1,
@@ -184,11 +208,12 @@
 						entityCodes: [ "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
 							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female"],
 						priority: 2.0,
+						priorityForCancel: 3.0,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
 						seekingRange: 60,
-						movespeed: 0.045,
-						animation: "sprint",
+						movespeed: 0.010,
+						animation: "sneakwalk",
 						animationSpeed: 2.0,
 						maxFollowTime: 60,
 						alarmHerd: true,
@@ -196,10 +221,11 @@
 						soundStartMs: 950,
 						whenNotInEmotionState: "saturated"
 					},
-					//Keep distance from the player when player approaches.
+					//Keep distance from any target that approaches.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "looter"],
+						entityCodes: ["player", "drifter-*", "looter", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
+							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female"],
 						priority: 3.0,
 						movespeed: 0.040,
 						seekingRange: 6,
@@ -306,31 +332,14 @@
 						maxduration: 5000,
 						mincooldown: 5000,
 						maxcooldown: 10000,
-						animation: "walkspearshouldered",
+						animation: "sneakwalk",
 						preferredLightLevel: 20,
 						whenNotInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
 					}
 				]
 			}
-		],
-		spawnconditions: {
-			runtime: {
-				group: "neutral",
-				tryOnlySurface: true,
-				chance: 0.006,
-				maxQuantity: 3,
-				"__comment": "Make them spawn away from artifical light",
-				maxLightLevel: 7,
-				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "verynarrowgaussian", avg: 1, var: 2 },
-				insideBlockCodes: ["game:air", "game:tallgrass-*","snowlayer-1"],
-				minTemp: -15,
-				maxTemp: 28,
-				minRain: 0,
-				minForestOrShrubs: 0.5
-			}
-		}
+		]
 	},
 	sounds: {
 		idle: "creature/bandit/idle1",

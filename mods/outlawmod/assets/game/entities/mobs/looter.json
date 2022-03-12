@@ -3,7 +3,7 @@
 	class: "EntityHumanoid",
 	canClimb: true,
 	hitboxSize: { x: 0.6, y: 1.75 },
-	deadHitboxSize: { x: 1.5, y: 0.5 },
+	deadHitboxSize: { x: 1.0, y: 0.5 },
 	eyeHeight: 1.7,
 	attributes: { reckless: false },
 
@@ -129,7 +129,7 @@
 				aitasks: [
 					{
 						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
 						priority: 4.0,
 						damage: 1.5,
 						damageTier: 1,
@@ -145,7 +145,7 @@
 					},
 					{
 						code: "throwatentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
 						priority: 3.5,
 						priorityForCancel: 9,
 						mincooldown: 1000, 
@@ -159,7 +159,7 @@
 					//Flee when injured.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
 						priority: 4,
 						movespeed: 0.040,
 						seekingRange: 14,
@@ -176,7 +176,7 @@
 					//Agro When Damaged
 					{
 						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
 						priority: 2.5,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
@@ -198,7 +198,7 @@
 					//Close the distance to enemy target.
 					{
 						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
 						priority: 1.5,
 						priorityForCancel: 2.5,
 						mincooldown: 1000, 
@@ -234,7 +234,7 @@
 						priorityForCancel: 1.33,
 						animation: "Sit",
 						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*"],
 						stopRange: 5
 					},
 					{

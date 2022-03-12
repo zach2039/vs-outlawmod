@@ -3,7 +3,7 @@
 	class: "EntityHumanoid",
 	canClimb: true,
 	hitboxSize: { x: 0.6, y: 1.75 },
-	deadHitboxSize: { x: 1.5, y: 0.5 },
+	deadHitboxSize: { x: 1.0, y: 0.5 },
 	eyeHeight: 1.7,
 	attributes: { reckless: false },
 
@@ -36,7 +36,7 @@
 	],
 	client: {
 		renderer: "Shape",
-		shape: { base: "entity/land/looter" },
+		shape: { base: "entity/land/poacher-archer" },
 		textures: {
 			"looter": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" } ] },
 		},
@@ -86,6 +86,29 @@
 				blendMode: "AddAverage"
 			},
 			{ 
+				code: "shootatentity", 
+				animation: "bowattack",
+				weight: 10,
+				blendMode: "Add"
+			},
+			{
+				code: "look",
+				animation: "look",
+				easeOutSpeed: 1,
+				blendMode: "Add",
+				SupressDefaultAnimation: true
+			},
+			{
+				code: "walk",
+				animation: "walk",
+				SupressDefaultAnimation: true
+			},
+			{
+				code: "walkbowready",
+				animation: "walkbowready",
+				SupressDefaultAnimation: true
+			},
+			{ 
 				code: "idle", 
 				animation: "idle",
 				blendMode: "AddAverage",
@@ -129,7 +152,7 @@
 				aitasks: [
 					{
 						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
 						priority: 4.0,
 						damage: 1.5,
 						damageTier: 1,
@@ -145,13 +168,13 @@
 					},
 					{
 						code: "shootatentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						priority: 3.75,
 						priorityForCancel: 9,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
 						maxDist: 32,
-						minRangeDistOffTarget: 0.5,
+						minRangeDistOffTarget: 0.25,
 						maxRangeDistOffTarget: 0.75,
 						maxVelocity: 1.25,
 						newTargetDistOffTarget: 0.75,
@@ -161,16 +184,16 @@
 						damageFalloffStartDist: 18,
 						damageFalloffEndDist: 28,
 						projectileItem: "arrow-copper",
-						durationMs: 1000,
-						releaseAtMs: 750,
+						durationMs: 2000,
+						releaseAtMs: 1000,
 						seekingRange: 15,
-						animationSpeed: 0.5,
-						animation: "throwlefthanded"
+						animationSpeed: 1.0,
+						animation: "bowattack"
 					},
-					//Flee when injured.
+					//Flee to arrow range.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						priority: 3.0,
 						movespeed: 0.040,
 						seekingRange: 6,
@@ -186,7 +209,7 @@
 					//Agro When Damaged
 					{
 						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						priority: 2.5,
 						priorityForCancel: 3.0,
 						mincooldown: 1000, 
@@ -209,7 +232,7 @@
 					//Close the distance to enemy target.
 					{
 						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
 						priority: 1.5,
 						priorityForCancel: 3.0,
 						mincooldown: 1000, 
@@ -249,16 +272,22 @@
 						priorityForCancel: 1.33,
 						animation: "Sit",
 						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
 					{
 						code: "wander", 
-						priority: 0.8, 
-						priorityForCancel: 1.0,
+						priority: 0.5, 
+						priorityForCancel: 1.35,
 						movespeed: 0.006,
-						animation: "Walk",
-						preferredLightLevel: 20
+						minduration: 2500,
+						maxduration: 5000,
+						mincooldown: 5000,
+						maxcooldown: 10000,
+						animation: "walkbowready",
+						preferredLightLevel: 20,
+						whenNotInEmotionState: "fleeondamage",
+						whenNotInEmotionState: "aggressiveondamage"
 					}
 				]
 			}
