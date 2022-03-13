@@ -15,7 +15,7 @@
 	},
 	creativeinventory: { "general": ["*"], "decorative": ["*"] },
 	shape: {
-		base: "block/bone/carcass/{type}",
+		base: "block/bone/carcass/humanoid1",
 		alternates: [
 			{ base: "block/bone/carcass/humanoid1", rotateY: 45 },
 			{ base: "block/bone/carcass/humanoid1", rotateY: 90 },
@@ -23,6 +23,7 @@
 			{ base: "block/bone/carcass/humanoid1", rotateY: 180 },
 			{ base: "block/bone/carcass/humanoid1", rotateY: 225 },		
 			{ base: "block/bone/carcass/humanoid1", rotateY: 270 },
+			{ base: "block/bone/carcass/humanoid2", rotateY: 0 },
 			{ base: "block/bone/carcass/humanoid2", rotateY: 45 },
 			{ base: "block/bone/carcass/humanoid2", rotateY: 90 },
 			{ base: "block/bone/carcass/humanoid2", rotateY: 135 },
