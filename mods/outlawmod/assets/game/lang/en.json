@@ -39,6 +39,9 @@
 
 	"item-creature-yeoman-archer": "Yeoman Archer",
 	"itemdesc-creature-yeoman-archer": "<font color=\"#99c9f9\"><i>Yeoman are free farmers. Sometimes, when the crops fail, they have to turn to other means to make ends-meet.</i></font><br>",
-	"item-dead-creature-yeoman-archer": "Dead Poacher",
-	"deadcreature-eaten-yeoman-archer": "Slain and cleaned by human hands. It has an arrow in its side."
+	"item-dead-creature-yeoman-archer": "Dead Yeoman Archer",
+	"deadcreature-eaten-yeoman-archer": "Slain and cleaned by human hands. It has an arrow in its side.",
+
+	"block-carcass-human": "Carcass (Human)"
+
 }
