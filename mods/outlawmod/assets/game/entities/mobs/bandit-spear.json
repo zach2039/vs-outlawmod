@@ -217,7 +217,7 @@
 						priorityForCancel: 1.33,
 						animation: "look",
 						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
 					{
@@ -230,7 +230,7 @@
 						priorityForCancel: 1.33,
 						animation: "idle",
 						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
 					{

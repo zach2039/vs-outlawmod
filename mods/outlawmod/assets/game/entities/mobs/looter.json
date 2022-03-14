@@ -140,7 +140,7 @@
 				aitasks: [
 					{
 						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
 						priority: 4.0,
 						damage: 1.5,
 						damageTier: 1,
@@ -154,9 +154,26 @@
 						animationSpeed: 2,
 						sound: "creature/bandit/attack"
 					},
+					//Looters will get into fights with one another if they take damage.
+					{
+						code: "meleeattack",
+						entityCodes: ["looter"],
+						priority: 3.75,
+						damage: 1.5,
+						damageTier: 1,
+						damageType: "BluntAttack",
+						slot: 1,
+						mincooldown: 500, 
+						maxcooldown: 1500, 
+						attackDurationMs: 450,
+						damagePlayerAtMs: 300,
+						animation: "attack",
+						animationSpeed: 2,
+						whenInEmotionState: "aggressiveondamage"
+					},
 					{
 						code: "throwatentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
 						priority: 3.5,
 						priorityForCancel: 9,
 						mincooldown: 1000, 
@@ -170,7 +187,7 @@
 					//Flee when injured.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter" ],
 						priority: 4,
 						movespeed: 0.040,
 						seekingRange: 14,
@@ -187,7 +204,7 @@
 					//Agro When Damaged
 					{
 						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter" ],
 						priority: 2.5,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
@@ -209,7 +226,7 @@
 					//Close the distance to enemy target.
 					{
 						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
 						priority: 1.5,
 						priorityForCancel: 2.5,
 						mincooldown: 1000, 
@@ -255,7 +272,7 @@
 						priorityForCancel: 1.33,
 						animation: "Sit",
 						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher-*", "yeoman-*"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*"],
 						stopRange: 5
 					},
 					{
@@ -273,7 +290,7 @@
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
-				chance: 0.009,
+				chance: 0.0055,
 				maxQuantity: 6,
 				"__comment": "Make them spawn away from artifical light, both day and night",
 				maxLightLevel: 7,

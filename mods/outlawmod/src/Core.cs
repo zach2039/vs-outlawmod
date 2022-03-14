@@ -27,9 +27,15 @@ namespace OutlawMod
             harmony = new Harmony("com.grifthegnome.outlawmod.causeofdeath");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            RegisterEntities();
-            RegisterEntityBehaviors();
-            RegisterAiTasks();
+            RegisterEntitiesShared();
+            RegisterEntityBehaviorsShared();
+            RegisterAiTasksShared();
+        }
+
+        public override void StartServerSide(ICoreServerAPI api)
+        {
+            base.StartServerSide(api);
+            AiTaskRegistry.Register<AiTaskShootProjectileAtEntity>("shootatentity");
         }
 
         public override void Dispose()
@@ -38,17 +44,17 @@ namespace OutlawMod
             base.Dispose();
         }
 
-        private void RegisterEntities()
+        private void RegisterEntitiesShared()
         {
             
         }
 
-        private void RegisterEntityBehaviors()
+        private void RegisterEntityBehaviorsShared()
         {
             
         }
 
-        private void RegisterAiTasks()
+        private void RegisterAiTasksShared()
         {
             AiTaskRegistry.Register("shootatentity", typeof(AiTaskShootProjectileAtEntity));
         }

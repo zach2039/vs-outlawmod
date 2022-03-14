@@ -158,7 +158,7 @@
 					{
 						code: "meleeattack",
 						entityCodes: ["wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
-							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female", "looter"],
+							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female"],
 						priority: 2.5,
 						damage: 5.0,
 						damageTier: 1,
@@ -305,7 +305,7 @@
 						animation: "look",
 						whenNotInEmotionState: "aggressiveondamage",
 						whenNotInEmotionState: "fleeondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
 					{
@@ -319,7 +319,7 @@
 						animation: "idle",
 						whenNotInEmotionState: "aggressiveondamage",
 						whenNotInEmotionState: "fleeondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-axe", "bandit-spear", "bandit-knife", "poacher"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
 					{
