@@ -285,6 +285,16 @@
 						whenInEmotionState: "aggressiveondamage"
 					},
 					{
+						code: "stayclosetoentity",
+						priority: 1.4,
+						entityCode: "poacher-*",
+						movespeed: 0.02,
+						animationSpeed: 4,
+						maxDistance: 15,
+						searchRange: 25,
+						animation: "sprint"
+					},
+					{
 						code: "idle",
 						priority: 0.8,
 						minduration: 5000,
@@ -333,7 +343,7 @@
 			runtime: {
 				group: "neutral",
 				tryOnlySurface: true,
-				chance: 0.006,
+				chance: 0.003,
 				maxQuantity: 2,
 				"__comment": "Make them spawn away from artifical light",
 				maxLightLevel: 7,

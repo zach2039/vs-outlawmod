@@ -42,6 +42,8 @@ namespace OutlawMod
         float damageFalloffEndDist = -1.0f;     //Distance in blocks where damage falloff hits full percent value.
 
         string projectileItem = "arrow-copper";
+        bool projectileRemainsInWorld = false;
+        float projectileBreakOnImpactChance = 0.0f;
 
         Entity targetLastFrame = null;
         double dtSinceTargetAquired = 0.0f;
@@ -55,7 +57,7 @@ namespace OutlawMod
         float maxTurnAnglePerSec;
         float curTurnRadPerSec;
 
-        Random rnd = new Random(420691337); //Make this use the world gen seed.
+        Random rnd;
 
         public AiTaskShootProjectileAtEntity(EntityAgent entity) : base(entity)
         {
@@ -64,6 +66,7 @@ namespace OutlawMod
         public override void LoadConfig(JsonObject taskConfig, JsonObject aiConfig)
         {
             this.api = entity.Api; 
+            this.rnd = new Random((int)(entity.EntityId + entity.World.ElapsedMilliseconds));
 
             partitionUtil = entity.Api.ModLoader.GetModSystem<EntityPartitioning>();
 
@@ -83,6 +86,8 @@ namespace OutlawMod
             this.damageFalloffStartDist = taskConfig["damageFalloffStartDist"].AsFloat(-1.0f);
             this.damageFalloffEndDist = taskConfig["damageFalloffEndDist"].AsFloat(-1.0f);
             this.projectileItem = taskConfig["projectileItem"].AsString("arrow-copper");
+            this.projectileRemainsInWorld = taskConfig["projectileRemainsInWorld"].AsBool(false);
+            this.projectileBreakOnImpactChance = taskConfig[ "projectileBreakOnImpactChance"].AsFloat(0.0f);
 
             //Error checking for bad json values.
             Debug.Assert(damageFalloffPercent >= 0.0f && damageFalloffPercent <= 1.0f, "AiTaskValue damageFalloffPercent must be a 0.0 to 1.0 value.");
@@ -207,12 +212,26 @@ namespace OutlawMod
 
                 float projectileDamage = GetProjectileDamageAfterFalloff( distToTargetSqr );
 
+                int durability = 0;
+                bool survivedImpact = true;
+                    
+                if ( projectileBreakOnImpactChance < 1.0 )
+                {
+                    double breakChance = rand.NextDouble();
+                    survivedImpact = breakChance > projectileBreakOnImpactChance; 
+                }
+                                       
+
+                if (projectileRemainsInWorld && survivedImpact)
+                    durability = 1;
+
                 EntityProperties type = entity.World.GetEntityType(new AssetLocation(projectileItem));
                 Entity projectile = entity.World.ClassRegistry.CreateEntity(type);
                 ((EntityProjectile)projectile).FiredBy = entity;
                 ((EntityProjectile)projectile).Damage = projectileDamage;
                 ((EntityProjectile)projectile).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation(projectileItem)));
-                ((EntityProjectile)projectile).DropOnImpactChance = 0.0f; //Todo: Make shot projectiles always break so players cannot farm them.
+                ((EntityProjectile)projectile).ProjectileStack.Attributes.SetInt("durability", durability);
+                ((EntityProjectile)projectile).DropOnImpactChance = projectileBreakOnImpactChance;
                 ((EntityProjectile)projectile).Weight = 0.0f;
 
                 projectile.ServerPos.SetPos(entity.SidedPos.BehindCopy(0.21).XYZ.Add(0, entity.LocalEyePos.Y, 0));

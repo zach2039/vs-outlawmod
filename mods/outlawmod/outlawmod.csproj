@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>D:\Users\User\AppData\Roaming\Vintagestory\Lib\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,8 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AiTaskShootProjectileAtEntity.cs" />
+    <Compile Include="src\Patches.cs" />
     <Compile Include="src\MathUtility.cs" />
-    <Compile Include="src\OutlawEntityBehaviorHarvestable.cs" />
     <Compile Include="src\Core.cs" />
   </ItemGroup>
   <ItemGroup>

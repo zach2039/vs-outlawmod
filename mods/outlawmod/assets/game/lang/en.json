@@ -10,37 +10,37 @@
 	"item-creature-bandit-knife": "Footpad",
 	"itemdesc-creature-bandit-knife": "<font color=\"#99c9f9\"><i>Footpads roam the hills and valleys at night, preying on unsuspecting travelers.</i></font><br>",
 	"item-dead-creature-bandit-knife": "Dead Footpad",
-	"deadcreature-eaten-bandit-knife": "Slain by human hands. Its been stabbed with a knife.",
+	"deadcreature-eaten-banditknife": "Slain by human hands.\nThey were stabbed with a knife.\n",
 
 	"item-creature-bandit-axe": "Bandit with Axe",
 	"itemdesc-creature-bandit-axe": "<font color=\"#99c9f9\"><i>Brigands are outlawed men, desperate for coin. Beware as they waylay along the roads at night.</i></font><br>",
 	"item-dead-creature-bandit-axe": "Dead Brigand",
-	"deadcreature-eaten-bandit-axe": "Slain by human hands. Its been hacked appart with an axe.",
+	"deadcreature-eaten-banditaxe": "Slain by human hands.\nThey were hacked appart with an axe.\n",
 
 	"item-creature-bandit-spear": "Brigand with Spear",
 	"itemdesc-creature-bandit-spear": "<font color=\"#99c9f9\"><i>Brigands are outlawed men, desperate for coin. Beware as they waylay along the roads at night.</i></font><br>",
 	"item-dead-creature-bandit-spear": "Dead Brigand",
-	"deadcreature-eaten-bandit-spear": "Slain by human hands. Its been run-through with a spear.",
+	"deadcreature-eaten-banditspear": "Slain by human hands.\nThey were been run-through with a spear.\n",
 
 	"item-creature-looter": "Looter",
 	"itemdesc-creature-looter": "<font color=\"#99c9f9\"><i>Looters are desperate and dangerous. Beware as they waylay along the roads at night.</i></font><br>",
 	"item-dead-creature-looter": "Dead Looter",
-	"deadcreature-eaten-looter": "Slain by human hands. Someone clubbed it to death.",
+	"deadcreature-eaten-looter": "Slain by human hands.\nThey were clubbed to death.\n",
 
 	"item-creature-poacher-spear": "Poacher with Spear",
 	"itemdesc-creature-poacher-spear": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
 	"item-dead-creature-poacher-spear": "Dead Poacher",
-	"deadcreature-eaten-poacher-spear": "Slain and cleaned by human hands. Looks like the work of a Poacher.",
+	"deadcreature-eaten-poacherspear": "Slain by human hands.\nThey were run through by a poacher's spear.\n",
 
 	"item-creature-poacher-archer": "Poacher with Bow",
 	"itemdesc-creature-poacher-archer": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
 	"item-dead-creature-poacher-archer": "Dead Poacher",
-	"deadcreature-eaten-poacher-archer": "Slain and cleaned by human hands. Looks like the work of a Poacher.",
+	"deadcreature-eaten-poacherarcher": "Slain by human hands.\nThey were shot with a poacher's arrow.\n",
 
 	"item-creature-yeoman-archer": "Yeoman Archer",
 	"itemdesc-creature-yeoman-archer": "<font color=\"#99c9f9\"><i>Yeoman are free farmers. Sometimes, when the crops fail, they have to turn to other means to make ends-meet.</i></font><br>",
 	"item-dead-creature-yeoman-archer": "Dead Yeoman Archer",
-	"deadcreature-eaten-yeoman-archer": "Slain and cleaned by human hands. It has an arrow in its side.",
+	"deadcreature-eaten-yeomanarcher": "Slain by human hands.\nThey were shot with an arrow.\n",
 
 	"block-carcass-human": "Carcass (Human)"
 

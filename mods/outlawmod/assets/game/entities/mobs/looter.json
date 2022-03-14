@@ -236,6 +236,16 @@
 						soundStartMs: 950
 					},
 					{
+						code: "stayclosetoentity",
+						priority: 1.4,
+						entityCode: "looter",
+						movespeed: 0.02,
+						animationSpeed: 4,
+						maxDistance: 15,
+						searchRange: 25,
+						animation: "sprint"
+					},
+					{
 						code: "idle",
 						priority: 0.7,
 						minduration: 5000,

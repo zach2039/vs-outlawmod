@@ -1,9 +1,11 @@
 ﻿
-    using System.Diagnostics;
-    using Vintagestory.API.Client;
-    using Vintagestory.API.Common;
-    using Vintagestory.API.Server;
-    using Vintagestory.GameContent;
+using HarmonyLib;
+using System.Diagnostics;
+using System.Reflection;
+using Vintagestory.API.Client;
+using Vintagestory.API.Common;
+using Vintagestory.API.Server;
+using Vintagestory.GameContent;
 
 namespace OutlawMod
 {
@@ -11,6 +13,8 @@ namespace OutlawMod
     public class Core : ModSystem
     {
         ICoreAPI api;
+
+        private Harmony harmony;
 
         public override void Start(ICoreAPI api)
         {
@@ -20,21 +24,20 @@ namespace OutlawMod
 
             //Debug.WriteLine("Outlaw Mod Started Sucessfully.");
 
-            //This is where we register our shoot arrow ai behavor once we add it.
-            //Example can be found in the VSSurvival Code in AiTaskThrowAtEntity.cs.
+            harmony = new Harmony("com.grifthegnome.outlawmod.causeofdeath");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             RegisterEntities();
             RegisterEntityBehaviors();
             RegisterAiTasks();
-
-
-            //api.ModLoader.GetModSystem(  )
-            //api.ObjectCache.
-
-
-
         }
-    
+
+        public override void Dispose()
+        {
+            harmony.UnpatchAll(harmony.Id);
+            base.Dispose();
+        }
+
         private void RegisterEntities()
         {
             
@@ -42,8 +45,7 @@ namespace OutlawMod
 
         private void RegisterEntityBehaviors()
         {
-            //This is where we register our harvestable behavior.
-            //api.RegisterEntityBehaviorClass("harvestable", typeof(OutlawEntityBehaviorHarvestable));
+            
         }
 
         private void RegisterAiTasks()

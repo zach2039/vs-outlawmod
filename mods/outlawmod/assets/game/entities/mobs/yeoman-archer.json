@@ -194,6 +194,8 @@
 						damageFalloffStartDist: 18,
 						damageFalloffEndDist: 28,
 						projectileItem: "arrow-copper",
+						projectileRemainsInWorld: true,
+						projectileBreakOnImpactChance: 0.75,
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						seekingRange: 15,
@@ -273,6 +275,16 @@
 						whenInEmotionState: "aggressiveondamage"
 					},
 					{
+						code: "stayclosetoentity",
+						priority: 1.4,
+						entityCode: "yeoman-archer",
+						movespeed: 0.02,
+						animationSpeed: 4,
+						maxDistance: 15,
+						searchRange: 25,
+						animation: "sprint"
+					},
+					{
 						code: "idle",
 						priority: 0.7,
 						minduration: 5000,
@@ -306,7 +318,7 @@
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
-				chance: 0.004,
+				chance: 0.002,
 				maxQuantity: 6,
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
 				maxLightLevel: 5,
