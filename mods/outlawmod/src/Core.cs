@@ -46,7 +46,7 @@ namespace OutlawMod
 
         private void RegisterEntitiesShared()
         {
-            
+            api.RegisterEntity("EntityOutlaw", typeof(EntityOutlaw));
         }
 
         private void RegisterEntityBehaviorsShared()

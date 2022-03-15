@@ -69,6 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AiTaskShootProjectileAtEntity.cs" />
+    <Compile Include="src\Utility.cs" />
+    <Compile Include="src\EntityOutlaw.cs" />
+    <Compile Include="src\CustomSpawnConditions.cs" />
     <Compile Include="src\Patches.cs" />
     <Compile Include="src\MathUtility.cs" />
     <Compile Include="src\Core.cs" />
