@@ -3,6 +3,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
 using Vintagestory.API.MathTools;
+using Vintagestory.GameContent;
 
 namespace OutlawMod
 {
@@ -10,9 +11,18 @@ namespace OutlawMod
     public class EntityOutlaw: EntityHumanoid
     {
 
+        POIRegistry poiregistry;
+
         const float MIN_DISTANCE_TO_WORLD_SPAWN = 250; //todo: replace this with a config file setting.
+        const float MAX_SPAWN_EXCLUSION_POI_SEARCH_DIST = 250;
+
+        const string SPAWN_EXCLUSION_POI_TYPE = "outlawSpawnBlocker";
 
         const bool DEUBUG_PRINTS = true;
+
+        //Spawn Exclusion Search Vars
+        private bool spawnIsBlockedByBlocker = false; //This must be reset whenever we do an OnEntitySpawn call. It is set by the PoiMatcher function to skip additional once we've found a ISpawnBlocker that will block our spawn request.
+        private Vec3d currentSpawnTryPosition; 
 
         //Look at Entity.cs in the VAPI project for more functions you can override.
 
@@ -25,6 +35,7 @@ namespace OutlawMod
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
             base.Initialize(properties, api, InChunkIndex3d);
+            poiregistry = api.ModLoader.GetModSystem<POIRegistry>();
         }
 
         /// <summary>
@@ -42,43 +53,56 @@ namespace OutlawMod
         {
             base.OnEntitySpawn();
 
-            //todo: make it so outlaws only get blocked from spawning in survival mode.
-
-            if ( Utility.IsSurvivalMode( Api ) )
+            //Only run on server side, because POIs are serveside only.
+            if (Api.Side == EnumAppSide.Server)
             {
-                Vec3d spawnPosition = Pos.XYZ;
+                currentSpawnTryPosition = Pos.XYZ;
+                spawnIsBlockedByBlocker = false;
 
-                //Make it so Outlaws can't spawn in the starting area.
-                EntityPos defaultWorldSpawn = this.Api.World.DefaultSpawnPosition;
-                double distToWorldSpawnSqr = spawnPosition.HorizontalSquareDistanceTo(defaultWorldSpawn.XYZ);
-
-                if (distToWorldSpawnSqr < (MIN_DISTANCE_TO_WORLD_SPAWN * MIN_DISTANCE_TO_WORLD_SPAWN))
+                //todo: make it so outlaws only get blocked from spawning in survival mode.
+                if (Utility.IsSurvivalMode(Api))
                 {
-                    if (DEUBUG_PRINTS)
-                        Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + spawnPosition + ". Too Close to Player Starting Spawn Area.");
-                
-                    //We do this post spawn, so that spawning system doesn't spend additinal frames repeatedly failing and taking up frames for something that will fail 100% of the time.
-                    this.Die( EnumDespawnReason.Removed, null );
-                    return;
-                }
+                    //Make it so Outlaws can't spawn in the starting area.
+                    EntityPos defaultWorldSpawn = this.Api.World.DefaultSpawnPosition;
+                    double distToWorldSpawnSqr = currentSpawnTryPosition.HorizontalSquareDistanceTo(defaultWorldSpawn.XYZ);
 
-                //Do Not Allow Outlaws to Spawn on Claimed Land.
-                //Make this a config setting.
-                //TODO: MAKE SURE THIS ISN"T CRAZY EXPENSIVE!
-                List<LandClaim> landclaims = Api.World.Claims.All;
-                foreach(LandClaim landclaim in landclaims)
-                {
-                    if ( landclaim.PositionInside(spawnPosition) )
+                    if (distToWorldSpawnSqr < (MIN_DISTANCE_TO_WORLD_SPAWN * MIN_DISTANCE_TO_WORLD_SPAWN))
                     {
                         if (DEUBUG_PRINTS)
-                            Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + spawnPosition + ". Attempted to spawn on landclaim " + landclaim.Description );
+                            Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + currentSpawnTryPosition + ". Too Close to Player Starting Spawn Area.");
+
+                        //We do this post spawn, so that spawning system doesn't spend additinal frames repeatedly failing and taking up frames for something that will fail 100% of the time.
+                        this.Die(EnumDespawnReason.Removed, null);
+                        return;
+                    }
+
+                    //Do Not Allow Outlaws to Spawn on Claimed Land.
+                    //Make this a config setting.
+                    List<LandClaim> landclaims = Api.World.Claims.All;
+                    foreach (LandClaim landclaim in landclaims)
+                    {
+                        if (landclaim.PositionInside(currentSpawnTryPosition))
+                        {
+                            if (DEUBUG_PRINTS)
+                                Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + currentSpawnTryPosition + ". Attempted to spawn on landclaim " + landclaim.Description);
+
+                            this.Die(EnumDespawnReason.Removed, null);
+                            return;
+                        }
+
+                    }
+
+                    //Do Not Allow Outlaws to Spawn near BlockEntityOutlawDeterents.
+                    poiregistry.WalkPois(currentSpawnTryPosition, MAX_SPAWN_EXCLUSION_POI_SEARCH_DIST, SpawnExclusionMatcher);
+                    if (spawnIsBlockedByBlocker == true)
+                    {
+                        if (DEUBUG_PRINTS)
+                            Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + currentSpawnTryPosition + ". Attempted to spawn within spawn blocker");
 
                         this.Die(EnumDespawnReason.Removed, null);
                         return;
                     }
-                       
                 }
-                
             }
         }
 
@@ -90,6 +114,26 @@ namespace OutlawMod
         {
             base.OnEntityDespawn(despawn);
         }
+
+        public bool SpawnExclusionMatcher( IPointOfInterest poi )
+        {
+            if (poi.Type == SPAWN_EXCLUSION_POI_TYPE && !spawnIsBlockedByBlocker)
+            {
+                IOutlawSpawnBlocker spawnBlocker = (IOutlawSpawnBlocker)poi;
+
+                float distToBlockerSqr = spawnBlocker.Position.SquareDistanceTo(currentSpawnTryPosition);
+                float blockingRange = spawnBlocker.blockingRange();
+
+                //We have found a blocker that blocks our spawn, no need to run compuations on other pois.
+                if ( distToBlockerSqr <= blockingRange * blockingRange)
+                    spawnIsBlockedByBlocker = true;
+
+                return true;
+            }
+                
+            return false;
+        }
+
 
     }
 

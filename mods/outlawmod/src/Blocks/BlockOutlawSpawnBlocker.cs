@@ -7,7 +7,7 @@ using Vintagestory.API.MathTools;
 namespace OutlawMod
 {
     //This is a base class that should be used to derive blocks that block outlaw spawns.
-    public class BlockOutlawDeterent : Block
+    public class BlockOutlawSpawnBlocker : Block
     {
         public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
         {
