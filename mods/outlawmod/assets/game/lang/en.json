@@ -42,6 +42,30 @@
 	"item-dead-creature-yeoman-archer": "Dead Yeoman Archer",
 	"deadcreature-eaten-yeomanarcher": "Slain by human hands.\nThey were shot with an arrow.\n",
 
-	"block-carcass-human": "Carcass (Human)"
+	"block-carcass-human": "Carcass (Human)",
+
+	//BLOCKS
+	"block-stocks-aged-*": "Aged Pillory",
+    "block-stocks-birch-*": "Birch Pillory",
+    "block-stocks-oak-*": "Oak Pillory",
+    "block-stocks-maple-*": "Maple Pillory",
+    "block-stocks-pine-*": "Pine Pillory",
+    "block-stocks-acacia-*": "Acacia Pillory",
+    "block-stocks-kapok-*": "Kapok Pillory",
+    "block-stocks-baldcypress-*": "Bald Cypress Pillory",
+    "block-stocks-larch-*": "Larch Pillory",
+    "block-stocks-redwood-*": "Redwood Pillory",
+    "block-stocks-ebony-*": "Ebony Pillory",
+    "block-stocks-walnut-*": "Walnut Pillory",
+    "block-stocks-purpleheart-*": "Purpleheart Pillory",
+
+	//RECIPIES
+
+	"stocks-handbook-help-title": "Pillories:", 
+	"stocks-handbook-help-text": "Pillories are a basic tool of medieval justice. They deter crime through public humiliation. Building a pillary shows the Outlaws you mean buisness. Outlaws will not spawn within 35 blocks of a pillary.",
+
+	//HANDBOOK
+	"gamemechanicinfo-outlaws-title": "Game Mechanic: Outlaws" ,
+	"gamemechanicinfo-outlaws-text": "<strong>Who are they?</strong><br>Outlaws are individuals who have commited crimes, and having refused to stand trial, have been branded as outside the protection of the law, or Outlawed. An Outlaw's life is forfit, anyone can kill them suffer no legal repercussions, in fact, it's considered a public service. So where do such desperate individuals go? Outlaws can be found throughout the world, in virtually all climates. However, they prefer rural and densely forested regions where they can easily hide. They perfer to travel and work at night, when they can easily ambush unsuspecting travelers.<br><br><strong>Detering Outlaws</strong><br>Outlaws can be detered from incuring into your territory by building and displaying instuments of justice such as the Pillory. These frigtening symbols of justice will keep all but the most bold Outlaws at bay."
 
 }

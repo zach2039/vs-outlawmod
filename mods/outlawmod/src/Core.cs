@@ -28,7 +28,8 @@ namespace OutlawMod
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             RegisterEntitiesShared();
-            RegisterEntityBehaviorsShared();
+            RegisterBlocksShared();
+            RegisterBlockEntitiesShared();
             RegisterAiTasksShared();
         }
 
@@ -49,9 +50,14 @@ namespace OutlawMod
             api.RegisterEntity("EntityOutlaw", typeof(EntityOutlaw));
         }
 
-        private void RegisterEntityBehaviorsShared()
+        private void RegisterBlocksShared()
         {
-            
+            api.RegisterBlockClass("BlockOutlawDeterent", typeof(BlockOutlawDeterent));
+        }
+
+        private void RegisterBlockEntitiesShared()
+        {
+            api.RegisterBlockEntityClass("BlockEntityOutlawDeterent", typeof(BlockEntityOutlawDeterent));
         }
 
         private void RegisterAiTasksShared()

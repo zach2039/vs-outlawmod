@@ -69,8 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AiTaskShootProjectileAtEntity.cs" />
+    <Compile Include="src\BlockEntities\BlockEntityOutlawDeterent.cs" />
+    <Compile Include="src\Blocks\BlockOutlawDeterent.cs" />
     <Compile Include="src\Utility.cs" />
-    <Compile Include="src\EntityOutlaw.cs" />
+    <Compile Include="src\Entities\EntityOutlaw.cs" />
     <Compile Include="src\CustomSpawnConditions.cs" />
     <Compile Include="src\Patches.cs" />
     <Compile Include="src\MathUtility.cs" />

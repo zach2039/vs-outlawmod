@@ -1,0 +1,66 @@
+{
+	code: "stocks",
+	class: "BlockOutlawDeterent",
+	attributes: {
+		handbook: {
+			groupBy: ["stocks-*"],
+			extraSections: [
+				{ title: "stocks-handbook-help-title", text: "stocks-handbook-help-text" }
+			]
+		}
+	},	
+	variantgroups: [
+		{ code: "wood", states: ["aged"], loadFromProperties: "block/wood" },
+		{ loadFromProperties: "abstract/horizontalorientation" }
+	],
+	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },
+	blockmaterial: "Wood",
+	shape: { base: "block/wood/stocks" },
+	textures: {
+		all: { base: "block/wood/planks/{wood}*" }
+	},
+	resistance: 3.5,
+    shapeByType: {
+		"*-north": { base: "block/wood/stocks", rotateY:0 },
+		"*-east": { base: "block/wood/stocks", rotateY:270 },
+		"*-south": { base: "block/wood/stocks", rotateY:180 },
+		"*-west": { base: "block/wood/stocks", rotateY:90 }
+	},
+	sidesolidByType: {	
+		"*-north": { all:false, down:true },
+		"*-west": { all:false, down:true },
+		"*-south": { all:false, down:true },
+		"*-east": { all:false, down:true }
+	},
+	sideopaqueByType	: {
+		"*-north": { all:false, down:true },
+		"*-west": { all:false, down:true },
+		"*-south": { all:false, down:true },
+		"*-east": { all:false, down:true }
+	},
+	sounds: {
+		"hit": "block/planks",
+		"break": "block/planks",
+		"place": "block/planks",
+		"walk": "walk/wood"
+	},
+    collisionboxes: [
+
+		{ x1: 0, y1: 0.25, z1: 0.75, x2: 1, y2: 1, z2: 0.875 , rotateYByType: {  "*-north": 180, "*-east": 90, "*-west": 270 } },
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 0.125, z2: 1, rotateYByType: {  "*-north": 180, "*-east": 90, "*-west": 270 } },
+		{ x1: 0, y1: 0, z1: 0.375, x2: 1, y2: 0.25, z2: 0.875, rotateYByType: {  "*-north": 180, "*-east": 90, "*-west": 270 } }
+	],
+	combustibleProps: {
+		burnTemperature: 800,
+		burnDuration: 20,
+	},
+	maxStackSize: 1,
+	materialDensity: 600,
+	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	tpHandTransform: {
+		translation: { x: -1.2, y: -1.1, z: -0.8 },
+		rotation: { x: -2, y: 25, z: -78 },
+		scale: 0.37
+	},
+	drops: [{ type: "block", code: "stocks-{wood}-north"}]
+}
