@@ -70,7 +70,7 @@
   <ItemGroup>
     <Compile Include="src\AiTaskShootProjectileAtEntity.cs" />
     <Compile Include="src\BlockEntities\BlockEntityOutlawSpawnBlocker.cs" />
-    <Compile Include="src\Blocks\BlockOutlawSpawnBlocker.cs" />
+    <Compile Include="src\Blocks\BlockStocks.cs" />
     <Compile Include="src\Systems\IOutlawSpawnBlocker.cs" />
     <Compile Include="src\Utility.cs" />
     <Compile Include="src\Entities\EntityOutlaw.cs" />

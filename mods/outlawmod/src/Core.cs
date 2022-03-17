@@ -52,7 +52,7 @@ namespace OutlawMod
 
         private void RegisterBlocksShared()
         {
-            api.RegisterBlockClass("BlockOutlawSpawnBlocker", typeof(BlockOutlawSpawnBlocker));
+            api.RegisterBlockClass("BlockStocks", typeof(BlockStocks));
         }
 
         private void RegisterBlockEntitiesShared()

@@ -1,6 +1,6 @@
 {
 	code: "stocks",
-	class: "BlockOutlawSpawnBlocker",
+	class: "BlockStocks",
 	entityClass: "BlockEntityOutlawSpawnBlocker",
 	attributes: {
 		handbook: {
