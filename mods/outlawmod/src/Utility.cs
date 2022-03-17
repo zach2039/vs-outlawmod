@@ -7,23 +7,55 @@ namespace OutlawMod
 {
     static class Utility
     {
-        //todo: these always return true if survival is loaded, even if we are not in survival mode. We need a better way to check for this.
-
-        //I THINK WHAT WE WANT HERE IS TO LOOK FOR THE WORLD'S GAMEMODE, NOT THE MOD LOAD STATE. FIGURE OUT HOW TO DO THIS.
-
-        public static bool IsSurvivalMode( ICoreAPI api )
-        { 
-            return api.ModLoader.IsModSystemEnabled("Vintagestory.GameContent.SurvivalCoreSystem");
-        }
-
-        public static bool IsSurvivalMode( ICoreServerAPI sapi )
+        public static bool AnyPlayersOnlineInSurvivalMode( ICoreAPI api )
         {
-            return sapi.ModLoader.IsModSystemEnabled("Vintagestory.GameContent.SurvivalCoreSystem");
+            IPlayer[] playersOnline = api.World.AllOnlinePlayers;
+            foreach ( IPlayer player in playersOnline )
+            {
+                if (player.WorldData.CurrentGameMode == EnumGameMode.Survival)
+                    return true;
+            }
+
+            return false;
         }
 
-        public static bool IsSurivivalMode( ICoreClientAPI capi )
+        public static bool AnyPlayersOnlineInSurvivalMode( ICoreServerAPI sapi )
         {
-            return capi.ModLoader.IsModSystemEnabled("Vintagestory.GameContent.SurvivalCoreSystem");
+            IPlayer[] playersOnline = sapi.World.AllOnlinePlayers;
+            foreach (IPlayer player in playersOnline)
+            {
+                if (player.WorldData.CurrentGameMode == EnumGameMode.Survival)
+                    return true;
+            }
+
+            return false;
         }
+
+        public static bool AnyPlayersOnlineInSurvivalMode( ICoreClientAPI capi )
+        {
+            IPlayer[] playersOnline = capi.World.AllOnlinePlayers;
+            foreach (IPlayer player in playersOnline)
+            {
+                if (player.WorldData.CurrentGameMode == EnumGameMode.Survival)
+                    return true;
+            }
+
+            return false;
+        }
+
+        //We want a function that looks at the average levels of all the tools on the player and decided which "era" they are currently in.
+        //We could then use this to decide which Outlaws to spawn based on player tech level.
+        /*
+        public static int GetAverageTechLevelOfOnlinePlayers( ICoreAPI api )
+        {
+            IPlayer[] playersOnline = api.World.AllOnlinePlayers;
+            foreach (IPlayer player in playersOnline)
+            {
+                player.InventoryManager.Inventories
+            }
+
+            return 0;
+        }
+        */
     }
 }

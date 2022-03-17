@@ -21,22 +21,22 @@
 			{
 				type: "item",
 				code: "game:nugget-nativecopper",
-				quantity: { avg: 2, var: 1 }
+				quantity: { avg: 0.5, var: 0.5 }
 			},
 			{
 				type: "item",
 				code: "game:nugget-nativesilver",
-				quantity: { avg: 0.25, var: 1 }
+				quantity: { avg: 0.125, var: 1 }
 			},
 			{
 				type: "item",
 				code: "game:nugget-nativegold",
-				quantity: { avg: 0.125, var: 0 }
+				quantity: { avg: 0.025, var: 0 }
 			},
 			{
 				type: "item",
 				code: "game:arrow-copper",
-				quantity: { avg: 6, var: 2 }
+				quantity: { avg: 1, var: 2 }
 			},
 			{
 				type: "item",
@@ -195,7 +195,7 @@
 						damageFalloffEndDist: 28,
 						projectileItem: "arrow-copper",
 						projectileRemainsInWorld: true,
-						projectileBreakOnImpactChance: 0.75,
+						projectileBreakOnImpactChance: 0.90,
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						seekingRange: 15,
@@ -318,7 +318,7 @@
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
-				chance: 0.002,
+				chance: 0.0004,
 				maxQuantity: 6,
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
 				maxLightLevel: 5,

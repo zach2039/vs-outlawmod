@@ -23,13 +23,13 @@
 			{ base: "block/bone/carcass/humanoid1", rotateY: 180 },
 			{ base: "block/bone/carcass/humanoid1", rotateY: 225 },		
 			{ base: "block/bone/carcass/humanoid1", rotateY: 270 },
-			{ base: "block/bone/carcass/humanoid2", rotateY: 0 },
-			{ base: "block/bone/carcass/humanoid2", rotateY: 45 },
-			{ base: "block/bone/carcass/humanoid2", rotateY: 90 },
-			{ base: "block/bone/carcass/humanoid2", rotateY: 135 },
-			{ base: "block/bone/carcass/humanoid2", rotateY: 180 },
-			{ base: "block/bone/carcass/humanoid2", rotateY: 225 },		
-			{ base: "block/bone/carcass/humanoid2", rotateY: 270 }
+			{ base: "block/bone/carcass/bonepile_human1", rotateY: 0 },
+			{ base: "block/bone/carcass/bonepile_human1", rotateY: 45 },
+			{ base: "block/bone/carcass/bonepile_human1", rotateY: 90 },
+			{ base: "block/bone/carcass/bonepile_human1", rotateY: 135 },
+			{ base: "block/bone/carcass/bonepile_human1", rotateY: 180 },
+			{ base: "block/bone/carcass/bonepile_human1", rotateY: 225 },		
+			{ base: "block/bone/carcass/bonepile_human1", rotateY: 270 }
 		]
 	},
 	randomDrawOffset: true,

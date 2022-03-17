@@ -59,8 +59,8 @@ namespace OutlawMod
                 currentSpawnTryPosition = Pos.XYZ;
                 spawnIsBlockedByBlocker = false;
 
-                //todo: make it so outlaws only get blocked from spawning in survival mode.
-                if (Utility.IsSurvivalMode(Api))
+                //Make it so outlaws only get blocked if any players are in survival mode.
+                if (Utility.AnyPlayersOnlineInSurvivalMode(Api))
                 {
                     //Make it so Outlaws can't spawn in the starting area.
                     EntityPos defaultWorldSpawn = this.Api.World.DefaultSpawnPosition;

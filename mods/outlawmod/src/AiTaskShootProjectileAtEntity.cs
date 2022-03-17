@@ -28,12 +28,8 @@ namespace OutlawMod
         float maxRangeDistOffTarget = 0.0f; //this is the number of blocks off target a projectile will stray at max range.
         float maxVelocity = 1.0f;
 
-        //todo: Add Accuracy Zeroing Time.
-        //todo: Add New Target Accuracy Penalty.
         float newTargetDistOffTarget = 0.0f;
         float newTargetZeroingTime = 0.0f;
-        //todo: Store and update target.
-        //todo: Store and update dt since target aquired.
 
         //Damage and Damage Falloff Vars
         float damage = 1.0f;
@@ -230,7 +226,10 @@ namespace OutlawMod
                 ((EntityProjectile)projectile).FiredBy = entity;
                 ((EntityProjectile)projectile).Damage = projectileDamage;
                 ((EntityProjectile)projectile).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation(projectileItem)));
-                ((EntityProjectile)projectile).ProjectileStack.Attributes.SetInt("durability", durability);
+
+                if ( durability == 0 )
+                    ((EntityProjectile)projectile).ProjectileStack.Attributes.SetInt("durability", durability);
+                
                 ((EntityProjectile)projectile).DropOnImpactChance = projectileBreakOnImpactChance;
                 ((EntityProjectile)projectile).Weight = 0.0f;
 

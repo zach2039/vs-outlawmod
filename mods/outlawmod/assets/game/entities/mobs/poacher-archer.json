@@ -41,16 +41,11 @@
 			{
 				type: "item",
 				code: "game:arrow-copper",
-				quantity: { avg: 6, var: 2 }
+				quantity: { avg: 1, var: 2 }
 			},
 			{
 				type: "item",
 				code: "game:bow-long",
-				quantity: { avg: 0.05, var: 0.0 }
-			},
-			{
-				type: "item",
-				code: "game:spear-copper",
 				quantity: { avg: 0.05, var: 0.0 }
 			}
 	],
@@ -192,7 +187,7 @@
 						damageFalloffEndDist: 28,
 						projectileItem: "arrow-copper",
 						projectileRemainsInWorld: true,
-						projectileBreakOnImpactChance: 0.75,
+						projectileBreakOnImpactChance: 0.90,
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						seekingRange: 15,
@@ -220,7 +215,7 @@
 						damageFalloffEndDist: 28,
 						projectileItem: "arrow-copper",
 						projectileRemainsInWorld: true,
-						projectileBreakOnImpactChance: 0.75,
+						projectileBreakOnImpactChance: 0.90,
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						seekingRange: 15,
