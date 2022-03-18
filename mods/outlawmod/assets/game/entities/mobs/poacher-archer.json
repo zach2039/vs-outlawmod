@@ -141,8 +141,7 @@
 		behaviors: [
 			{ code: "nametag", selectFromRandomName: ["Poacher"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
-			{ code: "despawn", minPlayerDistance: 32, minSeconds: 30 },
-			{ code: "despawn", minPlayerDistance: 64, minSeconds: 6 },
+			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
 			{ code: "controlledphysics", stepHeight: 1.01 }, 
 			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
