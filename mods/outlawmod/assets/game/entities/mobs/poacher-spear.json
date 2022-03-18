@@ -61,7 +61,8 @@
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.01 }, 
-			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "despawn", minPlayerDistance: 32, minSeconds: 30 },
+			{ code: "despawn", minPlayerDistance: 64, minSeconds: 6 },
 			{ code: "harvestable" },
 			{ code: "interpolateposition" }
 		],
@@ -343,7 +344,7 @@
 			runtime: {
 				group: "neutral",
 				tryOnlySurface: true,
-				chance: 0.0006,
+				chance: 0.0012,
 				maxQuantity: 2,
 				"__comment": "Make them spawn away from artifical light",
 				maxLightLevel: 7,

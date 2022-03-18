@@ -141,20 +141,13 @@
 		behaviors: [
 			{ code: "nametag", selectFromRandomName: ["Poacher"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
-			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "despawn", minPlayerDistance: 32, minSeconds: 30 },
+			{ code: "despawn", minPlayerDistance: 64, minSeconds: 6 },
 			{ code: "controlledphysics", stepHeight: 1.01 }, 
 			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 12, maxhealth: 12 },
-			{ code: "harvestable", drops: [
-				{
-					type: "block", 
-					code: "game:linen-normal-down", 
-					quantity: { avg: 0.25, var: 0.75 } 
-				}
-
-				]
-			},
+			{ code: "harvestable" },
 			{ 
 				code: "emotionstates",
 				states: [

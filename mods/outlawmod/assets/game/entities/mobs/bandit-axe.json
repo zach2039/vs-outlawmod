@@ -47,7 +47,8 @@
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.01 }, 
-			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "despawn", minPlayerDistance: 32, minSeconds: 30 },
+			{ code: "despawn", minPlayerDistance: 64, minSeconds: 6 },
 			{ code: "harvestable" },
 			{ code: "interpolateposition" }
 		],
@@ -96,20 +97,7 @@
 			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 16, maxhealth: 16 },
-			{ code: "harvestable", drops: [
-				{
-					type: "block", 
-					code: "game:linen-normal-down", 
-					quantity: { avg: 0.25, var: 0.75 } 
-				},
-				{
-					type: "item",
-					code: "game:clothes-waist-sturdy-leather-belt",
-					quantity: { avg: 0.09, var: 0.09 }
-				}
-
-				]
-			},
+			{ code: "harvestable"},
 			{ 
 				code: "emotionstates",
 				states: [
@@ -216,7 +204,7 @@
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
-				chance: 0.0004,
+				chance: 0.0008,
 				maxQuantity: 4,
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
 				maxLightLevel: 5,
