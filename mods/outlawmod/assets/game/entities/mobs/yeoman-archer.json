@@ -56,7 +56,7 @@
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.01 }, 
-			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
+			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
 			{ code: "harvestable" },
 			{ code: "interpolateposition" }
 		],
@@ -320,7 +320,7 @@
 				minTemp: -15,
 				maxTemp: 28,
 				minRain: 0,
-				minForest: 0.5,
+				minForestOrShrubs: 0.25,
 				companions: []
 			}
 		}

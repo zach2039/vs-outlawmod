@@ -353,7 +353,7 @@
 				minTemp: -15,
 				maxTemp: 28,
 				minRain: 0,
-				minForestOrShrubs: 0.5,
+				minForestOrShrubs: 0.25,
 				companions: ["poacher-archer"]
 			}
 		}

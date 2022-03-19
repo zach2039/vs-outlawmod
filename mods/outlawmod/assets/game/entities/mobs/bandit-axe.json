@@ -213,7 +213,7 @@
 				minTemp: -15,
 				maxTemp: 28,
 				minRain: 0,
-				minForest: 0.5,
+				minForestOrShrubs: 0.25,
 				companions: ["bandit-knife", "bandit-spear"]
 			}
 		}
