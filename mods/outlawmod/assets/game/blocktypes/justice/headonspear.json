@@ -1,0 +1,74 @@
+{
+	code: "headonspear",
+	class: "BlockHeadOnSpear",
+	entityClass: "BlockEntityOutlawSpawnBlocker",
+	attributes: {
+		handbook: {
+			groupBy: ["headonspear-*"],
+			extraSections: [
+				{ title: "headonspear-handbook-help-title", text: "headonspear-handbook-help-text" }
+			]
+		}
+	},	
+	variantgroups: [
+		{ code: "type", states: ["looter", "poacher", "brigand", "yeoman"]},
+		{ code:"metal", states: ["copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel"] },
+		{ loadFromProperties: "abstract/horizontalorientation" }
+	],
+	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },
+	blockmaterial: "Wood",
+	shape: { base: "block/justice/head_on_spear" },
+	textures: {
+		metal: { base: "item/tool/material/{metal}*" }
+	},
+	resistance: 3.5,
+	lightAbsorption: 0,
+    shapeByType: {
+		"*-north": { base: "block/justice/head_on_spear", rotateY:90, alternates: [ { base: "block/justice/head_on_spear1", rotateY:90 }, { base: "block/justice/head_on_spear2", rotateY:90 } ] },
+		"*-east": { base: "block/justice/head_on_spear", rotateY:0, alternates: [ { base: "block/justice/head_on_spear1", rotateY:0 }, { base: "block/justice/head_on_spear2", rotateY:0 } ] },
+		"*-south": { base: "block/justice/head_on_spear", rotateY:270, alternates: [ { base: "block/justice/head_on_spear1", rotateY:270 }, { base: "block/justice/head_on_spear2", rotateY:270 } ] },
+		"*-west": { base: "block/justice/head_on_spear", rotateY:180, alternates: [ { base: "block/justice/head_on_spear1", rotateY:180 }, { base: "block/justice/head_on_spear2", rotateY:180 } ] }
+	},
+	texturesByType: {
+		"*-looter-*": {
+			"head": { base: "entity/bandit/looter", alternates: [ { base: "entity/bandit/looter2" }, { base: "entity/bandit/looter3" }, { base: "entity/bandit/looter4" } ] },
+		},
+		"*-poacher-*": {
+			"head": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" }, { base: "entity/bandit/poacher3" }, { base: "entity/bandit/poacher4" } ] },
+		},
+		"*-brigand-*": {
+			"head": { base: "entity/bandit/bandit1", alternates: [ { base: "entity/bandit/bandit2" }, { base: "entity/bandit/bandit3" } ] },
+		},
+		"*-yeoman-*": {
+			"head": { base: "entity/bandit/yeoman1", alternates: [ { base: "entity/bandit/yeoman2" }, { base: "entity/bandit/yeoman3" }, { base: "entity/bandit/yeoman4" } ] },
+		}
+	},
+	sidesolidByType: {	
+		"*-north": { all:false },
+		"*-west": { all:false },
+		"*-south": { all:false },
+		"*-east": { all:false }
+	},
+	sideopaque :  { all:false },
+	sounds: {
+		"hit": "block/planks",
+		"break": "block/planks",
+		"place": "block/planks",
+		"walk": "walk/wood"
+	},
+    collisionboxes: [
+
+		{ x1: 0, y1: 0.25, z1: 0.75, x2: 1, y2: 1, z2: 0.875 , rotateYByType: {  "*-north": 180, "*-east": 90, "*-west": 270 } },
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 0.125, z2: 1, rotateYByType: {  "*-north": 180, "*-east": 90, "*-west": 270 } },
+		{ x1: 0, y1: 0, z1: 0.375, x2: 1, y2: 0.25, z2: 0.875, rotateYByType: {  "*-north": 180, "*-east": 90, "*-west": 270 } }
+	],
+	maxStackSize: 1,
+	materialDensity: 600,
+	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	tpHandTransform: {
+		translation: { x: -1.2, y: -1.1, z: -0.8 },
+		rotation: { x: -2, y: 25, z: -78 },
+		scale: 0.37
+	},
+	drops: [{ type: "block", code: "headonspear-{type}-{metal}-north"}]
+}
