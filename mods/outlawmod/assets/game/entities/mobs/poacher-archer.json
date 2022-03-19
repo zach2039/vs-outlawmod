@@ -146,7 +146,15 @@
 			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 12, maxhealth: 12 },
-			{ code: "harvestable" },
+			{ code: "harvestable", drops: [
+				{
+					type: "block", 
+					code: "game:linen-normal-down", 
+					quantity: { avg: 0.25, var: 0.75 } 
+				}
+
+				]
+			},
 			{ 
 				code: "emotionstates",
 				states: [

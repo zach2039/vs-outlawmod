@@ -4,9 +4,12 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSModLauncher", "VSModLauncher.csproj", "{203DFBF1-3599-43FD-8487-E1C79C2B788F}"
 	ProjectSection(ProjectDependencies) = postProject
+		{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9} = {d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}
 		{00347a21-4de3-46db-b8d1-753eb2529171} = {00347a21-4de3-46db-b8d1-753eb2529171}
 		{f4a19d9e-f292-4499-b59b-2489491df4a5} = {f4a19d9e-f292-4499-b59b-2489491df4a5}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drifteroverhaul", "mods\drifteroverhaul\drifteroverhaul.csproj", "{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testmod", "mods\testmod\testmod.csproj", "{00347a21-4de3-46db-b8d1-753eb2529171}"
 EndProject
@@ -37,6 +40,12 @@ Global
 {00347a21-4de3-46db-b8d1-753eb2529171}.Release x64|Any CPU.Build.0 = Release|Any CPU
 {00347a21-4de3-46db-b8d1-753eb2529171}.Release|Any CPU.ActiveCfg = Release|Any CPU
 {00347a21-4de3-46db-b8d1-753eb2529171}.Release|Any CPU.Build.0 = Release|Any CPU}
+{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
+{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release x64|Any CPU.Build.0 = Release|Any CPU
+{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release|Any CPU.Build.0 = Release|Any CPU}
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

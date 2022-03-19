@@ -49,7 +49,15 @@
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.01 }, 
 			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
-			{ code: "harvestable" },
+			{ code: "harvestable", drops: [
+				{
+					type: "block", 
+					code: "game:linen-normal-down", 
+					quantity: { avg: 0.25, var: 0.75 } 
+				}
+
+				]
+			},
 			{ code: "interpolateposition" }
 		],
 		animations: [
