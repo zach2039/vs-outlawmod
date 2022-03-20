@@ -9,7 +9,9 @@ namespace OutlawMod
 {
      public class BlockHeadOnSpear : Block
      {
-        
+
+        private const int CLEARANCE_ABOVE_NEEDED = 3;
+
         public override void OnLoaded(ICoreAPI api)
         {
             //We need the client to not cull the bottom side of the heads at any time.
@@ -28,6 +30,22 @@ namespace OutlawMod
                 return false;
             }
 
+            for (int i = 1; i <= CLEARANCE_ABOVE_NEEDED; i++)
+            {
+                Block blockAbove = world.BlockAccessor.GetBlock(blockSel.Position.AddCopy(0, i, 0));
+
+                //There is a block above us.
+                if (blockAbove != null)
+                {
+                    if (blockAbove.SideSolid[BlockFacing.DOWN.Index])
+                    {
+                        return false;
+                    }
+
+                }
+            }
+
+            //Check for solid below
             BlockFacing[] horVer = SuggestedHVOrientation(byPlayer, blockSel);
             AssetLocation blockCode = CodeWithVariants(new string[] { "horizontalorientation" }, new string[] { horVer[0].Code });
             Block block = world.BlockAccessor.GetBlock(blockCode);

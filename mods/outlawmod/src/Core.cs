@@ -31,6 +31,7 @@ namespace OutlawMod
             RegisterBlocksShared();
             RegisterBlockEntitiesShared();
             RegisterAiTasksShared();
+            RegisterItemsShared();
         }
 
         public override void StartServerSide(ICoreServerAPI api)
@@ -64,6 +65,11 @@ namespace OutlawMod
         private void RegisterAiTasksShared()
         {
             AiTaskRegistry.Register("shootatentity", typeof(AiTaskShootProjectileAtEntity));
+        }
+
+        private void RegisterItemsShared()
+        {
+            api.RegisterItemClass("ItemOutlawHead", typeof(ItemOutlawHead));
         }
     }
 }

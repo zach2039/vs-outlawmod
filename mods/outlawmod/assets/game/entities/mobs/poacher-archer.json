@@ -151,7 +151,12 @@
 					type: "block", 
 					code: "game:linen-normal-down", 
 					quantity: { avg: 0.25, var: 0.75 } 
-				}
+				},
+				{
+					type: "item",
+					code: "outlawhead-poacher",
+					quantity: { avg: 1, var: 0 }
+				},
 
 				]
 			},

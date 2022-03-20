@@ -18,8 +18,10 @@ namespace OutlawMod
 
         public float blockingRange()
         {
-            //todo: make this real.
-            return 35f;
+            if (Block.Attributes?["outlawSpawnBlockRadius"].Exists == true)
+                return Block.Attributes["outlawSpawnBlockRadius"].AsFloat();
+
+           return 0f;
         }
 
         public override void Initialize(ICoreAPI api)

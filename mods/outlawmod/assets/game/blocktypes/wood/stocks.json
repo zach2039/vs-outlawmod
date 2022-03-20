@@ -8,7 +8,8 @@
 			extraSections: [
 				{ title: "stocks-handbook-help-title", text: "stocks-handbook-help-text" }
 			]
-		}
+		},
+		outlawSpawnBlockRadius: 35
 	},	
 	variantgroups: [
 		{ code: "wood", states: ["aged"], loadFromProperties: "block/wood" },
