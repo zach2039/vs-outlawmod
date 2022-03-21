@@ -1,19 +1,22 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSModLauncher", "VSModLauncher.csproj", "{203DFBF1-3599-43FD-8487-E1C79C2B788F}"
 	ProjectSection(ProjectDependencies) = postProject
-		{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9} = {d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}
-		{00347a21-4de3-46db-b8d1-753eb2529171} = {00347a21-4de3-46db-b8d1-753eb2529171}
-		{f4a19d9e-f292-4499-b59b-2489491df4a5} = {f4a19d9e-f292-4499-b59b-2489491df4a5}
+		{68DE08ED-4609-49F1-8239-AF8EBF7F83D5} = {68DE08ED-4609-49F1-8239-AF8EBF7F83D5}
+		{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9} = {D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}
+		{00347A21-4DE3-46DB-B8D1-753EB2529171} = {00347A21-4DE3-46DB-B8D1-753EB2529171}
+		{F4A19D9E-F292-4499-B59B-2489491DF4A5} = {F4A19D9E-F292-4499-B59B-2489491DF4A5}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drifteroverhaul", "mods\drifteroverhaul\drifteroverhaul.csproj", "{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "expandedaitasks", "mods-dll\expandedaitasks\expandedaitasks.csproj", "{68DE08ED-4609-49F1-8239-AF8EBF7F83D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testmod", "mods\testmod\testmod.csproj", "{00347a21-4de3-46db-b8d1-753eb2529171}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drifteroverhaul", "mods\drifteroverhaul\drifteroverhaul.csproj", "{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "outlawmod", "mods\outlawmod\outlawmod.csproj", "{f4a19d9e-f292-4499-b59b-2489491df4a5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testmod", "mods\testmod\testmod.csproj", "{00347A21-4DE3-46DB-B8D1-753EB2529171}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "outlawmod", "mods\outlawmod\outlawmod.csproj", "{F4A19D9E-F292-4499-B59B-2489491DF4A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,24 +31,30 @@ Global
 		{203DFBF1-3599-43FD-8487-E1C79C2B788F}.Release x64|Any CPU.Build.0 = Release|Any CPU
 		{203DFBF1-3599-43FD-8487-E1C79C2B788F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{203DFBF1-3599-43FD-8487-E1C79C2B788F}.Release|Any CPU.Build.0 = Release|Any CPU
-{f4a19d9e-f292-4499-b59b-2489491df4a5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-{f4a19d9e-f292-4499-b59b-2489491df4a5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-{f4a19d9e-f292-4499-b59b-2489491df4a5}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
-{f4a19d9e-f292-4499-b59b-2489491df4a5}.Release x64|Any CPU.Build.0 = Release|Any CPU
-{f4a19d9e-f292-4499-b59b-2489491df4a5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-{f4a19d9e-f292-4499-b59b-2489491df4a5}.Release|Any CPU.Build.0 = Release|Any CPU}
-{00347a21-4de3-46db-b8d1-753eb2529171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-{00347a21-4de3-46db-b8d1-753eb2529171}.Debug|Any CPU.Build.0 = Debug|Any CPU
-{00347a21-4de3-46db-b8d1-753eb2529171}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
-{00347a21-4de3-46db-b8d1-753eb2529171}.Release x64|Any CPU.Build.0 = Release|Any CPU
-{00347a21-4de3-46db-b8d1-753eb2529171}.Release|Any CPU.ActiveCfg = Release|Any CPU
-{00347a21-4de3-46db-b8d1-753eb2529171}.Release|Any CPU.Build.0 = Release|Any CPU}
-{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
-{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release x64|Any CPU.Build.0 = Release|Any CPU
-{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-{d8d9a59d-f4aa-4bb6-9478-c2466411c5e9}.Release|Any CPU.Build.0 = Release|Any CPU}
+		{68DE08ED-4609-49F1-8239-AF8EBF7F83D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68DE08ED-4609-49F1-8239-AF8EBF7F83D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68DE08ED-4609-49F1-8239-AF8EBF7F83D5}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
+		{68DE08ED-4609-49F1-8239-AF8EBF7F83D5}.Release x64|Any CPU.Build.0 = Release|Any CPU
+		{68DE08ED-4609-49F1-8239-AF8EBF7F83D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68DE08ED-4609-49F1-8239-AF8EBF7F83D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}.Release x64|Any CPU.Build.0 = Release|Any CPU
+		{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D9A59D-F4AA-4BB6-9478-C2466411C5E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00347A21-4DE3-46DB-B8D1-753EB2529171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00347A21-4DE3-46DB-B8D1-753EB2529171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00347A21-4DE3-46DB-B8D1-753EB2529171}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
+		{00347A21-4DE3-46DB-B8D1-753EB2529171}.Release x64|Any CPU.Build.0 = Release|Any CPU
+		{00347A21-4DE3-46DB-B8D1-753EB2529171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00347A21-4DE3-46DB-B8D1-753EB2529171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4A19D9E-F292-4499-B59B-2489491DF4A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4A19D9E-F292-4499-B59B-2489491DF4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4A19D9E-F292-4499-B59B-2489491DF4A5}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
+		{F4A19D9E-F292-4499-B59B-2489491DF4A5}.Release x64|Any CPU.Build.0 = Release|Any CPU
+		{F4A19D9E-F292-4499-B59B-2489491DF4A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4A19D9E-F292-4499-B59B-2489491DF4A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

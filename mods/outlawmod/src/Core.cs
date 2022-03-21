@@ -16,28 +16,44 @@ namespace OutlawMod
 
         private Harmony harmony;
 
+        private bool usingExpandedAiTasksMod = false;
+
         public override void Start(ICoreAPI api)
         {
             this.api = api;
 
-            base.Start(api);
-
-            //Debug.WriteLine("Outlaw Mod Started Sucessfully.");
+            base.Start(api);              
 
             harmony = new Harmony("com.grifthegnome.outlawmod.causeofdeath");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            ModSystem expandedAiTasksMod = api.ModLoader.GetModSystem("ExpandedAiTasks.ExpandedAiTasksCore");
+
+            if (expandedAiTasksMod != null)
+            {
+                usingExpandedAiTasksMod = true;
+                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasks.dll Found, we will skip our internal ai task registration so that ExpandedAiTasks mod can handle-intermod dependencies.");
+            }
+            else
+            {
+                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasks.dll Not Found, we will register our internal ai tasks instead. Nothing to worry about here.");
+            }
 
             RegisterEntitiesShared();
             RegisterBlocksShared();
             RegisterBlockEntitiesShared();
             RegisterAiTasksShared();
             RegisterItemsShared();
+
         }
 
         public override void StartServerSide(ICoreServerAPI api)
         {
             base.StartServerSide(api);
-            AiTaskRegistry.Register<AiTaskShootProjectileAtEntity>("shootatentity");
+
+            //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") && !usingExpandedAiTasksMod )
+                AiTaskRegistry.Register<AiTaskShootProjectileAtEntity>("shootatentity");
         }
 
         public override void Dispose()
@@ -64,7 +80,9 @@ namespace OutlawMod
 
         private void RegisterAiTasksShared()
         {
-            AiTaskRegistry.Register("shootatentity", typeof(AiTaskShootProjectileAtEntity));
+            //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") && !usingExpandedAiTasksMod )
+                AiTaskRegistry.Register("shootatentity", typeof(AiTaskShootProjectileAtEntity));
         }
 
         private void RegisterItemsShared()
