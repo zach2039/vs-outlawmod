@@ -120,11 +120,22 @@
 	"block-headonspear-brigand-hacking-*": "Brigand head on hacking spear",
 	"block-headonspear-yeoman-hacking-*": "Yeoman head on hacking spear",
 
+	"blockdesc-stocks-*": "<font color=\"#99c9f9\"><i>Let them rot in the pillory. Pelt them with stones, fruit, and filth. They'll have plenty of time to think about what they've done.<br><br>Outlaws won't dare appear within 35 blocks of this symbol of justice.</i></font>",
+	"blockdesc-headonspear-looter-*": "<font color=\"#99c9f9\"><i>What a grisly sight.<br><br>Outlaws won't dare appear within 15 blocks of this terrifying symbol of justice.</i></font>",
+	"blockdesc-headonspear-poacher-*": "<font color=\"#99c9f9\"><i>His hunting days are done.<br><br>Outlaws won't dare appear within 20 blocks of this terrifying symbol of justice.</i></font>",
+	"blockdesc-headonspear-brigand-*": "<font color=\"#99c9f9\"><i>He lived by the sword, so he died by the sword.<br><br>Outlaws won't dare appear within 25 blocks of this terrifying symbol of justice.</i></font>",
+	"blockdesc-headonspear-yeoman-*": "<font color=\"#99c9f9\"><i>His bow shall sing no more.<br><br>Outlaws won't dare appear within 25 blocks of this terrifying symbol of justice.</i></font>",
+
 	//ITEMS
-	"item-outlawhead-looter": "Head (Looter)",
-	"item-outlawhead-poacher": "Head (Poacher)",
-	"item-outlawhead-brigand": "Head (Brigand)",
-	"item-outlawhead-yeoman": "Head (Yeoman)",
+	"item-outlawhead-looter": "Severed Head (Looter)",
+	"item-outlawhead-poacher": "Severed Head (Poacher)",
+	"item-outlawhead-brigand": "Severed Head (Brigand)",
+	"item-outlawhead-yeoman": "Severed Head (Yeoman)",
+
+	"itemdesc-outlawhead-looter": "<font color=\"#99c9f9\"><i>He though looting would get him ahead in life...</i></font>",
+	"itemdesc-outlawhead-poacher": "<font color=\"#99c9f9\"><i>The hunter became the hunted...</i></font>",
+	"itemdesc-outlawhead-brigand": "<font color=\"#99c9f9\"><i>Alas, poor Yorick! I knew him, Horatio. A fellow of infinite jest...</i></font>",
+	"itemdesc-outlawhead-yeoman": "<font color=\"#99c9f9\"><i>Yeoman, where's your head?</i></font>",
 
 	//RECIPIES
 
@@ -139,6 +150,6 @@
 
 	//HANDBOOK
 	"gamemechanicinfo-outlaws-title": "Game Mechanic: Outlaws" ,
-	"gamemechanicinfo-outlaws-text": "<strong>Who are they?</strong><br>Outlaws are individuals who have commited crimes, and having refused to stand trial, have been branded as outside the protection of the law, or Outlawed. An Outlaw's life is forfit, anyone can kill them suffer no legal repercussions, in fact, it's considered a public service. So where do such desperate individuals go? Outlaws can be found throughout the world, in virtually all climates. However, they prefer rural and densely forested regions where they can easily hide. They perfer to travel and work at night, when they can easily ambush unsuspecting travelers.<br><br><strong>Detering Outlaws</strong><br>Outlaws can be detered from incuring into your territory by building and displaying instuments of justice such as the Pillory. These frigtening symbols of justice will keep all but the most bold Outlaws at bay."
+	"gamemechanicinfo-outlaws-text": "<strong>Who are they?</strong><br>Outlaws are individuals who have commited crimes, and having refused to stand trial, have been branded as outside the protection of the law, or Outlawed. An Outlaw's life is forfit, anyone can kill them suffer no legal repercussions, in fact, it's considered a public service. So where do such desperate individuals go? Outlaws can be found throughout the world, in virtually all climates. However, they prefer rural and densely forested regions where they can easily hide. They perfer to travel and work at night, when they can easily ambush unsuspecting travelers.<br><br><strong>Detering Outlaws</strong><br>Outlaws can be detered from incuring into your territory by building and displaying instuments of justice such as the Pillory and Heads On Spears. These frigtening symbols of justice will keep all but the most bold Outlaws at bay."
 
 }
