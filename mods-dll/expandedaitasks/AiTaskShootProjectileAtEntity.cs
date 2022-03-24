@@ -133,6 +133,8 @@ namespace ExpandedAiTasks
 
             curTurnRadPerSec = minTurnAnglePerSec + (float)entity.World.Rand.NextDouble() * (maxTurnAnglePerSec - minTurnAnglePerSec);
             curTurnRadPerSec *= GameMath.DEG2RAD * 50 * 0.02f;
+
+            entity.PlayEntitySound("shootatentity", null, true);
         }
 
 

@@ -1,26 +1,59 @@
 ﻿
-using HarmonyLib;
+using System;
 using System.Diagnostics;
 using System.Reflection;
+using ProtoBuf;
+using HarmonyLib;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 using Vintagestory.GameContent;
+using Vintagestory.API.Config;
 
 namespace OutlawMod
 {
+    [ProtoContract]
+    public class OutlawModConfig
+    {
+        [ProtoMember(1)]
+        public float StartingSpawnSafeZoneRadius = 250f;
+
+        [ProtoMember(2)]
+        public bool StartingSafeZoneHasLifetime = true;
+
+        [ProtoMember(3)]
+        public bool StartingSafeZoneShrinksOverLifetime = true;
+
+        [ProtoMember(4)]
+        public float StartingSpawnSafeZoneLifetimeInDays = 180f;
+
+        [ProtoMember(5)]
+        public bool ClaminedLandBlocksOutlawSpawns = true;
+
+        [ProtoMember(6)]
+        public bool OutlawsUseClassicVintageStoryVoices = false;
+
+        [ProtoMember(7)]
+        public bool DevMode = false;
+    }
 
     public class Core : ModSystem
     {
         ICoreAPI api;
+        ICoreClientAPI capi;
 
         private Harmony harmony;
 
         private bool usingExpandedAiTasksMod = false;
 
+        OutlawModConfig config = new OutlawModConfig();
+
         public override void Start(ICoreAPI api)
         {
             this.api = api;
+
+            //Broadcast Outlaw Mod Config to Clients.
+            api.Network.RegisterChannel("outlawModConfig").RegisterMessageType<OutlawModConfig>();
 
             base.Start(api);              
 
@@ -47,9 +80,27 @@ namespace OutlawMod
 
         }
 
+        public override void StartClientSide(ICoreClientAPI api)
+        {
+            capi = api;
+            capi.Network.GetChannel("outlawModConfig").SetMessageHandler<OutlawModConfig>(onConfigFromServer);
+
+            api.Event.LevelFinalize += () =>
+            {
+                //Events we can run after the level finalizes.
+            };
+        }
+
         public override void StartServerSide(ICoreServerAPI api)
         {
             base.StartServerSide(api);
+
+            api.Event.ServerRunPhase(EnumServerRunPhase.ModsAndConfigReady, loadConfig);
+
+            api.Event.ServerRunPhase(EnumServerRunPhase.GameReady, () => {
+                applyConfig();
+                //config.ResolveStartItems(api.World);
+            });
 
             //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
             if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") && !usingExpandedAiTasksMod )
@@ -88,6 +139,58 @@ namespace OutlawMod
         private void RegisterItemsShared()
         {
             api.RegisterItemClass("ItemOutlawHead", typeof(ItemOutlawHead));
+        }
+
+        private void loadConfig()
+        {
+            try
+            {
+                OutlawModConfig modConfig = api.LoadModConfig<OutlawModConfig>("OutlawModConfig.json");
+
+                if (modConfig != null)
+                {
+                    config = modConfig;
+                }
+                else
+                {
+                    //We don't have a valid config.
+                    throw new Exception();
+                }
+                    
+            }
+            catch (Exception e)
+            {
+                api.World.Logger.Error("Failed loading OutlawModConfig.json, Will initialize new one", e);
+                config = new OutlawModConfig();
+                api.StoreModConfig( config, "OutlawModConfig.json");
+            }
+            
+            // Called on both sides
+        }
+
+
+        private void applyConfig()
+        {
+            //Start Spawn Safe Zone Vars
+            OMGlobalConstants.startingSpawnSafeZoneRadius           = config.StartingSpawnSafeZoneRadius;
+            OMGlobalConstants.startingSafeZoneHasLifetime           = config.StartingSafeZoneHasLifetime;
+            OMGlobalConstants.startingSafeZoneShrinksOverlifetime   = config.StartingSafeZoneShrinksOverLifetime;
+            OMGlobalConstants.startingSpawnSafeZoneLifetimeInDays   = config.StartingSpawnSafeZoneLifetimeInDays;
+            OMGlobalConstants.claminedLandBlocksOutlawSpawns        = config.ClaminedLandBlocksOutlawSpawns;
+
+            OMGlobalConstants.outlawsUseClassicVintageStoryVoices   = config.OutlawsUseClassicVintageStoryVoices;
+
+            OMGlobalConstants.devMode = config.DevMode;
+
+            //Store an up-to-date version of the config so any new fields that might differ between mod versions are added without altering user values.
+            api.StoreModConfig(config, "OutlawModConfig.json");
+
+        }
+
+        private void onConfigFromServer(OutlawModConfig networkMessage)
+        {
+            this.config = networkMessage;
+            applyConfig();
         }
     }
 }

@@ -5,7 +5,7 @@
 	hitboxSize: { x: 0.6, y: 1.75 },
 	deadHitboxSize: { x: 0.75, y: 0.5 },
 	eyeHeight: 1.7,
-	attributes: { reckless: false },
+	attributes: { reckless: false, classicVoice: "sounds/voice/harmonica" },
 
 	drops: [
 			{
@@ -157,7 +157,7 @@
 						damagePlayerAtMs: 300,
 						animation: "attack",
 						animationSpeed: 2,
-						sound: "creature/bandit/attack"
+						//sound: "creature/bandit/attack"
 					},
 					//Looters will get into fights with one another if they take damage.
 					{
@@ -203,7 +203,7 @@
 						animationSpeed: 3,
 						executionChance: 0.5,
 						whenInEmotionState: "fleeondamage",
-						sound: "creature/bandit/flee",
+						//sound: "creature/bandit/flee",
 						soundStartMs: 650
 					},
 					//Agro When Damaged
@@ -242,7 +242,7 @@
 						animationSpeed: 1.8,
 						maxFollowTime: 60,
 						alarmHerd: true,
-						sound: "creature/bandit/givemegold",
+						//sound: "creature/bandit/givemegold",
 						soundStartMs: 950
 					},
 					//Slow down to Engage the player.
@@ -313,7 +313,10 @@
 	sounds: {
 		idle: "creature/bandit/idle1",
 		hurt: "creature/bandit/hurt",
-		death: "creature/bandit/die"
+		death: "creature/bandit/die",
+		meleeattack: "creature/bandit/attack",
+		fleeentity: "creature/bandit/flee",
+		seekentity: "creature/bandit/givemegold",
 	},
 	idleSoundChance: 0.08
 }

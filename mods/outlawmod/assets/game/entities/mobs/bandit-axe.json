@@ -5,7 +5,7 @@
 	hitboxSize: { x: 0.6, y: 1.75 },
 	deadHitboxSize: { x: 0.75, y: 0.5 },
 	eyeHeight: 1.7,
-	attributes: { reckless: false },
+	attributes: { reckless: false, classicVoice: "sounds/voice/tuba" },
 
 	drops: [
 			{
@@ -133,7 +133,7 @@
 						damagePlayerAtMs: 300,
 						animation: "attack",
 						animationSpeed: 2,
-						sound: "creature/bandit/attack",
+						//sound: "creature/bandit/attack",
 						soundStartMs: 150
 					},
 					//Agro When Damaged
@@ -172,7 +172,7 @@
 						animationSpeed: 1.8,
 						maxFollowTime: 60,
 						alarmHerd: true,
-						sound: "creature/bandit/icanseeyou",
+						//sound: "creature/bandit/icanseeyou",
 						soundStartMs: 950
 					},
 					//Slow down to Engage the player.
@@ -231,8 +231,12 @@
 		}
 	},
 	sounds: {
+		idle: "creature/bandit/hrh",
 		hurt: "creature/bandit/hurt",
-		death: "creature/bandit/die2"
+		death: "creature/bandit/die2",
+		meleeattack: "creature/bandit/attack",
+		fleeentity: "creature/bandit/flee",
+		seekentity: "creature/bandit/icanseeyou",
 	},
 	idleSoundChance: 0.08
 }

@@ -15,6 +15,10 @@ using Vintagestory.GameContent;
 
 namespace OutlawMod
 {
+    ////////////////////////////////////////////////////////////////
+    /// PATCHING HARVESTABLE BEHAVIOR FOR CAUSE OF DEATH EVICENCE///
+    ////////////////////////////////////////////////////////////////
+
     [HarmonyPatch(typeof(EntityBehaviorHarvestable))]
     public class BehaviorHarvestableOverride
     {
@@ -102,6 +106,73 @@ namespace OutlawMod
             }
 
             return false;
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    /// PATCHING AI TASKS TO ADD PLAY SOUND EVENTS FOR VS CLASIC OUTLAW VOICES///
+    /////////////////////////////////////////////////////////////////////////////
+
+    [HarmonyPatch(typeof(AiTaskMeleeAttack))]
+    public class AiTaskMeleeAttackOverride
+    {
+        [HarmonyPrepare]
+        static bool Prepare(MethodBase original, Harmony harmony)
+        {
+            return true;
+        }
+
+
+        [HarmonyPatch("StartExecute")]
+        [HarmonyPostfix]
+        static void OverrideAddSoundCallToStartExecute(AiTaskMeleeAttack __instance)
+        {
+            if (__instance.entity.Alive)
+            {
+                __instance.entity.PlayEntitySound("meleeattack", null, true);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(AiTaskFleeEntity))]
+    public class AiTaskFleeEntityOverride
+    {
+        [HarmonyPrepare]
+        static bool Prepare(MethodBase original, Harmony harmony)
+        {
+            return true;
+        }
+
+
+        [HarmonyPatch("StartExecute")]
+        [HarmonyPostfix]
+        static void OverrideAddSoundCallToStartExecute(AiTaskFleeEntity __instance)
+        {
+            if (__instance.entity.Alive)
+            {
+                __instance.entity.PlayEntitySound("fleeentity", null, true);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(AiTaskSeekEntity))]
+    public class AiTaskSeekEntityOverride
+    {
+        [HarmonyPrepare]
+        static bool Prepare(MethodBase original, Harmony harmony)
+        {
+            return true;
+        }
+
+
+        [HarmonyPatch("StartExecute")]
+        [HarmonyPostfix]
+        static void OverrideAddSoundCallToStartExecute(AiTaskSeekEntity __instance)
+        {
+            if (__instance.entity.Alive)
+            {
+                __instance.entity.PlayEntitySound("seekentity", null, true);
+            }
         }
     }
 }

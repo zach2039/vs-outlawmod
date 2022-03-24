@@ -5,7 +5,7 @@
 	hitboxSize: { x: 0.6, y: 1.75 },
 	deadHitboxSize: { x: 0.75, y: 0.5 },
 	eyeHeight: 1.7,
-	attributes: { reckless: false },
+	attributes: { reckless: false, classicVoice: "sounds/voice/oboe" },
 
 	drops: [
 			{
@@ -175,7 +175,7 @@
 						damagePlayerAtMs: 300,
 						animation: "attack",
 						animationSpeed: 2,
-						sound: "creature/bandit/attack",
+						//sound: "creature/bandit/attack",
 						whenNotInEmotionState: "saturated"
 					},
 
@@ -212,7 +212,7 @@
 						animationSpeed: 2.0,
 						maxFollowTime: 60,
 						alarmHerd: true,
-						sound: "creature/bandit/youdead",
+						//sound: "creature/bandit/youdead",
 						soundStartMs: 950,
 						whenNotInEmotionState: "saturated"
 					},
@@ -229,7 +229,7 @@
 						animation: "sprint",
 						animationSpeed: 2.0,
 						executionChance: 1.0,
-						sound: "creature/bandit/flee",
+						//sound: "creature/bandit/flee",
 						soundStartMs: 650,
 						whenNotInEmotionState: "aggressiveondamage"
 					},
@@ -247,7 +247,7 @@
 						animation: "sprint",
 						animationSpeed: 2.0,
 						executionChance: 1.0,
-						sound: "creature/bandit/flee",
+						//sound: "creature/bandit/flee",
 						soundStartMs: 650,
 						whenInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
@@ -266,7 +266,7 @@
 						maxFollowTime: 60,
 						alarmHerd: true,
 						whenInEmotionState: "aggressiveondamage",
-						sound: "creature/bandit/youdead",
+						//sound: "creature/bandit/youdead",
 						soundStartMs: 950
 					},
 					{
@@ -366,7 +366,10 @@
 	sounds: {
 		idle: "creature/bandit/idle1",
 		hurt: "creature/bandit/hurt",
-		death: "creature/bandit/die"
+		death: "creature/bandit/die2",
+		meleeattack: "creature/bandit/attack",
+		fleeentity: "creature/bandit/flee",
+		seekentity: "creature/bandit/youdead",
 	},
 	idleSoundChance: 0.08
 }
