@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\mods\expandedaitasks\</OutputPath>
+    <OutputPath>.\</OutputPath>
     <IntermediateOutputPath>..\..\obj\Debug\expandedaitasks\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -63,13 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AiTaskShootProjectileAtEntity.cs" />
-    <Compile Include="ExpandedAiTasksCore.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\mods\outlawmod"
+copy "$(TargetPath)" "$(SolutionDir)\mods\expandedaitasksloader"</PostBuildEvent>
   </PropertyGroup>
 </Project>

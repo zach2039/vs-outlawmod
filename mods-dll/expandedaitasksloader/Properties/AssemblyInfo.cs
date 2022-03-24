@@ -1,16 +1,16 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-//using Vintagestory.API.Common;
+using Vintagestory.API.Common;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("expandedaitasks")]
+[assembly: AssemblyTitle("expandedaitasksloader")]
 [assembly: AssemblyDescription("")]
 //[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Grifthegnome")]
-[assembly: AssemblyProduct("Expanded Ai Tasks")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("")]
 
 [assembly: AssemblyTrademark("")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("68de08ed-4609-49f1-8239-af8ebf7f83d5")]
+[assembly: Guid("fbddd71f-ae07-4e29-be3a-6ec7d9f60dab")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,3 +34,10 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.*")]
+
+[assembly: ModInfo( "expandedaitasksloader", "expandedaitasksloader",
+    Version = "1.0.0",
+    Description = "Loads the contents of ExpandedAiTasks.dll for other mods",
+    Authors = new[] { "Grifthegnome" })]
+
+ [assembly: ModDependency("game")]

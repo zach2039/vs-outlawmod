@@ -9,6 +9,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 using Vintagestory.API.Config;
+using ExpandedAiTasks;
 
 namespace OutlawMod
 {
@@ -60,16 +61,16 @@ namespace OutlawMod
             harmony = new Harmony("com.grifthegnome.outlawmod.causeofdeath");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            ModSystem expandedAiTasksMod = api.ModLoader.GetModSystem("ExpandedAiTasks.ExpandedAiTasksCore");
+            ModSystem expandedAiTasksMod = api.ModLoader.GetModSystem("ExpandedAiTasksLoader.ExpandedAiTasksLoaderCore");
 
             if (expandedAiTasksMod != null)
             {
                 usingExpandedAiTasksMod = true;
-                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasks.dll Found, we will skip our internal ai task registration so that ExpandedAiTasks mod can handle-intermod dependencies.");
+                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasksMod Found, we will skip our internal ai task registration so that ExpandedAiTasks mod can handle-intermod dependencies.");
             }
             else
             {
-                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasks.dll Not Found, we will register our internal ai tasks instead. Nothing to worry about here.");
+                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasksMod Not Found. No Worries! we will register our ai tasks ourselves instead. Nothing to worry about here.");
             }
 
             RegisterEntitiesShared();

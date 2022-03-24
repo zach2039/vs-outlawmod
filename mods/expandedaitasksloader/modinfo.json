@@ -1,9 +1,9 @@
 {
   "type": "code",
-  "modid": "expandedaitasks",
+  "modid": "expandedaitasksloader",
   "name": "Expanded Ai Tasks",
   "authors": ["Grifthegnome" ],
-  "description": "Expands the libary of Ai Tasks available to modders.",
+  "description": "Expands the Libary of Ai Tasks Available to Modders.",
   "version": "1.0.0",
   "dependencies": {
     "game": "1.16.4"
