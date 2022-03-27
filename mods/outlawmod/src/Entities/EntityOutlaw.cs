@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Client;
@@ -33,18 +32,6 @@ namespace OutlawMod
             }
         }
 
-        POIRegistry poiregistry;
-
-        private const float MAX_SPAWN_EXCLUSION_POI_SEARCH_DIST = 250;
-
-        const string SPAWN_EXCLUSION_POI_TYPE = "outlawSpawnBlocker";
-
-        private static bool DEUBUG_PRINTS = false;
-
-        //Spawn Exclusion Search Vars
-        private bool spawnIsBlockedByBlocker = false; //This must be reset whenever we do an OnEntitySpawn call. It is set by the PoiMatcher function to skip additional once we've found a ISpawnBlocker that will block our spawn request.
-        private Vec3d currentSpawnTryPosition;
-
         public EntityTalkUtil talkUtil;
 
         //Look at Entity.cs in the VAPI project for more functions you can override.
@@ -52,7 +39,6 @@ namespace OutlawMod
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
             base.Initialize(properties, api, InChunkIndex3d);
-            poiregistry = api.ModLoader.GetModSystem<POIRegistry>();
 
             //Assign Personality for Classic Voice
             if ( World.Side == EnumAppSide.Client && OMGlobalConstants.outlawsUseClassicVintageStoryVoices)
@@ -75,8 +61,15 @@ namespace OutlawMod
         /// </summary>
         public override void OnEntityLoaded()
         {
-            DEUBUG_PRINTS = OMGlobalConstants.devMode;
             base.OnEntityLoaded();
+
+            if (!Utility.OutlawTypeEnabled( this.Code.FirstPathPart() ) && Api.Side == EnumAppSide.Server )
+            {
+                Utility.DebugLogToPlayerChat(Api as ICoreServerAPI, "Attempted to load " + this.Code.Path + " at: " + this.Pos + ". This Outlaw type is disabled in the config, removing.");
+                this.Die(EnumDespawnReason.Removed, null);
+                
+                return;
+            }
         }
 
         /// <summary>
@@ -86,94 +79,26 @@ namespace OutlawMod
         {
             base.OnEntitySpawn();
 
-            //Only run on server side, because POIs are serveside only.
-            if (Api.Side == EnumAppSide.Server)
+            //Allow us to block spawns for debugging purposes post OnTrySpawn callback.
+            //We want this debug functionality for dev purposes, but it should not run during a normal game.
+            if ( OMGlobalConstants.devMode && Api.Side == EnumAppSide.Server)
             {
-                currentSpawnTryPosition = Pos.XYZ;
-                spawnIsBlockedByBlocker = false;
-
-                ////////////////////////////////////////////
-                ///BLOCKED BY START SPAWN SAFE ZONE CHECK///
-                ////////////////////////////////////////////
-
-
-                //Make it so outlaws only get blocked if any players are in survival mode.
-                if (Utility.AnyPlayersOnlineInSurvivalMode(Api) || OMGlobalConstants.devMode)
+                //Check if the Outlaw is disabled in the config.
+                if (!Utility.OutlawTypeEnabled(this.Code.FirstPathPart()))
                 {
+                    Utility.DebugLogToPlayerChat(Api as ICoreServerAPI, "Cannot Spawn " + this.Code.Path + " at: " + this.Pos + ". This Outlaw type is disabled in the config.");
+                    this.Die(EnumDespawnReason.Removed, null);
                     
-                    double totalDays = Api.World.Calendar.TotalDays;
-                    double safeZoneDaysLeft = Math.Max(OMGlobalConstants.startingSpawnSafeZoneLifetimeInDays - totalDays, 0);
-                    double safeZoneRadius = OMGlobalConstants.startingSpawnSafeZoneRadius;
+                    return;
+                }
+
+                //Check if the Outlaw is blocked by spawn rules.
+                if ( !OutlawSpawnEvaluator.CanSpawn( Pos.XYZ, this.Code ) )
+                {
+                    Utility.DebugLogToPlayerChat(Api as ICoreServerAPI, "Cannot Spawn " + this.Code.Path + " at: " + this.Pos + ". See Debug Log for Details.");
+                    this.Die(EnumDespawnReason.Removed, null);
                     
-                    //If our starting safety zone has a lifetime (any negative value means never despawn).
-                    if (OMGlobalConstants.startingSafeZoneHasLifetime)
-                    {
-                        //If we are cofigured to shrink the safe zone over time. Figure out how big the spawn zone should be on this calender day.
-                        if ( OMGlobalConstants.startingSafeZoneShrinksOverlifetime )
-                        {
-                            safeZoneRadius = MathUtility.GraphClampedValue( OMGlobalConstants.startingSpawnSafeZoneLifetimeInDays, 0, OMGlobalConstants.startingSpawnSafeZoneRadius, 0, safeZoneDaysLeft);
-                        }
-                        //If we are cofigured to have our safe zone to come to a hard stop after X days.
-                        else
-                        {
-                            safeZoneRadius = safeZoneDaysLeft > 0 ? safeZoneRadius : 0;
-                        }
-                    }                        
-
-                    //If we have an eternal safe zone, or a zone that has lifetime days remaining, try to block spawns.
-                    if ( !OMGlobalConstants.startingSafeZoneHasLifetime || ( safeZoneDaysLeft > 0 ) )
-                    {
-                        //Make it so Outlaws can't spawn in the starting area.
-                        EntityPos defaultWorldSpawn = this.Api.World.DefaultSpawnPosition;
-                        double distToWorldSpawnSqr = currentSpawnTryPosition.HorizontalSquareDistanceTo(defaultWorldSpawn.XYZ);
-
-                        if (distToWorldSpawnSqr < (safeZoneRadius * safeZoneRadius))
-                        {
-                            if (DEUBUG_PRINTS)
-                                Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + currentSpawnTryPosition + ". Too Close to Player Starting Spawn Area.");
-
-                            //We do this post spawn, so that spawning system doesn't spend additinal frames repeatedly failing and taking up frames for something that will fail 100% of the time.
-                            this.Die(EnumDespawnReason.Removed, null);
-                            return;
-                        }
-                    }
-
-                    /////////////////////////////////
-                    ///BLOCKED BY LAND CLAIM CHECK///
-                    /////////////////////////////////             
-
-                    //Do Not Allow Outlaws to Spawn on Claimed Land. (If Config Says So)
-                    if (OMGlobalConstants.claminedLandBlocksOutlawSpawns)
-                    {
-                        List<LandClaim> landclaims = Api.World.Claims.All;
-                        foreach (LandClaim landclaim in landclaims)
-                        {
-                            if (landclaim.PositionInside(currentSpawnTryPosition))
-                            {
-                                if (DEUBUG_PRINTS)
-                                    Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + currentSpawnTryPosition + ". Attempted to spawn on landclaim " + landclaim.Description);
-
-                                this.Die(EnumDespawnReason.Removed, null);
-                                return;
-                            }
-
-                        }
-                    }
-
-                    ////////////////////////////////////////
-                    ///BLOCKED BY SPAWN BLOCKER POI CHECK///
-                    //////////////////////////////////////// 
-
-                    //Do Not Allow Outlaws to Spawn near BlockEntityOutlawDeterents.
-                    poiregistry.WalkPois(currentSpawnTryPosition, MAX_SPAWN_EXCLUSION_POI_SEARCH_DIST, SpawnExclusionMatcher);
-                    if (spawnIsBlockedByBlocker == true)
-                    {
-                        if (DEUBUG_PRINTS)
-                            Api.World.Logger.Warning("Spawn Failed for " + this.Code.Path + " at: " + currentSpawnTryPosition + ". Attempted to spawn within spawn blocker");
-
-                        this.Die(EnumDespawnReason.Removed, null);
-                        return;
-                    }
+                    return;
                 }
             }
         }
@@ -185,25 +110,6 @@ namespace OutlawMod
         public override void OnEntityDespawn(EntityDespawnReason despawn)
         {
             base.OnEntityDespawn(despawn);
-        }
-
-        public bool SpawnExclusionMatcher( IPointOfInterest poi )
-        {
-            if (poi.Type == SPAWN_EXCLUSION_POI_TYPE && !spawnIsBlockedByBlocker)
-            {
-                IOutlawSpawnBlocker spawnBlocker = (IOutlawSpawnBlocker)poi;
-
-                float distToBlockerSqr = spawnBlocker.Position.SquareDistanceTo(currentSpawnTryPosition);
-                float blockingRange = spawnBlocker.blockingRange();
-
-                //We have found a blocker that blocks our spawn, no need to run compuations on other pois.
-                if ( distToBlockerSqr <= blockingRange * blockingRange)
-                    spawnIsBlockedByBlocker = true;
-
-                return true;
-            }
-                
-            return false;
         }
 
         public override void OnGameTick(float dt)
@@ -264,6 +170,7 @@ namespace OutlawMod
                     talkUtil.Talk(EnumTalkType.Laugh);
 
                     break;
+
             }
             
         }
@@ -279,44 +186,27 @@ namespace OutlawMod
                     {
                         case "hurt":
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1001);
-
                             return;
-
-                            break;
 
                         case "death":
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1002);
-
                             return;
-
-                            break;
 
                         case "meleeattack":
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1003);
                             return;
 
-                            break;
-
                         case "shootatentity":
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1003);
                             return;
 
-                            break;
-
                         case "fleeentity":
-
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1004);
                             return;
 
-                            break;
-
                         case "seekentity":
-
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1005);
                             return;
-
-                            break;
-
                     }
                 }
                 else if (World.Side == EnumAppSide.Client)
@@ -325,11 +215,8 @@ namespace OutlawMod
                     switch (type)
                     {
                         case "idle":
-
                             talkUtil.Talk(EnumTalkType.Idle);
                             return;
-
-                            break;
                     }
                 }
             }

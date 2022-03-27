@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Vintagestory.API.Client;
+﻿
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
-using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
-using Vintagestory.API.Util;
-using Vintagestory.GameContent.Mechanics;
-using Vintagestory.ServerMods;
 
 namespace OutlawMod
 {
@@ -35,47 +28,38 @@ namespace OutlawMod
         private bool Event_OnTrySpawnEntity(ref EntityProperties properties, Vec3d spawnPosition, long herdId)
         {
 
+            string type = properties.Code.FirstPathPart();
+
             //This may be a good location to spawn things that have to spawn in specific locations or on specific block materials.
-            if (properties.Code.Path.StartsWithFast("bandit"))
-            {                
-                return ShouldSpawnBandit( ref properties, spawnPosition, herdId );
-            }     
-            else if (properties.Code.Path.StartsWithFast("looter"))
-            {                
-                return ShouldSpawnLooter(ref properties, spawnPosition, herdId);
-            }
-            else if (properties.Code.Path.StartsWithFast("yeoman"))
-            {                
-                return ShouldSpawnYeoman(ref properties, spawnPosition, herdId);
-            }
-            else if (properties.Code.Path.StartsWithFast("poacher"))
-            {                
-                return ShouldSpawnPoacher(ref properties, spawnPosition, herdId);
+            switch (type)
+            {
+                case "looter":
+                case "poacher-spear":
+                case "poacher-archer":
+                case "bandit-axe":
+                case "bandit-spear":
+                case "bandit-knife":
+                case "yeoman-archer":
+                    return ShouldSpawnOutlawOfType(ref properties, spawnPosition);
             }
 
-
-
             return true;
         }
 
-        private bool ShouldSpawnBandit(ref EntityProperties properties, Vec3d spawnPosition, long herdId )
+        private bool ShouldSpawnOutlawOfType( ref EntityProperties properties, Vec3d spawnPosition )
         {
-            return true;
+            string type = properties.Code.FirstPathPart();     
+            
+            //Check if the Outlaw is disabled in the config first.
+            if ( Utility.OutlawTypeEnabled(type) == false )
+            {
+                Utility.DebugLogMessage(sapi as ICoreAPI, "Cannot Spawn " + properties.Code.Path + " at: " + spawnPosition + ". This Outlaw type is disabled in the config.");
+                return false;
+            }
+
+            //Check spawn rules.
+            return OutlawSpawnEvaluator.CanSpawn(spawnPosition, properties.Code);
         }
 
-        private bool ShouldSpawnLooter(ref EntityProperties properties, Vec3d spawnPosition, long herdId )
-        {
-            return true;
-        }
-
-        private bool ShouldSpawnYeoman(ref EntityProperties properties, Vec3d spawnPosition, long herdId)
-        {
-            return true;
-        }
-
-        private bool ShouldSpawnPoacher(ref EntityProperties properties, Vec3d spawnPosition, long herdId)
-        {
-            return true;
-        }
     }
 }

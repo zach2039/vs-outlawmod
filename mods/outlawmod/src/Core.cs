@@ -17,24 +17,36 @@ namespace OutlawMod
     public class OutlawModConfig
     {
         [ProtoMember(1)]
-        public float StartingSpawnSafeZoneRadius = 250f;
-
+        public bool EnableLooters = true;
+        
         [ProtoMember(2)]
-        public bool StartingSafeZoneHasLifetime = true;
+        public bool EnablePoachers = true;
 
         [ProtoMember(3)]
-        public bool StartingSafeZoneShrinksOverLifetime = true;
+        public bool EnableBrigands = true;
 
         [ProtoMember(4)]
-        public float StartingSpawnSafeZoneLifetimeInDays = 180f;
+        public bool EnableYeomen = true;
 
         [ProtoMember(5)]
-        public bool ClaminedLandBlocksOutlawSpawns = true;
+        public float StartingSpawnSafeZoneRadius = 250f;
 
         [ProtoMember(6)]
-        public bool OutlawsUseClassicVintageStoryVoices = false;
+        public bool StartingSafeZoneHasLifetime = true;
 
         [ProtoMember(7)]
+        public bool StartingSafeZoneShrinksOverLifetime = true;
+
+        [ProtoMember(8)]
+        public float StartingSpawnSafeZoneLifetimeInDays = 180f;
+
+        [ProtoMember(9)]
+        public bool ClaminedLandBlocksOutlawSpawns = true;
+
+        [ProtoMember(10)]
+        public bool OutlawsUseClassicVintageStoryVoices = false;
+
+        [ProtoMember(11)]
         public bool DevMode = false;
     }
 
@@ -101,6 +113,11 @@ namespace OutlawMod
             api.Event.ServerRunPhase(EnumServerRunPhase.GameReady, () => {
                 applyConfig();
                 //config.ResolveStartItems(api.World);
+            });
+            api.Event.ServerRunPhase(EnumServerRunPhase.GameReady, () =>
+            {
+                //Initialize our static instance of our spawn evaluator.
+                OutlawSpawnEvaluator.Initialize(api as ICoreServerAPI);
             });
 
             //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
@@ -172,6 +189,12 @@ namespace OutlawMod
 
         private void applyConfig()
         {
+            //Enable/Disable Outlaw Types
+            OMGlobalConstants.enableLooters     = config.EnableLooters;
+            OMGlobalConstants.enablePoachers    = config.EnablePoachers;
+            OMGlobalConstants.enableBrigands    = config.EnableBrigands;
+            OMGlobalConstants.enableYeomen      = config.EnableYeomen;
+
             //Start Spawn Safe Zone Vars
             OMGlobalConstants.startingSpawnSafeZoneRadius           = config.StartingSpawnSafeZoneRadius;
             OMGlobalConstants.startingSafeZoneHasLifetime           = config.StartingSafeZoneHasLifetime;
@@ -179,8 +202,10 @@ namespace OutlawMod
             OMGlobalConstants.startingSpawnSafeZoneLifetimeInDays   = config.StartingSpawnSafeZoneLifetimeInDays;
             OMGlobalConstants.claminedLandBlocksOutlawSpawns        = config.ClaminedLandBlocksOutlawSpawns;
 
+            //Classic Voice Setting
             OMGlobalConstants.outlawsUseClassicVintageStoryVoices   = config.OutlawsUseClassicVintageStoryVoices;
 
+            //Devmode
             OMGlobalConstants.devMode = config.DevMode;
 
             //Store an up-to-date version of the config so any new fields that might differ between mod versions are added without altering user values.
