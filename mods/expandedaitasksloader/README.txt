@@ -11,28 +11,23 @@ If you are experiencing any kind of weird behavior, always check your config fir
 
 So what's in the config?
 
-//ENABLE/DISABLE OUTLAW SPAWNING BY TYPE
-EnableLooters: true/false
-EnablePoachers: true/false
-EnableBrigands: true/false
-EnableYeomen: true/false
-
 //START SPAWN SAFE ZONE SETTINGS
+
 So OutlawMod adds a zone around your start spawn in your survival world that blocks Outlaw spawns. This is so you can get a foothold in the world and start doing your thing.
 By default, this zone starts at a specified size and shrinks at a constant rate over a set number of days until there's no safe zone left, unless you configure it to do something else.
 
 StartingSpawnSafeZoneRadius: The Starting Radius of the Safe Area, measured in blocks.
 StartingSafeZoneHasLifetime: Whether the zone has a lifetime and will despawn after a time. Effectively, do you want the safe zone to go away at some point, yes or no?
-StartingSafeZoneShrinksOverLifetime: Whether the zone will shrink over the course of its lifetime. This means Outlaws will appear closer and closer to the start as the days progress.
-StartingSpawnSafeZoneLifetimeInDays: The number of days it will take for the safe zone to shrink and disappear entirely. If StartingSafeZoneHasLifeTime = false, this value will do nothing.
+StartingSafeZoneShrinksOverLifetime: Whether the zone will shrink over the course of it's lifetime. This means Outlaws will appear closer and closer to the start as the days progress.
+StartingSpawnSafeZoneLifetimeInDays: The number of days it will take for the safe zone to shrink and disapear entirely. If StartingSafeZoneHasLifeTime = false, this value will do nothing.
 ClaminedLandBlocksOutlawSpawns: Whether or not land claim areas block Outlaw spawns.
 
 //CLASSIC VINTAGE STORY VOICES
-By default, Outlaws will use a variety of recorded voice lines. Classic Vintage Story Voices, like the ones the traders use, are also supported. Each type of Outlaw uses its own instrument so you can tell them apart from a distance.
+By default, Outlaws will use a variety of recorded voice lines. Classic Vintage Story Voices, like the ones the traders use, are also supported. Each type of Outlaw uses its own instrument so you can tell them appart from a distance.
 
 OutlawsUseClassicVintageStoryVoices: Set this to true if you want Classic Vintage Story Voices for Outlaws.
 
 //DEVELOPER STUFF
-This stuff is really just for me to work on the Mod, it's not super exciting, sorry.
+This stuff is really just for me to work on the Mod, it's not super exciting, sorry. 
 
-DevMode: configures a bunch of stuff on the back end so I can test and debug certain things more easily. I really don't recommend enabling this, unless you're me.
+DevMode: configures a bunch of stuff on the back end so I can test certain things more easily.
