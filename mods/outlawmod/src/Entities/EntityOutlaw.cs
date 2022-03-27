@@ -41,7 +41,7 @@ namespace OutlawMod
             base.Initialize(properties, api, InChunkIndex3d);
 
             //Assign Personality for Classic Voice
-            if ( World.Side == EnumAppSide.Client && OMGlobalConstants.outlawsUseClassicVintageStoryVoices)
+            if ( World.Side == EnumAppSide.Client )
             {
                 this.talkUtil = new EntityTalkUtil(api as ICoreClientAPI, this);
 
@@ -125,6 +125,9 @@ namespace OutlawMod
         public override void OnReceivedServerPacket(int packetid, byte[] data)
         {
             base.OnReceivedServerPacket(packetid, data);
+
+            if (talkUtil == null)
+                return;
 
             switch ( packetid )
             {
