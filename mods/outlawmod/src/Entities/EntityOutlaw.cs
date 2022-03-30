@@ -174,6 +174,15 @@ namespace OutlawMod
 
                     break;
 
+                case 1006: //Engage Entity
+
+                    if (!Alive)
+                        return;
+
+                    talkUtil.Talk(EnumTalkType.Laugh);
+
+                    break;
+
             }
             
         }
@@ -210,6 +219,11 @@ namespace OutlawMod
                         case "seekentity":
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1005);
                             return;
+                        case "engageentity":
+                            (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1006);
+                            return;
+
+
                     }
                 }
                 else if (World.Side == EnumAppSide.Client)

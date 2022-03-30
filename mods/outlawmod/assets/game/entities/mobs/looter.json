@@ -150,8 +150,9 @@
 						damage: 1.5,
 						damageTier: 1,
 						damageType: "BluntAttack",
+						minDist: 1.5,
 						slot: 1,
-						mincooldown: 500, 
+						mincooldown: 1000, 
 						maxcooldown: 1500, 
 						attackDurationMs: 450,
 						damagePlayerAtMs: 300,
@@ -167,13 +168,14 @@
 						damage: 1.5,
 						damageTier: 1,
 						damageType: "BluntAttack",
+						minDist: 1.5,
 						slot: 1,
-						mincooldown: 500, 
+						mincooldown: 1000, 
 						maxcooldown: 1500, 
 						attackDurationMs: 450,
 						damagePlayerAtMs: 300,
 						animation: "attack",
-						animationSpeed: 2,
+						animationSpeed: 1.0,
 						whenInEmotionState: "aggressiveondamage"
 					},
 					{
@@ -181,7 +183,7 @@
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
 						priority: 3.5,
 						priorityForCancel: 9,
-						mincooldown: 1000, 
+						mincooldown: 3000, 
 						maxcooldown: 10000, 
 						durationMs: 550,
 						releaseAtMs: 500,
@@ -200,24 +202,25 @@
 						fleeingDistance: 64,
 						fleeDurationMs: 9999999,
 						animation: "sprint",
-						animationSpeed: 3,
+						animationSpeed: 1,
 						executionChance: 0.5,
 						whenInEmotionState: "fleeondamage",
-						//sound: "creature/bandit/flee",
-						soundStartMs: 650
 					},
 					//Agro When Damaged
 					{
-						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter" ],
+						code: "engageentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
 						priority: 2.5,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 22,
-						movespeed: 0.040,
-						animation: "sprint",
-						animationSpeed: 2.0,
-						maxFollowTime: 60,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.040,
+						pursueRange: 22,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.025,
+						engageRange: 4,
+						engageAnimation: "walk",
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
 						whenInEmotionState: "aggressiveondamage"
 					},
@@ -230,31 +233,21 @@
 					},
 					//Close the distance to enemy target.
 					{
-						code: "seekentity",
+						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
 						priority: 1.5,
 						priorityForCancel: 2.5,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 22,
-						movespeed: 0.040,
-						animation: "sprint",
-						animationSpeed: 1.8,
-						maxFollowTime: 60,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.040,
+						pursueRange: 22,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.025,
+						engageRange: 4,
+						engageAnimation: "walk",
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
-						//sound: "creature/bandit/givemegold",
-						soundStartMs: 950
-					},
-					//Slow down to Engage the player.
-					{
-						code: "seekentity",
-						entityCodes: ["player"],
-						priority: 3.0,
-						seekingRange: 8,
-						movespeed: 0.035,
-						animation: "walk",
-						animationSpeed: 1.8,
-						maxFollowTime: 5.0,
 						soundStartMs: 950
 					},
 					{
@@ -262,11 +255,12 @@
 						priority: 1.4,
 						entityCode: "looter",
 						movespeed: 0.02,
-						animationSpeed: 4,
+						animationSpeed: 1.0,
 						maxDistance: 15,
 						searchRange: 25,
 						animation: "sprint"
 					},
+					/*
 					{
 						code: "idle",
 						priority: 0.7,
@@ -280,6 +274,7 @@
 						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*"],
 						stopRange: 5
 					},
+					*/
 					{
 						code: "wander", 
 						priority: 0.5, 
@@ -317,6 +312,7 @@
 		meleeattack: "creature/bandit/attack",
 		fleeentity: "creature/bandit/flee",
 		seekentity: "creature/bandit/givemegold",
+		engageentity: "creature/bandit/givemegold",
 	},
 	idleSoundChance: 0.08
 }

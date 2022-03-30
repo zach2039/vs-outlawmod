@@ -36,6 +36,9 @@ namespace ExpandedAiTasksLoader
             //We need to make sure we don't double register with outlaw mod, if that mod loaded first.
             if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity"))
                 AiTaskRegistry.Register<AiTaskShootProjectileAtEntity>("shootatentity");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
+                AiTaskRegistry.Register<AiTaskPursueAndEngageEntity>("engageentity");
         }
 
         private void RegisterAiTasksShared()
@@ -43,6 +46,9 @@ namespace ExpandedAiTasksLoader
             //We need to make sure we don't double register with outlaw mod, if that mod loaded first.
             if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity"))
                 AiTaskRegistry.Register("shootatentity", typeof(AiTaskShootProjectileAtEntity));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
+                AiTaskRegistry.Register("engageentity", typeof(AiTaskPursueAndEngageEntity));
         }
     }
 }

@@ -84,7 +84,7 @@ namespace OutlawMod
                 /////////////////////////////////             
 
                 //Do Not Allow Outlaws to Spawn on Claimed Land. (If Config Says So)
-                if (OMGlobalConstants.claminedLandBlocksOutlawSpawns)
+                if (OMGlobalConstants.claimedLandBlocksOutlawSpawns)
                 {
                     List<LandClaim> landclaims = sapi.World.Claims.All;
                     foreach (LandClaim landclaim in landclaims)

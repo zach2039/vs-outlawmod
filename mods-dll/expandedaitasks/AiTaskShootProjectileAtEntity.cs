@@ -94,15 +94,24 @@ namespace ExpandedAiTasks
         public override bool ShouldExecute()
         {
             // React immediately on hurt, otherwise only 1/10 chance of execution
-            if (rand.NextDouble() > 0.1f && (whenInEmotionState == null || bhEmo?.IsInEmotionState(whenInEmotionState) != true)) return false;
+            if (rand.NextDouble() > 0.1f && (whenInEmotionState == null || bhEmo?.IsInEmotionState(whenInEmotionState) != true)) 
+                return false;
 
-            if (whenInEmotionState != null && bhEmo?.IsInEmotionState(whenInEmotionState) != true) return false;
-            if (whenNotInEmotionState != null && bhEmo?.IsInEmotionState(whenNotInEmotionState) == true) return false;
-            if (whenInEmotionState == null && rand.NextDouble() > 0.5f) return false;
-            if (cooldownUntilMs > entity.World.ElapsedMilliseconds) return false;
+            if (whenInEmotionState != null && bhEmo?.IsInEmotionState(whenInEmotionState) != true) 
+                return false;
+
+            if (whenNotInEmotionState != null && bhEmo?.IsInEmotionState(whenNotInEmotionState) == true) 
+                return false;
+            
+            if (whenInEmotionState == null && rand.NextDouble() > 0.5f) 
+                return false;
+            
+            if (cooldownUntilMs > entity.World.ElapsedMilliseconds) 
+                return false;
 
             float range = maxDist;
             lastSearchTotalMs = entity.World.ElapsedMilliseconds;
+
             Vec3d ownPos = entity.ServerPos.XYZ;
 
             targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, range / 2f));
@@ -111,6 +120,10 @@ namespace ExpandedAiTasks
                 dtSinceTargetAquired = 0.0f;
 
              targetLastFrame = targetEntity;
+
+            //If the target is too close to fire upon.
+            if ( targetEntity != null && ownPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= minDist * minDist)
+                return false;
 
             return targetEntity != null;
         }
@@ -168,6 +181,10 @@ namespace ExpandedAiTasks
             dtSinceTargetAquired += dt;
 
             //Extra: We should look at what it would take to have a json bool, movingResetsAccuracy. That would force an AI's accuracy to reset if it is force to move from it's firing position.
+
+            //If the target is too close to fire upon, cancel the attack.
+            if (targetEntity != null && entity.ServerPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= minDist * minDist)
+                return false;
 
             if (accum > releaseAtMs / 1000f && !didThrow)
             {

@@ -113,7 +113,7 @@
 				code: "emotionstates",
 				states: [
 					{ code: "aggressiveondamage", duration: 7, chance: 1.00, slot: 0, priority: 2, accumType: "noaccum" },
-					{ code: "fleeondamage", duration: 3, chance: 0.50, slot: 2, priority: 5, accumType: "max", whenHealthRelBelow: 0.15 }
+					//{ code: "fleeondamage", duration: 3, chance: 0.50, slot: 2, priority: 5, accumType: "max", whenHealthRelBelow: 0.15 }
 				],
 			},
 			{ 
@@ -126,28 +126,31 @@
 						damage: 3.5,
 						damageTier: 2,
 						damageType: "SlashingAttack",
+						minDist: 1.5,
 						slot: 1,
 						mincooldown: 500, 
 						maxcooldown: 1500, 
 						attackDurationMs: 450,
 						damagePlayerAtMs: 300,
 						animation: "attack",
-						animationSpeed: 2,
-						//sound: "creature/bandit/attack",
+						animationSpeed: 1,
 						soundStartMs: 150
 					},
 					//Agro When Damaged
 					{
-						code: "seekentity",
+						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
 						priority: 2.5,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 22,
-						movespeed: 0.040,
-						animation: "sprint",
-						animationSpeed: 2.0,
-						maxFollowTime: 60,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.040,
+						pursueRange: 22,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.025,
+						engageRange: 4,
+						engageAnimation: "walk",
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
 						whenInEmotionState: "aggressiveondamage"
 					},
@@ -160,33 +163,23 @@
 					},
 					//Close the distance to enemy target.
 					{
-						code: "seekentity",
+						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
 						priority: 1.5,
 						priorityForCancel: 2.5,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 22,
-						movespeed: 0.040,
-						animation: "sprint",
-						animationSpeed: 1.8,
-						maxFollowTime: 60,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.040,
+						pursueRange: 22,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.025,
+						engageRange: 4,
+						engageAnimation: "walk",
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
-						//sound: "creature/bandit/icanseeyou",
-						soundStartMs: 950
 					},
-					//Slow down to Engage the player.
-					{
-						code: "seekentity",
-						entityCodes: ["player"],
-						priority: 3.0,
-						seekingRange: 8,
-						movespeed: 0.035,
-						animation: "walk",
-						animationSpeed: 1.8,
-						maxFollowTime: 5.0,
-						soundStartMs: 950
-					},
+					/*
 					{
 						code: "idle",
 						priority: 0.7,
@@ -200,13 +193,15 @@
 						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
+					*/
 					{
 						code: "wander", 
 						priority: 0.8, 
 						priorityForCancel: 1.0,
 						movespeed: 0.006,
 						animation: "Walk",
-						preferredLightLevel: 20
+						preferredLightLevel: 20,
+						whenNotInEmotionState: "aggressiveondamage"
 					}
 				]
 			}
@@ -237,6 +232,7 @@
 		meleeattack: "creature/bandit/attack",
 		fleeentity: "creature/bandit/flee",
 		seekentity: "creature/bandit/icanseeyou",
+		engageentity: "creature/bandit/icanseeyou",
 	},
 	idleSoundChance: 0.08
 }

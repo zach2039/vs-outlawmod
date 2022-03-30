@@ -147,8 +147,7 @@
 						attackDurationMs: 450,
 						damagePlayerAtMs: 300,
 						animation: "attack",
-						animationSpeed: 2,
-						sound: "creature/bandit/attack"
+						animationSpeed: 1,
 					},
 					//disengage when injured.
 					{
@@ -164,21 +163,22 @@
 						animationSpeed: 2.0,
 						executionChance: 1.0,
 						whenInEmotionState: "fleeondamage",
-						//sound: "creature/bandit/flee",
-						soundStartMs: 650
 					},
 					//Agro When Damaged
 					{
-						code: "seekentity",
+						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
 						priority: 4.0,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 22,
-						movespeed: 0.048,
-						animation: "sprint",
-						animationSpeed: 2.0,
-						maxFollowTime: 60,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.048,
+						pursueRange: 44,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.035,
+						engageRange: 4,
+						engageAnimation: "sprint",
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
 						whenInEmotionState: "aggressiveondamage"
 					},
@@ -192,33 +192,23 @@
 					//Close the distance to enemy target.
 					//Double the agro distance of normal outlaws because of skirmish behavior.
 					{
-						code: "seekentity",
+						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
 						priority: 2.5,
 						priorityForCancel: 2.5,
-						mincooldown: 1, 
-						maxcooldown: 5, 
-						seekingRange: 44,
-						movespeed: 0.048,
-						animation: "sprint",
-						animationSpeed: 1.8,
-						maxFollowTime: 60,
-						alarmHerd: true,
-						//sound: "creature/bandit/givemegold",
-						soundStartMs: 950
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.048,
+						pursueRange: 44,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.035,
+						engageRange: 4,
+						engageAnimation: "sprint",
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
+						alarmHerd: true
 					},
-					//Slow down to Engage the player.
-					{
-						code: "seekentity",
-						entityCodes: ["player"],
-						priority: 3.0,
-						seekingRange: 4,
-						movespeed: 0.035,
-						animation: "walk",
-						animationSpeed: 1.8,
-						maxFollowTime: 50,
-						soundStartMs: 950
-					},
+					/*
 					{
 						code: "idle",
 						priority: 0.9,
@@ -232,6 +222,7 @@
 						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
+					*/
 					{
 						code: "wander", 
 						priority: 1.0, 
@@ -251,6 +242,7 @@
 		meleeattack: "creature/bandit/attack",
 		fleeentity: "creature/bandit/flee",
 		seekentity: "creature/bandit/givemegold",
+		engageentity: "creature/bandit/givemegold",
 	},
 	idleSoundChance: 0.08
 }

@@ -41,7 +41,7 @@ namespace OutlawMod
         public float StartingSpawnSafeZoneLifetimeInDays = 180f;
 
         [ProtoMember(9)]
-        public bool ClaminedLandBlocksOutlawSpawns = true;
+        public bool ClaimedLandBlocksOutlawSpawns = true;
 
         [ProtoMember(10)]
         public bool OutlawsUseClassicVintageStoryVoices = false;
@@ -56,8 +56,6 @@ namespace OutlawMod
         ICoreClientAPI capi;
 
         private Harmony harmony;
-
-        private bool usingExpandedAiTasksMod = false;
 
         OutlawModConfig config = new OutlawModConfig();
 
@@ -77,7 +75,6 @@ namespace OutlawMod
 
             if (expandedAiTasksMod != null)
             {
-                usingExpandedAiTasksMod = true;
                 api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasksMod Found, we will skip our internal ai task registration so that ExpandedAiTasks mod can handle-intermod dependencies.");
             }
             else
@@ -121,8 +118,11 @@ namespace OutlawMod
             });
 
             //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") && !usingExpandedAiTasksMod )
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") )
                 AiTaskRegistry.Register<AiTaskShootProjectileAtEntity>("shootatentity");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
+                AiTaskRegistry.Register<AiTaskPursueAndEngageEntity>("engageentity");
         }
 
         public override void Dispose()
@@ -150,8 +150,11 @@ namespace OutlawMod
         private void RegisterAiTasksShared()
         {
             //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") && !usingExpandedAiTasksMod )
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") )
                 AiTaskRegistry.Register("shootatentity", typeof(AiTaskShootProjectileAtEntity));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
+                AiTaskRegistry.Register("engageentity", typeof(AiTaskPursueAndEngageEntity));
         }
 
         private void RegisterItemsShared()
@@ -200,7 +203,7 @@ namespace OutlawMod
             OMGlobalConstants.startingSafeZoneHasLifetime           = config.StartingSafeZoneHasLifetime;
             OMGlobalConstants.startingSafeZoneShrinksOverlifetime   = config.StartingSafeZoneShrinksOverLifetime;
             OMGlobalConstants.startingSpawnSafeZoneLifetimeInDays   = config.StartingSpawnSafeZoneLifetimeInDays;
-            OMGlobalConstants.claminedLandBlocksOutlawSpawns        = config.ClaminedLandBlocksOutlawSpawns;
+            OMGlobalConstants.claimedLandBlocksOutlawSpawns         = config.ClaimedLandBlocksOutlawSpawns;
 
             //Classic Voice Setting
             OMGlobalConstants.outlawsUseClassicVintageStoryVoices   = config.OutlawsUseClassicVintageStoryVoices;

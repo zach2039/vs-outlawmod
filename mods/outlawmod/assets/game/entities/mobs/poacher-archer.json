@@ -180,6 +180,7 @@
 						priorityForCancel: 9,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
+						minDist: 0,
 						maxDist: 18,
 						minRangeDistOffTarget: 0.5,
 						maxRangeDistOffTarget: 0.75,
@@ -208,6 +209,7 @@
 						priorityForCancel: 9,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 
+						minDist: 0,
 						maxDist: 32,
 						minRangeDistOffTarget: 0.25,
 						maxRangeDistOffTarget: 0.75,
@@ -242,11 +244,9 @@
 						seekingRange: 60,
 						movespeed: 0.010,
 						animation: "sneakwalk",
-						animationSpeed: 2.0,
-						maxFollowTime: 60,
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
-						//sound: "creature/bandit/youdead",
-						soundStartMs: 950,
 						whenNotInEmotionState: "saturated"
 					},
 					//Keep distance from any target that approaches.
@@ -261,10 +261,8 @@
 						fleeingDistance: 14,
 						fleeDurationMs: 12000,
 						animation: "sprint",
-						animationSpeed: 2.0,
+						animationSpeed: 1.0,
 						executionChance: 1.0,
-						//sound: "creature/bandit/flee",
-						soundStartMs: 650,
 						whenNotInEmotionState: "aggressiveondamage"
 					},
 					//Run from the player if we take damage.
@@ -279,10 +277,8 @@
 						fleeingDistance: 22,
 						fleeDurationMs: 30000,
 						animation: "sprint",
-						animationSpeed: 2.0,
+						animationSpeed: 1.0,
 						executionChance: 1.0,
-						//sound: "creature/bandit/flee",
-						soundStartMs: 650,
 						whenInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
 					},

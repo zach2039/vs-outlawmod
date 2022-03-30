@@ -168,14 +168,14 @@
 						damage: 5.0,
 						damageTier: 1,
 						damageType: "PiercingAttack",
+						minDist: 2.0,
 						slot: 1,
 						mincooldown: 500, 
 						maxcooldown: 1500, 
 						attackDurationMs: 450,
 						damagePlayerAtMs: 300,
 						animation: "attack",
-						animationSpeed: 2,
-						//sound: "creature/bandit/attack",
+						animationSpeed: 1.0,
 						whenNotInEmotionState: "saturated"
 					},
 
@@ -187,15 +187,15 @@
 						damage: 5.0,
 						damageTier: 1,
 						damageType: "PiercingAttack",
+						minDist: 2.0,
 						slot: 1,
 						mincooldown: 500, 
 						maxcooldown: 1500, 
 						attackDurationMs: 450,
 						damagePlayerAtMs: 300,
 						animation: "attack",
-						animationSpeed: 2,
+						animationSpeed: 1.0,
 						whenInEmotionState: "aggressiveondamage",
-						sound: "creature/bandit/attack"
 					},
 
 					//Seek game to hunt.
@@ -209,11 +209,9 @@
 						seekingRange: 60,
 						movespeed: 0.045,
 						animation: "sprint",
-						animationSpeed: 2.0,
-						maxFollowTime: 60,
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
-						//sound: "creature/bandit/youdead",
-						soundStartMs: 950,
 						whenNotInEmotionState: "saturated"
 					},
 					//Keep distance from the player when player approaches.
@@ -227,10 +225,8 @@
 						fleeingDistance: 14,
 						fleeDurationMs: 12000,
 						animation: "sprint",
-						animationSpeed: 2.0,
+						animationSpeed: 1.0,
 						executionChance: 1.0,
-						//sound: "creature/bandit/flee",
-						soundStartMs: 650,
 						whenNotInEmotionState: "aggressiveondamage"
 					},
 					//Run from the player if we take damage.
@@ -245,9 +241,8 @@
 						fleeingDistance: 22,
 						fleeDurationMs: 30000,
 						animation: "sprint",
-						animationSpeed: 2.0,
+						animationSpeed: 1.0,
 						executionChance: 1.0,
-						//sound: "creature/bandit/flee",
 						soundStartMs: 650,
 						whenInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
@@ -262,12 +257,10 @@
 						seekingRange: 22,
 						movespeed: 0.040,
 						animation: "sprint",
-						animationSpeed: 2.0,
-						maxFollowTime: 60,
+						animationSpeed: 1.0,
+						//maxFollowTime: 60,
 						alarmHerd: true,
 						whenInEmotionState: "aggressiveondamage",
-						//sound: "creature/bandit/youdead",
-						soundStartMs: 950
 					},
 					{
 						code: "getoutofwater",
@@ -284,7 +277,7 @@
 						seekingRange: 8,
 						movespeed: 0.035,
 						animation: "walk",
-						animationSpeed: 1.8,
+						animationSpeed: 1.0,
 						maxFollowTime: 50,
 						soundStartMs: 950,
 						whenInEmotionState: "aggressiveondamage"
