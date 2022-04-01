@@ -6,6 +6,9 @@
 	"deathmsg-poacherspear-1": "{0} was killed aprehending a cornered poacher.",
 	"deathmsg-poacherarcher-1": "{0} was shot down aprehending a cornered poacher.",
 	"deathmsg-yeomanarcher-1": "{0} caught an arrow from a merry yeoman archer.",
+	"deathmsg-houndferal-1": "{0} was mauled by a mangy feral hound.",
+
+	//OUTLAWS
 
 	"item-creature-bandit-knife": "Footpad",
 	"itemdesc-creature-bandit-knife": "<font color=\"#99c9f9\"><i>Footpads roam the hills and valleys at night, preying on unsuspecting travelers.</i></font><br>",
@@ -41,6 +44,12 @@
 	"itemdesc-creature-yeoman-archer": "<font color=\"#99c9f9\"><i>Yeoman are free farmers. Sometimes, when the crops fail, they have to turn to other means to make ends-meet.</i></font><br>",
 	"item-dead-creature-yeoman-archer": "Dead Yeoman Archer",
 	"deadcreature-eaten-yeomanarcher": "Slain by human hands.\nThey were shot with an arrow.\n",
+
+	//HOUNDS
+	"item-creature-hound-feral": "Feral Hound",
+	"itemdesc-creature-hound-feral": "<font color=\"#99c9f9\"><i>Feral hounds have no owner to bring them to heel. They roam the lands in packs, attacking weak prey for easy meals.</i></font><br>",
+	"item-dead-creature-hound-feral": "Dead Feral Hound",
+	"deadcreature-eaten-houndferal": "They've been mauled by a feral hound.\n",	
 
 	"block-carcass-human": "Carcass (Human)",
 

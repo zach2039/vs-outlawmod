@@ -136,7 +136,7 @@
 				aitasks: [
 					{
 						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*"],
 						priority: 4.0,
 						damage: 2.5,
 						damageTier: 1,
@@ -152,7 +152,7 @@
 					//disengage when injured.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*"],
 						priority: 4.5,
 						movespeed: 0.045,
 						seekingRange: 22,
@@ -167,7 +167,7 @@
 					//Agro When Damaged
 					{
 						code: "engageentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*" ],
 						priority: 4.0,
 						mincooldown: 0, 
 						maxcooldown: 0, 

@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AiTaskShootProjectileAtEntity.cs" />
     <Compile Include="AiTaskPursueAndEngageEntity.cs" />
+    <Compile Include="AiTaskStayCloseToHerd.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

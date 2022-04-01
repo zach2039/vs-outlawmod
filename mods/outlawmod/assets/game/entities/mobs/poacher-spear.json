@@ -182,7 +182,7 @@
 					//Poacher only attacks non-animals to aggro first.
 					{
 						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "looter"],
+						entityCodes: ["player", "drifter-*", "looter", "hound-*"],
 						priority: 5.0,
 						damage: 5.0,
 						damageTier: 1,
@@ -217,7 +217,7 @@
 					//Keep distance from the player when player approaches.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "looter"],
+						entityCodes: ["player", "drifter-*", "looter", "hound-*"],
 						priority: 3.0,
 						movespeed: 0.040,
 						seekingRange: 6,
@@ -232,7 +232,7 @@
 					//Run from the player if we take damage.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "looter"],
+						entityCodes: ["player", "drifter-*", "looter", "hound-*"],
 						priority: 3.5,
 						priorityForCancel: 4.0,
 						movespeed: 0.040,
@@ -250,7 +250,7 @@
 					//Agro When Damaged
 					{
 						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "looter" ],
+						entityCodes: ["player", "drifter-*", "looter", "hound-*" ],
 						priority: 4.0,
 						mincooldown: 1000, 
 						maxcooldown: 1500, 

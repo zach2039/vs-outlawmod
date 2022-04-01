@@ -145,7 +145,7 @@
 				aitasks: [
 					{
 						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 4.0,
 						damage: 1.5,
 						damageTier: 1,
@@ -158,7 +158,21 @@
 						damagePlayerAtMs: 300,
 						animation: "attack",
 						animationSpeed: 2,
-						//sound: "creature/bandit/attack"
+					},					
+					//Flee when injured.
+					{
+						code: "fleeentity",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						priority: 4,
+						movespeed: 0.040,
+						seekingRange: 14,
+						cancelOnHurt: false,
+						fleeingDistance: 64,
+						fleeDurationMs: 9999999,
+						animation: "sprint",
+						animationSpeed: 1,
+						executionChance: 0.5,
+						whenInEmotionState: "fleeondamage",
 					},
 					//Looters will get into fights with one another if they take damage.
 					{
@@ -191,25 +205,10 @@
 						animationSpeed: 0.5,
 						animation: "throwlefthanded"
 					},
-					//Flee when injured.
-					{
-						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter" ],
-						priority: 4,
-						movespeed: 0.040,
-						seekingRange: 14,
-						cancelOnHurt: false,
-						fleeingDistance: 64,
-						fleeDurationMs: 9999999,
-						animation: "sprint",
-						animationSpeed: 1,
-						executionChance: 0.5,
-						whenInEmotionState: "fleeondamage",
-					},
 					//Agro When Damaged
 					{
 						code: "engageentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 2.5,
 						mincooldown: 0, 
 						maxcooldown: 0, 
@@ -220,7 +219,6 @@
 						engageRange: 4,
 						engageAnimation: "walk",
 						animationSpeed: 1.0,
-						//maxFollowTime: 60,
 						alarmHerd: true,
 						whenInEmotionState: "aggressiveondamage"
 					},
@@ -246,19 +244,17 @@
 						engageRange: 4,
 						engageAnimation: "walk",
 						animationSpeed: 1.0,
-						//maxFollowTime: 60,
 						alarmHerd: true,
 						soundStartMs: 950
 					},
 					{
-						code: "stayclosetoentity",
-						priority: 1.4,
-						entityCode: "looter",
+						code: "stayclosetoherd",
+						priority: 1.1,
 						movespeed: 0.02,
 						animationSpeed: 1.0,
 						maxDistance: 15,
 						searchRange: 25,
-						animation: "sprint"
+						animation: "Run"
 					},
 					/*
 					{
@@ -271,7 +267,7 @@
 						priorityForCancel: 1.33,
 						animation: "Sit",
 						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*"],
+						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*"],
 						stopRange: 5
 					},
 					*/

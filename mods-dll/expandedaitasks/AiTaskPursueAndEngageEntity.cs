@@ -8,8 +8,9 @@ using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using Vintagestory.GameContent;
 
-namespace Vintagestory.GameContent
+namespace ExpandedAiTasks
 {
     public class AiTaskPursueAndEngageEntity : AiTaskBaseTargetable
     {
@@ -23,6 +24,7 @@ namespace Vintagestory.GameContent
         protected float engageRange = 5f;
         protected string engageAnimation = "walk";
         protected float maxFollowTime = 60;
+        protected float maxTargetHealth = -1.0f;
 
         //State Vars
         protected bool stopNow = false;
@@ -30,6 +32,7 @@ namespace Vintagestory.GameContent
         protected float currentFollowTime = 0;
 
         protected bool alarmHerd = false;
+        protected bool packHunting = false; //Each individual herd member's maxTargetHealth value will equal maxTargetHealth * number of herd members.
 
         protected bool siegeMode;
 
@@ -43,6 +46,8 @@ namespace Vintagestory.GameContent
         protected bool lowTempMode;
 
         protected int searchWaitMs = 4000;
+
+        protected List<Entity> herdMembers = new List<Entity>();
 
         private eInternalMovementState internalMovementState = eInternalMovementState.Pursuing;
 
@@ -68,10 +73,14 @@ namespace Vintagestory.GameContent
             engageSpeed = taskConfig["engageSpeed"].AsFloat(0.01f);
             engageRange = taskConfig["engageRange"].AsFloat(5f);
             engageAnimation = taskConfig["engageAnimation"].AsString("walk");
+            maxTargetHealth = taskConfig["maxTargetHealth"].AsFloat(-1.0f);
 
             extraTargetDistance = taskConfig["extraTargetDistance"].AsFloat(0f);
             maxFollowTime = taskConfig["maxFollowTime"].AsFloat(60);
+            
             alarmHerd = taskConfig["alarmHerd"].AsBool(false);
+            packHunting = taskConfig["packHunting"].AsBool(false);
+
             retaliateAttacks = taskConfig["retaliateAttacks"].AsBool(true);
 
             Debug.Assert(pursueRange > engageRange, "pursueRange must be a greater value to engageRange.");
@@ -115,38 +124,117 @@ namespace Vintagestory.GameContent
             {
                 targetEntity = attackedByEntity;
             }
-            else
+
+            if (packHunting)
             {
-                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range));
-
-                if (targetEntity != null)
+                if (herdMembers.Count == 0)
                 {
-                    if (alarmHerd && entity.HerdId > 0)
-                    {
-                        entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (e) =>
-                        {
-                            EntityAgent agent = e as EntityAgent;
-                            if (e.EntityId != entity.EntityId && agent != null && agent.Alive && agent.HerdId == entity.HerdId)
-                            {
-                                agent.Notify("seekEntity", targetEntity);
-                            }
-
-                            return false;
-                        });
-                    }
-
-                    targetPos = targetEntity.ServerPos.XYZ;
-
-                    if (entity.ServerPos.SquareDistanceTo(targetPos) <= MinDistanceToTarget())
-                    {
-                        return false;
-                    }
-
-                    return true;
+                    herdMembers = new List<Entity>();
+                    partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => CountHerdMembers(e, range));
+                }
+                else
+                {
+                    UpdateHerdCount();
                 }
             }
 
+            //Aquire a target if we don't have one.
+            //if ( targetEntity == null || !targetEntity.Alive)
+            targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsEntityTargetableByPack(e, range));
+
+            if (targetEntity != null)
+            {
+                if ((alarmHerd) && entity.HerdId > 0)
+                {
+                    entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (e) =>
+                    {
+                        EntityAgent agent = e as EntityAgent;
+                        if (e.EntityId != entity.EntityId && agent != null && agent.Alive && agent.HerdId == entity.HerdId)
+                        {
+                            agent.Notify("pursueEntity", targetEntity);
+                        }
+
+                        return false;
+                    });
+                }
+
+                targetPos = targetEntity.ServerPos.XYZ;
+
+                if (entity.ServerPos.SquareDistanceTo(targetPos) <= MinDistanceToTarget())
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
             return false;
+        }
+
+        private bool CountHerdMembers(Entity e, float range, bool ignoreEntityCode = false)
+        {
+            EntityAgent agent = e as EntityAgent;
+            if (agent != null && agent.Alive && agent.HerdId == entity.HerdId)
+            {
+                herdMembers.Add(agent);
+            }
+
+            return false;
+        }
+
+        private void UpdateHerdCount()
+        {
+            List<Entity> currentMembers = new List<Entity>();
+            foreach( Entity agent in herdMembers)
+            {
+                if (agent == null)
+                    continue;
+
+                if ( !agent.Alive )
+                    continue;
+
+                currentMembers.Add(agent);
+            }
+
+            herdMembers = currentMembers;
+        }
+
+        private bool IsEntityTargetableByPack(Entity e, float range, bool ignoreEntityCode = false)
+        {
+
+            //if (e == null)
+            //    return false;
+
+            EntityAgent agent = e as EntityAgent;
+
+            if (agent == null)
+                return false;
+
+            //If we are pack hunting.
+            if (packHunting)
+            {
+                float packTargetMaxHealth = maxTargetHealth * herdMembers.Count;
+
+                ITreeAttribute treeAttribute = agent.WatchedAttributes.GetTreeAttribute("health");
+                float targetHealth = treeAttribute.GetFloat("currenthealth");
+
+                if ( packTargetMaxHealth < targetHealth )
+                    return false;
+
+            }
+            else
+            {
+                if ( maxTargetHealth > 0 )
+                {
+                    ITreeAttribute treeAttribute = agent.WatchedAttributes.GetTreeAttribute("health");
+                    float targetHealth = treeAttribute.GetFloat("currenthealth");
+
+                    if (maxTargetHealth < targetHealth)
+                        return false;
+                }
+            }
+
+            return IsTargetableEntity(e, range, ignoreEntityCode);
         }
 
         public float MinDistanceToTarget()
@@ -294,7 +382,7 @@ namespace Vintagestory.GameContent
 
         public override bool Notify(string key, object data)
         {
-            if (key == "seekEntity")
+            if (key == "pursueEntity")
             {
                 targetEntity = (Entity)data;
                 targetPos = targetEntity.ServerPos.XYZ;

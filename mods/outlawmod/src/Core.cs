@@ -123,6 +123,9 @@ namespace OutlawMod
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
                 AiTaskRegistry.Register<AiTaskPursueAndEngageEntity>("engageentity");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("stayclosetoherd"))
+                AiTaskRegistry.Register<AiTaskStayCloseToHerd>("stayclosetoherd");
         }
 
         public override void Dispose()
@@ -155,6 +158,9 @@ namespace OutlawMod
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
                 AiTaskRegistry.Register("engageentity", typeof(AiTaskPursueAndEngageEntity));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("stayclosetoherd"))
+                AiTaskRegistry.Register("stayclosetoherd", typeof(AiTaskStayCloseToHerd));
         }
 
         private void RegisterItemsShared()
