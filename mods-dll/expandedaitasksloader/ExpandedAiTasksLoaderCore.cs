@@ -42,6 +42,9 @@ namespace ExpandedAiTasksLoader
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("stayclosetoherd"))
                 AiTaskRegistry.Register<AiTaskStayCloseToHerd>("stayclosetoherd");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
+                AiTaskRegistry.Register<AiTaskEatDeadEntities>("eatdead");
         }
 
         private void RegisterAiTasksShared()
@@ -55,6 +58,9 @@ namespace ExpandedAiTasksLoader
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("stayclosetoherd"))
                 AiTaskRegistry.Register("stayclosetoherd", typeof(AiTaskStayCloseToHerd));
+
+            if(!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
+                AiTaskRegistry.Register("eatdead", typeof(AiTaskEatDeadEntities));
         }
     }
 }

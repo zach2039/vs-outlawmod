@@ -139,7 +139,7 @@ namespace ExpandedAiTasks
             }
 
             //Aquire a target if we don't have one.
-            //if ( targetEntity == null || !targetEntity.Alive)
+            if ( targetEntity == null || !targetEntity.Alive || ( targetEntity != attackedByEntity ) )
             targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsEntityTargetableByPack(e, range));
 
             if (targetEntity != null)
@@ -202,9 +202,6 @@ namespace ExpandedAiTasks
         private bool IsEntityTargetableByPack(Entity e, float range, bool ignoreEntityCode = false)
         {
 
-            //if (e == null)
-            //    return false;
-
             EntityAgent agent = e as EntityAgent;
 
             if (agent == null)
@@ -216,6 +213,10 @@ namespace ExpandedAiTasks
                 float packTargetMaxHealth = maxTargetHealth * herdMembers.Count;
 
                 ITreeAttribute treeAttribute = agent.WatchedAttributes.GetTreeAttribute("health");
+
+                if (treeAttribute == null)
+                    return false;
+
                 float targetHealth = treeAttribute.GetFloat("currenthealth");
 
                 if ( packTargetMaxHealth < targetHealth )
@@ -227,7 +228,11 @@ namespace ExpandedAiTasks
                 if ( maxTargetHealth > 0 )
                 {
                     ITreeAttribute treeAttribute = agent.WatchedAttributes.GetTreeAttribute("health");
-                    float targetHealth = treeAttribute.GetFloat("currenthealth");
+                    
+                    if (treeAttribute == null)
+                        return false;
+                    
+                    float targetHealth = treeAttribute.GetFloat("currenthealth");                   
 
                     if (maxTargetHealth < targetHealth)
                         return false;

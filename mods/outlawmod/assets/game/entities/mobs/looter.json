@@ -250,11 +250,11 @@
 					{
 						code: "stayclosetoherd",
 						priority: 1.1,
-						movespeed: 0.02,
+						movespeed: 0.04,
 						animationSpeed: 1.0,
 						maxDistance: 15,
 						searchRange: 25,
-						animation: "Run"
+						animation: "sprint"
 					},
 					/*
 					{
