@@ -15,6 +15,7 @@ namespace ExpandedAiTasks
     public class AiTaskPursueAndEngageEntity : AiTaskBaseTargetable
     {
         protected Vec3d targetPos;
+        protected Vec3d withdrawPos = new Vec3d();
 
         //Json Fields
         protected float pursueSpeed = 0.2f;
@@ -30,11 +31,15 @@ namespace ExpandedAiTasks
         protected bool stopNow = false;
 
         protected float currentFollowTime = 0;
+        protected float currentWithdrawTime = 0;
 
         protected bool alarmHerd = false;
         protected bool packHunting = false; //Each individual herd member's maxTargetHealth value will equal maxTargetHealth * number of herd members.
 
-        protected bool siegeMode;
+        protected bool withdrawIfNoPath = false;
+        protected float withdrawDist = 20.0f;
+        protected float withdrawDistDamaged = 30.0f;
+        protected float withdrawEndTime = 30.0f;
 
         protected long finishedMs;
 
@@ -56,6 +61,13 @@ namespace ExpandedAiTasks
             Pursuing,
             Engaging
         }
+
+        bool hasPath = false;
+        private int consecutivePathFailCount = 0;
+
+        float stepHeight;
+        Vec3d tmpVec = new Vec3d();
+        Vec3d collTmpVec = new Vec3d();
 
         public AiTaskPursueAndEngageEntity(EntityAgent entity) : base(entity)
         {
@@ -80,6 +92,11 @@ namespace ExpandedAiTasks
             
             alarmHerd = taskConfig["alarmHerd"].AsBool(false);
             packHunting = taskConfig["packHunting"].AsBool(false);
+
+            withdrawIfNoPath = taskConfig["withdrawIfNoPath"].AsBool(false);
+            withdrawDist = taskConfig["withdrawDist"].AsFloat(20.0f);
+            withdrawDistDamaged = taskConfig["withdrawDistDamaged"].AsFloat(30.0f);
+            withdrawEndTime = taskConfig["withdrawEndTime"].AsFloat(30.0f);
 
             retaliateAttacks = taskConfig["retaliateAttacks"].AsBool(true);
 
@@ -110,7 +127,6 @@ namespace ExpandedAiTasks
 
 
             float range = pursueRange;
-
 
             lastSearchTotalMs = entity.World.ElapsedMilliseconds;
 
@@ -159,6 +175,7 @@ namespace ExpandedAiTasks
                 }
 
                 targetPos = targetEntity.ServerPos.XYZ;
+                withdrawPos = targetPos.Clone();
 
                 if (entity.ServerPos.SquareDistanceTo(targetPos) <= MinDistanceToTarget())
                 {
@@ -239,7 +256,10 @@ namespace ExpandedAiTasks
                 }
             }
 
-            return IsTargetableEntity(e, range, ignoreEntityCode);
+            if (!IsTargetableEntity(e, range, ignoreEntityCode))
+                return false;
+
+            return hasDirectContact(e, range, range / 2);
         }
 
         public float MinDistanceToTarget()
@@ -251,8 +271,11 @@ namespace ExpandedAiTasks
         {
             base.StartExecute();
 
+            consecutivePathFailCount = 0;
             stopNow = false;
-            siegeMode = false;
+
+            var bh = entity.GetBehavior<EntityBehaviorControlledPhysics>();
+            stepHeight = bh == null ? 0.6f : bh.stepHeight;
 
             bool giveUpWhenNoPath = targetPos.SquareDistanceTo(entity.Pos.XYZ) < 12 * 12;
             int searchDepth = 3500;
@@ -264,62 +287,25 @@ namespace ExpandedAiTasks
 
             float moveSpeed = GetMovementSpeedForState(internalMovementState);
 
-            if (!pathTraverser.NavigateTo(targetPos.Clone(), moveSpeed, MinDistanceToTarget(), OnGoalReached, OnStuck, giveUpWhenNoPath, searchDepth, true))
+            hasPath = pathTraverser.NavigateTo(targetPos.Clone(), moveSpeed, MinDistanceToTarget(), OnGoalReached, OnStuck, giveUpWhenNoPath, searchDepth, true);
+            if (!hasPath)
             {
-                // If we cannot find a path to the target, let's circle it!
-                float angle = (float)Math.Atan2(entity.ServerPos.X - targetPos.X, entity.ServerPos.Z - targetPos.Z);
+                UpdateWithdrawPos();
+                bool witdrawOk = pathTraverser.NavigateTo(withdrawPos.Clone(), moveSpeed, MinDistanceToTarget(), OnGoalReached, OnStuck, giveUpWhenNoPath, searchDepth, true);
 
-                double randAngle = angle + 0.5 + world.Rand.NextDouble() / 2;
-
-                double distance = 4 + world.Rand.NextDouble() * 6;
-
-                double dx = GameMath.Sin(randAngle) * distance;
-                double dz = GameMath.Cos(randAngle) * distance;
-                targetPos = targetPos.AddCopy(dx, 0, dz);
-
-                int tries = 0;
-                bool ok = false;
-                BlockPos tmp = new BlockPos((int)targetPos.X, (int)targetPos.Y, (int)targetPos.Z);
-
-                int dy = 0;
-                while (tries < 5)
-                {
-                    // Down ok?
-                    if (world.BlockAccessor.GetBlock(tmp.X, tmp.Y - dy, tmp.Z).SideSolid[BlockFacing.UP.Index] && !world.CollisionTester.IsColliding(world.BlockAccessor, entity.SelectionBox, new Vec3d(tmp.X + 0.5, tmp.Y - dy + 1, tmp.Z + 0.5), false))
-                    {
-                        ok = true;
-                        targetPos.Y -= dy;
-                        targetPos.Y++;
-                        siegeMode = true;
-                        break;
-                    }
-
-                    // Down ok?
-                    if (world.BlockAccessor.GetBlock(tmp.X, tmp.Y + dy, tmp.Z).SideSolid[BlockFacing.UP.Index] && !world.CollisionTester.IsColliding(world.BlockAccessor, entity.SelectionBox, new Vec3d(tmp.X + 0.5, tmp.Y + dy + 1, tmp.Z + 0.5), false))
-                    {
-                        ok = true;
-                        targetPos.Y += dy;
-                        targetPos.Y++;
-                        siegeMode = true;
-                        break;
-
-                    }
-
-                    tries++;
-                    dy++;
-                }
-
-                ok = ok && pathTraverser.NavigateTo(targetPos.Clone(), moveSpeed, MinDistanceToTarget(), OnGoalReached, OnStuck, giveUpWhenNoPath, searchDepth, true);
-
-                stopNow = !ok;
+                stopNow = !witdrawOk;
             }
 
             currentFollowTime = 0;
+            currentWithdrawTime = 0;
 
-            //play a sound associated with this action.
-            entity.PlayEntitySound("engageentity", null, true);
+            if ( !stopNow )
+            {
+                //play a sound associated with this action.
+                entity.PlayEntitySound("engageentity", null, true);
+            }
+            
         }
-
 
         float lastPathUpdateSeconds;
         public override bool ContinueExecute(float dt)
@@ -333,24 +319,89 @@ namespace ExpandedAiTasks
             //Depending on whether we are pursuing or engaging, determine the distance our target has to move for us to recompute our path.
             //When we are engaging (close range follow) we need to recompute more often so we can say on our target.
             float minRecomputeNavDistance = internalMovementState == eInternalMovementState.Engaging ? 1 * 1 : 3 * 3;
+            bool activelyMoving = targetPos.SquareDistanceTo(targetEntity.ServerPos.X, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z) >= minRecomputeNavDistance;
 
-            if (!siegeMode && ( lastPathUpdateSeconds >= 0.75f || 
-                targetPos.SquareDistanceTo(targetEntity.ServerPos.X, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z) >= minRecomputeNavDistance ||
-                internalMovementState != lastMovementState) )
+            if ( lastPathUpdateSeconds >= 0.75f ||
+                activelyMoving || internalMovementState != lastMovementState)
             {
-                targetPos.Set(targetEntity.ServerPos.X + targetEntity.ServerPos.Motion.X * 10, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z + targetEntity.ServerPos.Motion.Z * 10);
+                if (activelyMoving)
+                    targetPos.Set(targetEntity.ServerPos.X + targetEntity.ServerPos.Motion.X * 10, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z + targetEntity.ServerPos.Motion.Z * 10);
+                else
+                    targetPos.Set(targetEntity.ServerPos.X, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z);
 
-                pathTraverser.NavigateTo(targetPos, GetMovementSpeedForState(internalMovementState), MinDistanceToTarget(), OnGoalReached, OnStuck, false, 2000, true);
+                bool giveUpWhenNoPath = withdrawIfNoPath;
+
+                hasPath = pathTraverser.NavigateTo(targetPos, GetMovementSpeedForState(internalMovementState), MinDistanceToTarget(), OnGoalReached, OnStuck, giveUpWhenNoPath, 2000, true);
                 lastPathUpdateSeconds = 0;
+
+                if (hasPath)
+                {
+                    consecutivePathFailCount = 0;
+                }
+                else
+                {
+                    consecutivePathFailCount++;
+                }
+            
             }
 
-            if (!siegeMode)
+            if ( hasPath || !withdrawIfNoPath )
             {
+                currentWithdrawTime = 0.0f;
                 pathTraverser.CurrentTarget.X = targetEntity.ServerPos.X;
                 pathTraverser.CurrentTarget.Y = targetEntity.ServerPos.Y;
                 pathTraverser.CurrentTarget.Z = targetEntity.ServerPos.Z;
             }
+            else if ( withdrawIfNoPath )
+            {
+                currentWithdrawTime += dt;
 
+                //Try to withdraw based on our health level.
+                bool injured = false;
+                ITreeAttribute treeAttribute = entity.WatchedAttributes.GetTreeAttribute("health");
+
+                if (treeAttribute != null)
+                {
+                    float currentHealth = treeAttribute.GetFloat("currenthealth");
+                    float maxHealth = treeAttribute.GetFloat("maxhealth");
+
+                    //If we are below half health or recently damaged, retreat farther.
+                    if ( currentHealth < maxHealth * 0.5 || attackedByEntityMs < 15000 && attackedByEntity != null )
+                    {
+                        injured = true;
+                    }
+                }
+
+                float withdrawRange = injured ? withdrawDistDamaged : withdrawDist;
+                if (entity.ServerPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= withdrawRange * withdrawRange)
+                {
+                    UpdateWithdrawPos();
+
+                    float size = targetEntity.SelectionBox.XSize;
+                    pathTraverser.WalkTowards(withdrawPos, GetMovementSpeedForState(internalMovementState), size + 0.2f, OnGoalReached, OnStuck);
+                }
+                else
+                {
+
+                    //todo: Need to make ai turn to face target.
+
+                    if (engageAnimation != null)
+                        entity.AnimManager.StopAnimation(engageAnimation);
+
+                    if (pursueAnimation != null)
+                        entity.AnimManager.StopAnimation(pursueAnimation);
+
+                    pathTraverser.Stop();
+                }
+            }
+
+            //If our path keeps failing, every 10 failures see if we can aquire a new target.
+            if ( consecutivePathFailCount / 10 >= 1.0f && consecutivePathFailCount % 10 == 0 )
+            {
+                if (CanAquireNewTarget())
+                    stopNow = true;
+            }
+                
             Cuboidd targetBox = targetEntity.SelectionBox.ToDouble().Translate(targetEntity.ServerPos.X, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z);
             Vec3d pos = entity.ServerPos.XYZ.Add(0, entity.SelectionBox.Y2 / 2, 0).Ahead(entity.SelectionBox.XSize / 2, 0, entity.ServerPos.Yaw);
             double distance = targetBox.ShortestDistanceFrom(pos);
@@ -362,6 +413,7 @@ namespace ExpandedAiTasks
 
             return
                 currentFollowTime < maxFollowTime &&
+                currentWithdrawTime < withdrawEndTime &&
                 distance < range * range &&
                 (distance > minDist || (targetEntity is EntityAgent ea && ea.ServerControls.TriesToMove)) &&
                 targetEntity.Alive &&
@@ -405,15 +457,7 @@ namespace ExpandedAiTasks
 
         private void OnGoalReached()
         {
-            if (!siegeMode)
-            {
-                pathTraverser.Retarget();
-            }
-            else
-            {
-                stopNow = true;
-            }
-
+            pathTraverser.Retarget();
         }
 
         private void UpdateMovementState()
@@ -454,6 +498,61 @@ namespace ExpandedAiTasks
 
             Debug.Assert(false, "Invalid intermal move state.");
             return 0.0f;
+        }
+
+        private void UpdateWithdrawPos()
+        {
+            float yaw = (float)Math.Atan2(targetEntity.ServerPos.X - entity.ServerPos.X, targetEntity.ServerPos.Z - entity.ServerPos.Z);
+
+            // Simple steering behavior
+            tmpVec = tmpVec.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z);
+            tmpVec.Ahead(0.9, 0, yaw - GameMath.PI / 2);
+
+            // Running into wall?
+            if (IsTraversable(tmpVec))
+            {
+                withdrawPos.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z).Ahead(10, 0, yaw - GameMath.PI / 2);
+                return;
+            }
+
+            // Try 90 degrees left
+            tmpVec = tmpVec.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z);
+            tmpVec.Ahead(0.9, 0, yaw - GameMath.PI);
+            if (IsTraversable(tmpVec))
+            {
+                withdrawPos.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z).Ahead(10, 0, yaw - GameMath.PI);
+                return;
+            }
+
+            // Try 90 degrees right
+            tmpVec = tmpVec.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z);
+            tmpVec.Ahead(0.9, 0, yaw);
+            if (IsTraversable(tmpVec))
+            {
+                withdrawPos.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z).Ahead(10, 0, yaw);
+                return;
+            }
+
+            // Run towards target o.O
+            tmpVec = tmpVec.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z);
+            tmpVec.Ahead(0.9, 0, -yaw);
+            withdrawPos.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z).Ahead(10, 0, -yaw);
+
+        }
+
+        bool IsTraversable(Vec3d pos)
+        {
+            return
+                !entity.World.CollisionTester.IsColliding(entity.World.BlockAccessor, entity.SelectionBox, pos, false) ||
+                !entity.World.CollisionTester.IsColliding(entity.World.BlockAccessor, entity.SelectionBox, collTmpVec.Set(pos).Add(0, Math.Min(1, stepHeight), 0), false)
+            ;
+        }
+
+        private bool CanAquireNewTarget()
+        {
+            float range = pursueRange;
+            Entity target = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsEntityTargetableByPack(e, range));
+            return target != null && target != targetEntity;
         }
     }
 }

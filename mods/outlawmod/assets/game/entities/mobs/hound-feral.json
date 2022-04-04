@@ -167,6 +167,11 @@
 						engageSpeed: 0.035,
 						engageRange: 4,
 						engageAnimation: "Run",
+
+						withdrawIfNoPath: false,
+						//withdrawDist: 12.0,
+        				//withdrawDistDamaged: 20.0,
+
 						animationSpeed: 2.2,
 						alarmHerd: true,
 						sound: "creature/wolf/growl",
@@ -184,6 +189,11 @@
 						engageSpeed: 0.035,
 						engageRange: 4,
 						engageAnimation: "Run",
+
+						withdrawIfNoPath: false,
+						//withdrawDist: 12.0,
+        				//withdrawDistDamaged: 20.0,
+
 						animationSpeed: 2.2,
 						alarmHerd: true,
 						sound: "creature/wolf/growl",
@@ -201,6 +211,11 @@
 						engageSpeed: 0.035,
 						engageRange: 4,
 						engageAnimation: "Run",
+
+						withdrawIfNoPath: false,
+						//withdrawDist: 12.0,
+        				//withdrawDistDamaged: 20.0,
+
 						animationSpeed: 2.2,
 						alarmHerd: true,
 						sound: "creature/wolf/growl",

@@ -55,7 +55,7 @@
 			{ code: "nametag", "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
-			{ code: "controlledphysics", stepHeight: 1.01 }, 
+			{ code: "controlledphysics", stepHeight: 1.1251 }, 
 			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
 			{ code: "harvestable"},
 			{ code: "interpolateposition" }
@@ -137,7 +137,7 @@
 			{ code: "nametag", selectFromRandomName: ["Yeoman Archer"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
-			{ code: "controlledphysics", stepHeight: 1.01 }, 
+			{ code: "controlledphysics", stepHeight: 1.1251 }, 
 			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 12, maxhealth: 12 },
@@ -235,6 +235,11 @@
 						engageSpeed: 0.025,
 						engageRange: 4,
 						engageAnimation: "walk",
+
+						withdrawIfNoPath: true,
+       					withdrawDist: 20.0,
+        				withdrawDistDamaged: 30.0,
+
 						animationSpeed: 1.0,
 						//maxFollowTime: 60,
 						alarmHerd: true,
@@ -261,6 +266,11 @@
 						engageSpeed: 0.025,
 						engageRange: 4,
 						engageAnimation: "walk",
+
+						withdrawIfNoPath: true,
+       					withdrawDist: 20.0,
+        				withdrawDistDamaged: 30.0,
+
 						animationSpeed: 1.0,
 						//maxFollowTime: 60,
 						alarmHerd: true,
