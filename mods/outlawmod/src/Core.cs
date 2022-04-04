@@ -29,7 +29,7 @@ namespace OutlawMod
         public bool EnableYeomen = true;
 
         [ProtoMember(5)]
-        public float StartingSpawnSafeZoneRadius = 250f;
+        public float StartingSpawnSafeZoneRadius = 500f;
 
         [ProtoMember(6)]
         public bool StartingSafeZoneHasLifetime = true;

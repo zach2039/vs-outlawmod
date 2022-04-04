@@ -8,7 +8,7 @@ namespace OutlawMod
         public static bool enablePoachers = true;
         public static bool enableBrigands = true;
         public static bool enableYeomen = true;
-        public static float startingSpawnSafeZoneRadius = 250f;
+        public static float startingSpawnSafeZoneRadius = 500f;
         public static bool startingSafeZoneHasLifetime = true;
         public static bool startingSafeZoneShrinksOverlifetime = true;
         public static float startingSpawnSafeZoneLifetimeInDays = 180f;
