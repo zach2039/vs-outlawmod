@@ -153,6 +153,7 @@
 						withdrawIfNoPath: true,
 						withdrawDist: 15.0,
         				withdrawDistDamaged: 40.0,
+						withdrawAnimation: "idle",
 
 						animationSpeed: 1.0,
 						alarmHerd: true,
@@ -183,6 +184,7 @@
 						withdrawIfNoPath: true,
 						withdrawDist: 15.0,
         				withdrawDistDamaged: 40.0,
+						withdrawAnimation: "idle",
 
 						animationSpeed: 1.0,
 						alarmHerd: true,

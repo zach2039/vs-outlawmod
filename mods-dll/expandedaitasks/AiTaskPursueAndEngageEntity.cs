@@ -24,22 +24,25 @@ namespace ExpandedAiTasks
         protected float engageSpeed = 0.1f;
         protected float engageRange = 5f;
         protected string engageAnimation = "walk";
+        
         protected float maxFollowTime = 60;
         protected float maxTargetHealth = -1.0f;
+
+        protected bool withdrawIfNoPath = false;
+        protected float withdrawDist = 20.0f;
+        protected float withdrawDistDamaged = 30.0f;
+        protected float withdrawEndTime = 30.0f;
+        protected string withdrawAnimation = "idle";
+
+        protected bool alarmHerd = false;
+        protected bool packHunting = false; //Each individual herd member's maxTargetHealth value will equal maxTargetHealth * number of herd members.
 
         //State Vars
         protected bool stopNow = false;
 
         protected float currentFollowTime = 0;
         protected float currentWithdrawTime = 0;
-
-        protected bool alarmHerd = false;
-        protected bool packHunting = false; //Each individual herd member's maxTargetHealth value will equal maxTargetHealth * number of herd members.
-
-        protected bool withdrawIfNoPath = false;
-        protected float withdrawDist = 20.0f;
-        protected float withdrawDistDamaged = 30.0f;
-        protected float withdrawEndTime = 30.0f;
+        protected float withdrawTargetMoveDistBeforeEncroaching = 0.0f;
 
         protected long finishedMs;
 
@@ -69,6 +72,10 @@ namespace ExpandedAiTasks
         Vec3d tmpVec = new Vec3d();
         Vec3d collTmpVec = new Vec3d();
 
+        protected float minTurnAnglePerSec;
+        protected float maxTurnAnglePerSec;
+        protected float curTurnRadPerSec;
+
         public AiTaskPursueAndEngageEntity(EntityAgent entity) : base(entity)
         {
         }
@@ -87,16 +94,17 @@ namespace ExpandedAiTasks
             engageAnimation = taskConfig["engageAnimation"].AsString("walk");
             maxTargetHealth = taskConfig["maxTargetHealth"].AsFloat(-1.0f);
 
+            withdrawIfNoPath = taskConfig["withdrawIfNoPath"].AsBool(false);
+            withdrawDist = taskConfig["withdrawDist"].AsFloat(20.0f);
+            withdrawDistDamaged = taskConfig["withdrawDistDamaged"].AsFloat(30.0f);
+            withdrawEndTime = taskConfig["withdrawEndTime"].AsFloat(30.0f);
+            withdrawAnimation = taskConfig["withdrawAnimation"].AsString("idle");
+
             extraTargetDistance = taskConfig["extraTargetDistance"].AsFloat(0f);
             maxFollowTime = taskConfig["maxFollowTime"].AsFloat(60);
             
             alarmHerd = taskConfig["alarmHerd"].AsBool(false);
             packHunting = taskConfig["packHunting"].AsBool(false);
-
-            withdrawIfNoPath = taskConfig["withdrawIfNoPath"].AsBool(false);
-            withdrawDist = taskConfig["withdrawDist"].AsFloat(20.0f);
-            withdrawDistDamaged = taskConfig["withdrawDistDamaged"].AsFloat(30.0f);
-            withdrawEndTime = taskConfig["withdrawEndTime"].AsFloat(30.0f);
 
             retaliateAttacks = taskConfig["retaliateAttacks"].AsBool(true);
 
@@ -176,6 +184,23 @@ namespace ExpandedAiTasks
 
                 targetPos = targetEntity.ServerPos.XYZ;
                 withdrawPos = targetPos.Clone();
+                withdrawTargetMoveDistBeforeEncroaching = Math.Max(1.0f, withdrawDist / 4);
+
+                //Get Turning Speed
+                if (entity?.Properties.Server?.Attributes != null)
+                {
+                    minTurnAnglePerSec = entity.Properties.Server.Attributes.GetTreeAttribute("pathfinder").GetFloat("minTurnAnglePerSec", 250);
+                    maxTurnAnglePerSec = entity.Properties.Server.Attributes.GetTreeAttribute("pathfinder").GetFloat("maxTurnAnglePerSec", 450);
+                }
+                else
+                {
+                    minTurnAnglePerSec = 250;
+                    maxTurnAnglePerSec = 450;
+                }
+
+                curTurnRadPerSec = minTurnAnglePerSec + (float)entity.World.Rand.NextDouble() * (maxTurnAnglePerSec - minTurnAnglePerSec);
+                curTurnRadPerSec *= GameMath.DEG2RAD * 50 * 0.02f;
+
 
                 if (entity.ServerPos.SquareDistanceTo(targetPos) <= MinDistanceToTarget())
                 {
@@ -308,6 +333,7 @@ namespace ExpandedAiTasks
         }
 
         float lastPathUpdateSeconds;
+        bool reachedWithdrawPosition = false;
         public override bool ContinueExecute(float dt)
         {
             currentFollowTime += dt;
@@ -315,6 +341,8 @@ namespace ExpandedAiTasks
 
             eInternalMovementState lastMovementState = internalMovementState;
             UpdateMovementState();
+
+            double distToTargetEntitySqr = entity.ServerPos.SquareDistanceTo(targetEntity.ServerPos.XYZ);
 
             //Depending on whether we are pursuing or engaging, determine the distance our target has to move for us to recompute our path.
             //When we are engaging (close range follow) we need to recompute more often so we can say on our target.
@@ -348,6 +376,7 @@ namespace ExpandedAiTasks
             if ( hasPath || !withdrawIfNoPath )
             {
                 currentWithdrawTime = 0.0f;
+                reachedWithdrawPosition = false;
                 pathTraverser.CurrentTarget.X = targetEntity.ServerPos.X;
                 pathTraverser.CurrentTarget.Y = targetEntity.ServerPos.Y;
                 pathTraverser.CurrentTarget.Z = targetEntity.ServerPos.Z;
@@ -373,7 +402,10 @@ namespace ExpandedAiTasks
                 }
 
                 float withdrawRange = injured ? withdrawDistDamaged : withdrawDist;
-                if (entity.ServerPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= withdrawRange * withdrawRange)
+                double encroachRange = withdrawRange - withdrawTargetMoveDistBeforeEncroaching;
+                bool targetEncroaching = distToTargetEntitySqr <= encroachRange * encroachRange;
+                //Withdraw till we reach our withdraw range, otherwise, only move if the target encroaches (moves closer while we still have no path).
+                if (!reachedWithdrawPosition && distToTargetEntitySqr <= withdrawRange * withdrawRange || targetEncroaching)
                 {
                     UpdateWithdrawPos();
 
@@ -383,7 +415,9 @@ namespace ExpandedAiTasks
                 else
                 {
 
-                    //todo: Need to make ai turn to face target.
+                    reachedWithdrawPosition = true;
+
+                    pathTraverser.Stop();
 
                     if (engageAnimation != null)
                         entity.AnimManager.StopAnimation(engageAnimation);
@@ -391,7 +425,27 @@ namespace ExpandedAiTasks
                     if (pursueAnimation != null)
                         entity.AnimManager.StopAnimation(pursueAnimation);
 
-                    pathTraverser.Stop();
+                    if (withdrawAnimation != null)
+                        entity.AnimManager.StartAnimation(new AnimationMetaData() { Animation = withdrawAnimation, Code = withdrawAnimation }.Init());
+
+                    //todo: Need to make ai turn to face target.
+
+                    //Turn to face target.
+                    Vec3f targetVec = new Vec3f();
+
+                    targetVec.Set(
+                        (float)(targetEntity.ServerPos.X - entity.ServerPos.X),
+                        (float)(targetEntity.ServerPos.Y - entity.ServerPos.Y),
+                        (float)(targetEntity.ServerPos.Z - entity.ServerPos.Z)
+                    );
+
+                    targetVec.Normalize();
+
+                    float desiredYaw = (float)Math.Atan2(targetVec.X, targetVec.Z);
+
+                    float yawDist = GameMath.AngleRadDistance(entity.ServerPos.Yaw, desiredYaw);
+                    entity.ServerPos.Yaw += GameMath.Clamp(yawDist, -curTurnRadPerSec * dt, curTurnRadPerSec * dt);
+                    entity.ServerPos.Yaw = entity.ServerPos.Yaw % GameMath.TWOPI;
                 }
             }
 
@@ -470,6 +524,9 @@ namespace ExpandedAiTasks
                 if (pursueAnimation != null)
                     entity.AnimManager.StopAnimation(pursueAnimation);
 
+                if (withdrawAnimation != null)
+                    entity.AnimManager.StopAnimation(withdrawAnimation);
+
                 if (engageAnimation != null)
                     entity.AnimManager.StartAnimation(new AnimationMetaData() { Animation = engageAnimation, Code = engageAnimation }.Init());
             }
@@ -480,6 +537,9 @@ namespace ExpandedAiTasks
 
                 if (engageAnimation != null)
                     entity.AnimManager.StopAnimation(engageAnimation);
+
+                if (withdrawAnimation != null)
+                    entity.AnimManager.StopAnimation(withdrawAnimation);
 
                 if (pursueAnimation != null)
                     entity.AnimManager.StartAnimation(new AnimationMetaData() { Animation = pursueAnimation, Code = pursueAnimation }.Init());

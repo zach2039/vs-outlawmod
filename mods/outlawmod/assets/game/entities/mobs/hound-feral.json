@@ -171,6 +171,7 @@
 						withdrawIfNoPath: false,
 						//withdrawDist: 12.0,
         				//withdrawDistDamaged: 20.0,
+						//withdrawAnimation: "idle",
 
 						animationSpeed: 2.2,
 						alarmHerd: true,
@@ -193,6 +194,7 @@
 						withdrawIfNoPath: false,
 						//withdrawDist: 12.0,
         				//withdrawDistDamaged: 20.0,
+						//withdrawAnimation: "idle",
 
 						animationSpeed: 2.2,
 						alarmHerd: true,
@@ -215,6 +217,7 @@
 						withdrawIfNoPath: false,
 						//withdrawDist: 12.0,
         				//withdrawDistDamaged: 20.0,
+						//withdrawAnimation: "idle",
 
 						animationSpeed: 2.2,
 						alarmHerd: true,

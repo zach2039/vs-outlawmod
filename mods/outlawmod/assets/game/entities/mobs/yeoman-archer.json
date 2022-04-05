@@ -239,6 +239,7 @@
 						withdrawIfNoPath: true,
        					withdrawDist: 20.0,
         				withdrawDistDamaged: 30.0,
+						withdrawAnimation: "idle",
 
 						animationSpeed: 1.0,
 						//maxFollowTime: 60,
@@ -270,6 +271,7 @@
 						withdrawIfNoPath: true,
        					withdrawDist: 20.0,
         				withdrawDistDamaged: 30.0,
+						withdrawAnimation: "idle",
 
 						animationSpeed: 1.0,
 						//maxFollowTime: 60,
