@@ -167,6 +167,9 @@ namespace OutlawMod
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
                 AiTaskRegistry.Register("eatdead", typeof(AiTaskEatDeadEntities));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
+                AiTaskRegistry.Register("morale", typeof(AiTaskMorale));
         }
 
         private void RegisterItemsShared()

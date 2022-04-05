@@ -144,6 +144,27 @@
 				code: "taskai",
 				aitasks: [
 					{
+						code: "morale",
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						priority: 5.0,
+						movespeed: 0.040,
+						cancelOnHurt: false,
+						routDistance: 64,
+						rallyTimeAfterRoutMs: 60000,
+						minMorale: 0.3,
+						maxMorale: 0.8,
+						moraleRange: 15,
+						useGroupMorale: true,
+						canRoutFromAnyEnemy: true,
+
+						//These array counts must match exactly.
+						poiSourcesOfFearNames: ["outlawSpawnBlocker"],
+						poiSourcesOfFearWeights: [0.2],
+
+						animation: "sprint",
+						animationSpeed: 1,
+					},
+					{
 						code: "meleeattack",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 4.0,
@@ -160,6 +181,7 @@
 						animationSpeed: 2,
 					},					
 					//Flee when injured.
+					/*
 					{
 						code: "fleeentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
@@ -174,24 +196,7 @@
 						executionChance: 0.5,
 						whenInEmotionState: "fleeondamage",
 					},
-					//Looters will get into fights with one another if they take damage.
-					{
-						code: "meleeattack",
-						entityCodes: ["looter"],
-						priority: 3.75,
-						damage: 1.5,
-						damageTier: 1,
-						damageType: "BluntAttack",
-						minDist: 1.5,
-						slot: 1,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						attackDurationMs: 450,
-						damagePlayerAtMs: 300,
-						animation: "attack",
-						animationSpeed: 1.0,
-						whenInEmotionState: "aggressiveondamage"
-					},
+					*/
 					{
 						code: "throwatentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],

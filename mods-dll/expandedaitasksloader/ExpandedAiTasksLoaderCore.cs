@@ -45,6 +45,9 @@ namespace ExpandedAiTasksLoader
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
                 AiTaskRegistry.Register<AiTaskEatDeadEntities>("eatdead");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
+                AiTaskRegistry.Register<AiTaskMorale>("morale");
         }
 
         private void RegisterAiTasksShared()
@@ -61,6 +64,9 @@ namespace ExpandedAiTasksLoader
 
             if(!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
                 AiTaskRegistry.Register("eatdead", typeof(AiTaskEatDeadEntities));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
+                AiTaskRegistry.Register("morale", typeof(AiTaskMorale));
         }
     }
 }
