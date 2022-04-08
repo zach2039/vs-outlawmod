@@ -353,7 +353,7 @@
 				maxTemp: 28,
 				minRain: 0,
 				minForestOrShrubs: 0.25,
-				companions: ["poacher-archer"]
+				companions: ["hound-hunting"]
 			}
 		}
 	},

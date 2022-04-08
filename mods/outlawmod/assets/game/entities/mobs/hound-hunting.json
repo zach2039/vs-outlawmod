@@ -1,0 +1,347 @@
+{
+	code: "hound-hunting",
+	class: "EntityAgent",
+	hitboxSize: { x: 1.2, y: 1 },
+	deadHitboxSize: { x: 1, y: 0.75 },
+	eyeHeight: 0.9,
+	drops: [],
+	client: {
+		renderer: "Shape",
+		shape: { base: "entity/land/hound-hunting" },
+		textures: {
+			"skin": { base: "entity/hound/hound1", alternates: [ { base: "entity/hound/hound2" }, { base: "entity/hound/hound3" }, { base: "entity/hound/hound4" }, { base: "entity/hound/hound5" }, { base: "entity/hound/hound6" }, { base: "entity/hound/hound7" }, { base: "entity/hound/hound8" }, { base: "entity/hound/hound9" } ] },
+			"collar": { base: "entity/hound/collar_red", alternates: [ { base: "entity/hound/collar_green"}, { base: "entity/hound/collar_blue"}, { base: "entity/hound/collar_yellow"}] },
+		},
+		
+		behaviors: [
+			{ code: "nametag", selectFromRandomName: ["Hunting Hound"], "showtagonlywhentargeted": true }, 
+			{ code: "repulseagents" }, 
+			{ code: "controlledphysics", stepHeight: 1.1251 }, 
+			{ code: "floatupwhenstuck", onlyWhenDead: true },
+			{ code: "interpolateposition" },
+			{ code: "harvestable" },
+			{ code: "despawn", minPlayerDistance: 8, belowLightLevel: 8, minSeconds: 300 }
+		],
+		animations: [
+			{
+				code: "hurt",
+				animation: "hurt", 
+				animationSpeed: 2.2,
+				weight: 10,
+				blendMode: "AddAverage" 
+			},
+			{
+				code: "die",
+				animation: "death", 
+				animationSpeed: 1.25,
+				weight: 10,
+				blendMode: "Average",
+				triggeredBy: { onControls: ["dead"] }
+			},
+			{ 
+				code: "idle", 
+				animation: "idle",
+				blendMode: "AddAverage",
+				easeOutSpeed: 4,
+				triggeredBy: { defaultAnim: true },
+			},
+			{
+				code: "sleep", 
+				animation: "sleep",
+				easeInSpeed: 4,
+				easeOutSpeed: 4,
+				blendMode: "Average", 
+			},
+			{
+				code: "sit", 
+				animation: "sit",
+				easeInSpeed: 4,
+				easeOutSpeed: 4,
+				blendMode: "Average", 
+			}
+		]
+	},
+	server: {
+		behaviors: [
+			{ code: "nametag", selectFromRandomName: ["Hunting Hound"], "showtagonlywhentargeted": true }, 
+			{ code: "repulseagents" }, 
+			{ code: "controlledphysics", stepHeight: 1.1251 },
+			{ code: "despawn", minPlayerDistance: 8, belowLightLevel: 8, minSeconds: 300 },
+			{ code: "health", currenthealth: 12, maxhealth: 12, },
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-medium" },
+			{ code: "floatupwhenstuck", onlyWhenDead: true },
+			{ code: "harvestable", drops: [
+				{
+					type: "item", 
+					code: "bushmeat-raw", 
+					quantity: { avg: 4, var: 1 } 
+				},
+				{
+					type: "item", 
+					code: "hide-raw-medium", 
+					quantity: { avg: 1.5, var: 0 } 
+				},
+				{
+					type: "item", 
+					code: "fat", 
+					quantity: { avg: 1.25, var: 0 } 
+				},
+				{
+					type: "item", 
+					code: "bone", 
+					quantity: { avg: 2, var: 0.5 } 
+				}
+				],
+			},
+			{ code: "breathe" },
+			{ 
+				code: "emotionstates",
+				states: [
+					{ code: "fleeondamage", duration: 60, chance: 0.75, slot: 2, priority: 5, accumType: "max", whenHealthRelBelow: 0.3 },
+					{ 
+						code: "saturated", duration: 60, chance: 1, slot: 0, priority: 1, accumType: "max",
+						belowTempDuration: 30,
+						belowTempThreshold: -5
+					},
+					{ code: "aggressiveondamage", duration: 30, chance: 1, slot: 2, priority: 2, accumType: "noaccum" },
+					{ code: "alarmherdondamage", chance: 1, slot: 1, priority: 1, accumType: "max" }
+				],
+			},
+			{
+				code: "taskai",
+				aitasks: [
+					{
+						code: "morale",
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						priority: 5.0,
+						movespeed: 0.052,
+						cancelOnHurt: false,
+						routDistance: 60,
+						rallyTimeAfterRoutMs: 10000,
+						minMorale: 0.5,
+						maxMorale: 0.8,
+						moraleRange: 15,
+						useGroupMorale: true,
+						deathsImpactMorale: true,
+						canRoutFromAnyEnemy: true,
+
+						entitySourcesOfFear: [
+							{ code: "player", fearWeight: 0.1},
+							{ code: "looter", fearWeight: 0.05},
+							{ code: "hound-hunting", fearWeight: -0.1},
+							{ code: "poacher-*", fearWeight: -0.15},
+							{ code: "bandit-*", fearWeight: 0.1},
+							{ code: "yeoman-*", fearWeight: 0.1},
+						],
+
+						animation: "Run",
+						animationSpeed: 1,
+					},
+					{
+						code: "morale",
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						priority: 4.9,
+						movespeed: 0.052,
+						cancelOnHurt: false,
+						routDistance: 15,
+						rallyTimeAfterRoutMs: 10000,
+						minMorale: 1.0,
+						maxMorale: 1.0,
+						moraleRange: 5,
+						useGroupMorale: true,
+						canRoutFromAnyEnemy: true,
+
+						itemStackSourcesOfFear: [
+							{ code: "torch-crude-lit-*", fearWeight: 2.0},
+							{ code: "torch-basic-lit-*", fearWeight: 2.0},
+							{ code: "torch-cloth-lit-*", fearWeight: 2.0},
+						],
+
+						animation: "Run",
+						animationSpeed: 1,
+					},
+					{
+						code: "meleeattack",
+						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter"],
+						priority: 2,
+						damage: 2,
+						damageTier: 1,
+						damageType: "SlashingAttack",
+						slot: 1,
+						mincooldown: 1500, 
+						maxcooldown: 1500, 
+						attackDurationMs: 800,
+						damagePlayerAtMs: 500,
+						animation: "Attack",
+						animationSpeed: 2.5,
+						sound: "creature/wolf/attack"
+					},
+					{
+						code: "engageentity",
+						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral"],
+						priority: 1.49,		
+						maxTargetHealth: 5.0,
+						packHunting: " true",			
+						pursueSpeed: 0.048,
+						pursueRange: 15,
+						pursueAnimation: "Run",
+						engageSpeed: 0.035,
+						engageRange: 4,
+						engageAnimation: "Run",
+
+						withdrawIfNoPath: false,
+						//withdrawDist: 12.0,
+        				//withdrawDistDamaged: 20.0,
+						//withdrawAnimation: "idle",
+
+						animationSpeed: 2.2,
+						alarmHerd: true,
+						sound: "creature/wolf/growl",
+						whenInEmotionState: "aggressiveondamage"
+					},
+					{
+						code: "stayclosetoherd",
+						priority: 1.48,
+						movespeed: 0.02,
+						animationSpeed: 1.0,
+						maxDistance: 4,
+						searchRange: 25,
+						animation: "Run"
+					},
+					//Eat dead game that poachers kill.
+					{
+						code: "eatdead",
+						entityCodes: ["chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*"],
+						priority: 1.47,
+
+						moveSpeed: 0.006,
+						moveAnimation: "walk",
+						minDist: 15.0,
+						maxDist: 30.0,
+				
+						eatDuration: 60.0,
+						eatAnimation: "eat",
+						eatAnimMinInterval: 1.0,
+						eatAnimMaxInterval: 3.5,
+
+						eatEveryting: false,
+        				allowCannibalism: false,
+
+						whenNotInEmotionState: "saturated"
+
+					},
+					{
+						code: "idle",
+						priority: 1.45,
+						priorityForCancel: 1.55,
+						minduration: 200000,
+						maxduration: 800000,
+						mincooldown: 10000,
+						maxcooldown: 30000,
+						animation: "Sleep",
+						whenNotInEmotionState: "aggressiveondamage",
+						duringDayTimeFrames: [ { fromHour: 22, toHour: 4 }, { fromHour: 1, toHour: 3 } ],
+						stopOnNearbyEntityCodes: ["player","bandit-*", "poacher-*", "yeoman-*", "looter"],
+						stopRange: 10,
+						stopOnHurt: true
+					},
+					
+					{
+						code: "getoutofwater",
+						priority: 1.4,
+						movespeed: 0.015,
+						animation: "Walk",
+						animationSpeed: 2.2
+					},
+					{
+						code: "idle",
+						priority: 1.3,
+						priorityForCancel: 1.35,
+						minduration: 4667,
+						maxduration: 4667,
+						mincooldown: 80000,
+						maxcooldown: 500000,
+						animation: "Howl",
+						animationSpeed: 0.5,
+						sound: "creature/wolf/howl",
+						soundRange: 110
+					},
+					{
+						code: "idle",
+						priority: 1.2,
+						priorityForCancel: 1.35,
+						minduration: 2500,
+						maxduration: 2500,
+						mincooldown: 6000,
+						maxcooldown: 20000,
+						animation: "Sniff",
+						animationSpeed: 1.25,
+						whenNotInEmotionState: "aggressiveondamage"
+					},
+					{
+						code: "wander", 
+						priority: 1.0, 
+						priorityForCancel: 1.35,
+						movespeed: 0.006,
+						animation: "Walk",
+						preferredLightLevel: 20
+					},
+					{
+						code: "idle",
+						priority: 0.9,
+						minduration: 5000,
+						maxduration: 30000,
+						mincooldown: 2000,
+						maxcooldown: 120000,
+						priorityForCancel: 1.33,
+						animation: "Sit",
+						whenNotInEmotionState: "aggressiveondamage",
+						stopOnNearbyEntityCodes: ["player"],
+						stopRange: 5
+					},
+					{ 
+						code: "lookaround", 
+						priority: 0.5
+					}
+				]
+			},
+		],
+		/*
+		spawnconditions: {
+			worldgen: {
+				TriesPerChunk: { avg: 0.07, var: 0 },
+				tryOnlySurface: true,
+				groupSize: { dist: "verynarrowgaussian", avg: 4, var: 2 },
+				insideBlockCodes: ["air", "tallgrass-*"],
+				minTemp: -15,
+				maxTemp: 15,
+				minRain: 0,
+				minForest: 0.0,
+				companions: []
+			},
+			runtime: {
+				group: "hostile",
+				tryOnlySurface: true,
+				chance: 0.0008,
+				maxQuantity: 8,
+				"__comment": "Make them spawn away from artifical light so they don't spawn inside farmland",
+				maxLightLevel: 7,
+				lightLevelType: "onlyBlockLight",					
+				groupSize: { dist: "verynarrowgaussian", avg: 4, var: 2 },
+				insideBlockCodes: ["air", "tallgrass-*"],
+				minTemp: -15,
+				maxTemp: 15,
+				minRain: 0,
+				minForest: 0.0,
+				companions: []
+			}
+		}
+	},
+	*/
+	sounds: {
+		hurt: "creature/wolf/hurt",
+		death: "creature/wolf/hurt",
+		idle: "creature/wolf/howl"
+	},
+	idleSoundChance: 0
+}

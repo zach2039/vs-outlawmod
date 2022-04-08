@@ -8,6 +8,7 @@
 	"textureSizes": {
 	},
 	"textures": {
+		"collar": "entity/hound/collar_red",
 		"skin": "entity/hound/hound6"
 	},
 	"elements": [
@@ -157,6 +158,21 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "collar",
+							"from": [ 1.0, -0.15, -0.35 ], 
+							"to": [ 4.0, 6.35, 5.65 ], 
+							"uv": [ 12.0, 14.0 ],
+							"rotationOrigin": [ 3.65, 3.25, 2.75 ],
+							"faces": {
+								"north": { "texture": "#collar", "uv": [ 0.0, 14.0, 6.0, 28.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"east": { "texture": "#collar", "uv": [ 0.0, 0.0, 5.94, 6.93 ], "enabled": false, "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"south": { "texture": "#collar", "uv": [ 6.0, 14.0, 12.0, 28.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#collar", "uv": [ 12.0, 14.0, 26.0, 28.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"up": { "texture": "#collar", "uv": [ 0.0, 0.0, 6.0, 14.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#collar", "uv": [ 6.0, 0.0, 12.0, 14.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
 						}
 					],
 					"attachmentpoints": [
@@ -1519,6 +1535,14 @@
 					}
 				},
 				{
+					"frame": 8,
+					"elements": {
+						"Body": {  },
+						"neck": {  },
+						"collar": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 }
+					}
+				},
+				{
 					"frame": 9,
 					"elements": {
 						"Body": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 8.0 },
@@ -1537,7 +1561,7 @@
 					"frame": 13,
 					"elements": {
 						"Body": {  },
-						"neck": { "offsetX": 0.0, "offsetY": -0.35639998884201035, "offsetZ": 0.0, "rotationX": -2.0, "rotationY": 0.0, "rotationZ": 39.0 },
+						"neck": { "offsetX": 0.0, "offsetY": -0.36, "offsetZ": 0.0, "rotationX": -2.0, "rotationY": 0.0, "rotationZ": 39.0 },
 						"head": { "rotationX": -5.0, "rotationY": 0.0, "rotationZ": -6.0 },
 						"mouth up": {  },
 						"jaw": { "offsetX": 0.0, "offsetY": -0.2672999916315078, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 14.0 }
@@ -1586,7 +1610,7 @@
 					"frame": 24,
 					"elements": {
 						"Body": {  },
-						"neck": { "offsetX": 0.0, "offsetY": -0.2672999916315078, "offsetZ": 0.0, "rotationX": -2.0, "rotationY": 0.0, "rotationZ": 30.0 },
+						"neck": { "offsetX": 0.0, "offsetY": -0.27, "offsetZ": 0.0, "rotationX": -2.0, "rotationY": 0.0, "rotationZ": 30.0 },
 						"left leg": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": -26.0 },
 						"left leg end": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 18.0 },
 						"right leg": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 6.0 }
