@@ -155,6 +155,7 @@
 						maxMorale: 0.8,
 						moraleRange: 15,
 						useGroupMorale: true,
+						deathsImpactMorale: true,
 						canRoutFromAnyEnemy: true,
 
 						entitySourcesOfFear: [
@@ -164,10 +165,6 @@
 							{ code: "yeoman-*", fearWeight: 0.1},
 							{ code: "hound-*", fearWeight: 0.1},
 						],
-
-						//These array counts must match exactly.
-						//poiSourcesOfFearNames: ["outlawSpawnBlocker"],
-						//poiSourcesOfFearWeights: [0.2],
 
 						poiSourcesOfFear: [
 							{ poiType: "outlawSpawnBlocker", fearWeight: 0.2}

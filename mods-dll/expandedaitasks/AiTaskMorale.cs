@@ -40,6 +40,7 @@ namespace ExpandedAiTasks
         Dictionary<string,double> poiSourcesOfFearWeightsByType = new Dictionary<string,double>();
 
         bool useGroupMorale = false;
+        bool deathsImpactMorale = false;
         bool canRoutFromAnyEnemy = false;
 
         double moraleLevel = 0.0f;
@@ -87,7 +88,8 @@ namespace ExpandedAiTasks
             moraleRange = taskConfig["moraleRange"].AsFloat(15f);
 
             useGroupMorale = taskConfig["useGroupMorale"].AsBool(false);
-            canRoutFromAnyEnemy= taskConfig["canRoutFromAnyEnemy"].AsBool(false);
+            deathsImpactMorale = taskConfig["deathsImpactMorale"].AsBool(false);
+            canRoutFromAnyEnemy = taskConfig["canRoutFromAnyEnemy"].AsBool(false);
 
             //To Do: Once we build our data dictionaries from these trees, do we really need to save them on the entity?
             //To Do: Do we want to build and store these tables unqiuely for every entity, or do we want to store them statically per entity type?
@@ -510,7 +512,7 @@ namespace ExpandedAiTasks
             EntityAgent agent = ent as EntityAgent;
             if ( agent != null)
             {
-                if (!ent.Alive || !ent.IsInteractable || !CanSense(ent, moraleRange))
+                if ( (!ent.Alive && !deathsImpactMorale) || !ent.IsInteractable || !CanSense(ent, moraleRange))
                     return 0;
             }           
 
@@ -530,14 +532,26 @@ namespace ExpandedAiTasks
             //Try to match exact.
             if (entitySourcesOfFearWeightsByCodeExact.ContainsKey(ent.Code.Path))
             {
-                return entitySourcesOfFearWeightsByCodeExact[ent.Code.Path];
+                //If this ent is dead and we care about who's dead.
+                //It has the opposite fear effect on us than when it's alive.
+                float livingScalar = 1.0f;
+                if (deathsImpactMorale)
+                    livingScalar = ent.Alive ? 1.0f : -1.0f;
+
+                return entitySourcesOfFearWeightsByCodeExact[ent.Code.Path] * livingScalar;
             }
 
             //Try to match partials.
             foreach (var codePartial in entitySourcesOfFearWeightsByCodePartial)
             {
+                //If this ent is dead and we care about who's dead.
+                //It has the opposite fear effect on us than when it's alive.
+                float livingScalar = 1.0f;
+                if (deathsImpactMorale)
+                    livingScalar = ent.Alive ? 1.0f : -1.0f;
+
                 if (ent.Code.Path.StartsWithFast(codePartial.Key))
-                    return codePartial.Value;
+                    return codePartial.Value * livingScalar;
             }
 
             return 0;

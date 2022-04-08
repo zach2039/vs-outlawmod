@@ -177,6 +177,7 @@
 						maxMorale: 0.9,
 						moraleRange: 15,
 						useGroupMorale: true,
+						deathsImpactMorale: true,
 						canRoutFromAnyEnemy: true,
 
 						entitySourcesOfFear: [
