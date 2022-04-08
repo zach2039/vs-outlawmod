@@ -25,9 +25,19 @@ namespace ExpandedAiTasks
         double maxMorale = 0.8f;
         float moraleRange = 15f;
 
-        string[] poiSourcesOfFearNames = new string[0];
-        double[] poiSourcesOfFearWeights = new double[0];
-        Dictionary<string,double> poiSourcesOfFearWeightsByName = new Dictionary<string,double>();
+        //Data for fear caused by entities in morale range.
+        TreeAttribute[] entitySourcesOfFear = new TreeAttribute[0];
+        Dictionary<string, double> entitySourcesOfFearWeightsByCodeExact = new Dictionary<string, double>();
+        Dictionary<string, double> entitySourcesOfFearWeightsByCodePartial = new Dictionary<string, double>();
+
+        //Data for fear caused by item and block stacks in morale range.
+        TreeAttribute[] itemStackSourcesOfFear = new TreeAttribute[0];
+        Dictionary<string, double> itemStackSourcesOfFearWeightsByCodeExact = new Dictionary<string, double>();
+        Dictionary<string, double> itemStackSourcesOfFearWeightsByCodePartial = new Dictionary<string, double>();
+
+        //Data for points of intrest in morale range.
+        TreeAttribute[] poiSourcesOfFear = new TreeAttribute[0];
+        Dictionary<string,double> poiSourcesOfFearWeightsByType = new Dictionary<string,double>();
 
         bool useGroupMorale = false;
         bool canRoutFromAnyEnemy = false;
@@ -41,6 +51,9 @@ namespace ExpandedAiTasks
         protected List<Entity> herdMembers = new List<Entity>();
         
         static POIRegistry poiregistry;
+
+        double entitySourceOfFearTotalWeight = 0;
+        double itemStackSourceOfFearTotalWeight = 0;
         double poiSourceOfFearTotalWeight = 0;
 
         float stepHeight;
@@ -76,8 +89,29 @@ namespace ExpandedAiTasks
             useGroupMorale = taskConfig["useGroupMorale"].AsBool(false);
             canRoutFromAnyEnemy= taskConfig["canRoutFromAnyEnemy"].AsBool(false);
 
-            poiSourcesOfFearNames = taskConfig["poiSourcesOfFearNames"].AsArray<string>();
-            poiSourcesOfFearWeights = taskConfig["poiSourcesOfFearWeights"].AsArray<double>();
+            //To Do: Once we build our data dictionaries from these trees, do we really need to save them on the entity?
+            //To Do: Do we want to build and store these tables unqiuely for every entity, or do we want to store them statically per entity type?
+
+            //Read Data from Entity Fear Tree.
+            IAttribute entitySourcesOfFearData = taskConfig["entitySourcesOfFear"].ToAttribute();
+            TreeAttribute[] entitySourcesOfFearAsTree = entitySourcesOfFearData?.GetValue() as TreeAttribute[];
+
+            if (entitySourcesOfFearAsTree != null)
+                entitySourcesOfFear = entitySourcesOfFearAsTree;
+
+            //Read Data from Item Stack Fear Tree.
+            IAttribute itemStackSourcesOfFearData = taskConfig["itemStackSourcesOfFear"].ToAttribute();
+            TreeAttribute[] itemStackSourcesOfFearAsTree = itemStackSourcesOfFearData?.GetValue() as TreeAttribute[];
+
+            if ( itemStackSourcesOfFearAsTree != null)
+                itemStackSourcesOfFear = itemStackSourcesOfFearAsTree;
+
+            //Read Data From Poi Fear Tree.
+            IAttribute poiSourcesOfFearData = taskConfig["poiSourcesOfFear"].ToAttribute();
+            TreeAttribute[] poiSourcesOfFearAsTree = poiSourcesOfFearData?.GetValue() as TreeAttribute[];
+
+            if (poiSourcesOfFearAsTree != null)
+                poiSourcesOfFear = poiSourcesOfFearAsTree;
 
             Debug.Assert(minMorale <= maxMorale, "minMorale must be less than or equal to maxMorale.");
 
@@ -95,8 +129,6 @@ namespace ExpandedAiTasks
         }
 
 
-
-
         public override bool ShouldExecute()
         {
             soundChance = Math.Min(1.01f, soundChance + 1 / 500f);
@@ -106,10 +138,6 @@ namespace ExpandedAiTasks
 
             if (whenNotInEmotionState != null && bhEmo?.IsInEmotionState(whenNotInEmotionState) == true) 
                 return false;
-
-            // Double exec chance, but therefore halved here again to increase response speed for creature when aggressive
-            //if (whenInEmotionState == null && rand.NextDouble() > 0.5f) 
-            //    return false;
 
             if (useGroupMorale)
             {
@@ -135,31 +163,63 @@ namespace ExpandedAiTasks
 
             Vec3d ownPos = entity.ServerPos.XYZ;
 
-            //TO DO:ONCE WE'VE BUILT ALL OUR FEAR WEIGHT TABLES, WE SHOULD POPULATE ANY OF THE ENTITY RELATED ONES DURING THIS SEARCH.
-            //REPLACE IsTargetableEntity WITH A FUNCTION THAT CALLS IT, BUT ALSO GENERATES THE FEAR WEIGHTS WE WILL NEED LATER DURING OUR SEARCH.
-            targetEntity = (EntityAgent)partitionUtil.GetNearestEntity(ownPos, moraleRange, (e) => IsTargetableEntity(e, moraleRange, canRoutFromAnyEnemy));
+            entitySourceOfFearTotalWeight = 0;
+            itemStackSourceOfFearTotalWeight = 0;
+            poiSourceOfFearTotalWeight = 0;
+
+            targetEntity = partitionUtil.GetNearestEntity(ownPos, moraleRange, (e) => IsValidMoraleTarget(e, moraleRange, canRoutFromAnyEnemy));
 
             if (targetEntity != null)
             {
                 //Take the target's injury ratio into account.
                 double targetInjuryRatio = CalculateEntityInjuryRatio(targetEntity);
-
-                double poiSourcesOfFearWeight = 0;
-                if (poiSourcesOfFearNames.Length > 0)
-                    poiSourcesOfFearWeight = GetPoiSourceOfFearWeight();
-
+                double poiSourcesOfFearWeight = GetTotalPoiSourceOfFearWeight();
 
                 //We should be less scared if we're winning.
-                fearLevel = Math.Max(injuryRatio - targetInjuryRatio, 0) + poiSourcesOfFearWeight;
+                fearLevel = Math.Max(injuryRatio - targetInjuryRatio, 0) + entitySourceOfFearTotalWeight + itemStackSourceOfFearTotalWeight + poiSourcesOfFearWeight;
 
                 if ( fearLevel >= moraleLevel)
                 {
+                    targetEntity.Notify("entityRouted", entity);
                     UpdateTargetPos();
                     return true;
                 }
             }
 
             return false;
+        }
+
+
+        private bool IsValidMoraleTarget(Entity ent, float range, bool ignoreEntityCode = false)
+        {
+
+            //Handle case where our target is an enemy entity.
+            EntityAgent agent = ent as EntityAgent;
+            if ( agent != null )
+            {
+                if (entitySourcesOfFearWeightsByCodeExact.Count > 0 || entitySourcesOfFearWeightsByCodePartial.Count > 0 || ent.Code.Path == "player")
+                    entitySourceOfFearTotalWeight += GetEntitySourceOfFearWeight(ent);
+
+                if (!IsTargetableEntity(ent, range, ignoreEntityCode))
+                    return false;
+
+                //Don't be scared of our friends.
+                if (agent.HerdId == entity.HerdId)
+                    return false;
+            }
+            else
+            {
+                //Handle case where our target could be an item or block.
+                EntityItem item = ent as EntityItem;
+                if ( item != null )
+                {
+                    if ( itemStackSourcesOfFearWeightsByCodeExact.Count > 0 || itemStackSourcesOfFearWeightsByCodePartial.Count > 0 )
+                        itemStackSourceOfFearTotalWeight += GetItemStackSourceOfFearWeight(item.Itemstack);      
+                }
+            }
+
+            return true;
+
         }
 
         private bool CountHerdMembers(Entity e, float range, bool ignoreEntityCode = false)
@@ -303,30 +363,85 @@ namespace ExpandedAiTasks
 
         private void BuildSourceOfFearTables()
         {
-            Debug.Assert(poiSourcesOfFearNames.Length == poiSourcesOfFearWeights.Length, "poiSourcesOfFearNames entry count does not match poiSourcesOfFearWeights entry count, these must match exactly.");
-
-            //Build table for pois that scare the ai.
-            for ( int i = 0; i < poiSourcesOfFearNames.Length; i++)
+          
+            //Build dictionaries for entities that scare the Ai from our tree.
+            if (entitySourcesOfFear != null)
             {
-                poiSourcesOfFearWeightsByName.Add(poiSourcesOfFearNames[i], poiSourcesOfFearWeights[i]);
+                for (int i = 0; i < entitySourcesOfFear.Length; i++)
+                {
+                    Debug.Assert(entitySourcesOfFear[i].HasAttribute("code"), "entitySourcesOfFear for " + entity.Code.Path + " is missing code: at entry " + i);
+                    Debug.Assert(entitySourcesOfFear[i].HasAttribute("fearWeight"), "entitySourcesOfFear for " + entity.Code.Path + " is missing fearWeight: at entry " + i);
+
+                    string code = entitySourcesOfFear[i].GetString("code");
+                    double weight = entitySourcesOfFear[i].GetDouble("fearWeight");
+
+                    if (code.EndsWith("*"))
+                    {
+                        //Handle Partial Entity Code
+                        entitySourcesOfFearWeightsByCodePartial.Add(code.Substring(0, code.Length - 1), weight);
+                    }
+                    else
+                    {
+                        //Handle Exact Entity Code
+                        entitySourcesOfFearWeightsByCodeExact.Add(code, weight);
+                    }
+                }
             }
 
-            //To do: We need to do this with entityCodes and a weight array so that individual entities can scare this Ai more than others.
+            //Build dictionaries for item stacks that scare the Ai from our tree.
+            if (itemStackSourcesOfFear != null)
+            {
+                for (int i = 0; i < itemStackSourcesOfFear.Length; i++)
+                {
+                    Debug.Assert(itemStackSourcesOfFear[i].HasAttribute("code"), "itemStackSourcesOfFear for " + entity.Code.Path + " is missing code: at entry " + i);
+                    Debug.Assert(itemStackSourcesOfFear[i].HasAttribute("fearWeight"), "itemStackSourcesOfFear for " + entity.Code.Path + " is missing fearWeight: at entry " + i);
 
+                    string code = itemStackSourcesOfFear[i].GetString("code");
+                    double weight = itemStackSourcesOfFear[i].GetDouble("fearWeight");
+
+                    if (code.EndsWith("*"))
+                    {
+                        //Handle Partial Entity Code
+                        itemStackSourcesOfFearWeightsByCodePartial.Add(code.Substring(0, code.Length - 1), weight);
+                    }
+                    else
+                    {
+                        //Handle Exact Entity Code
+                        itemStackSourcesOfFearWeightsByCodeExact.Add(code, weight);
+                    }
+                }
+            }
+
+            //Build table for pois that scare the Ai.
+            if ( poiSourcesOfFear != null)
+            {
+                for (int i = 0; i < poiSourcesOfFear.Length; i++)
+                {
+                    Debug.Assert(poiSourcesOfFear[i].HasAttribute("poiType"), "poiSourcesOfFear for " + entity.Code.Path + " is missing poiType: at entry " + i);
+                    Debug.Assert(poiSourcesOfFear[i].HasAttribute("fearWeight"), "poiSourcesOfFear for " + entity.Code.Path + " is missing fearWeight: at entry " + i);
+
+                    string poiType = poiSourcesOfFear[i].GetString("poiType");
+                    double weight = poiSourcesOfFear[i].GetDouble("fearWeight");
+                    poiSourcesOfFearWeightsByType.Add(poiType, weight);
+                }
+            }
         }
 
         private double CalculateEntityInjuryRatio(Entity ent)
         {
-            ITreeAttribute treeAttribute = ent.WatchedAttributes.GetTreeAttribute("health");
-
-            if (treeAttribute != null)
+            if ( ent as EntityAgent != null )
             {
-                double currentHealth = treeAttribute.GetFloat("currenthealth"); ;
-                double maxHealth = treeAttribute.GetFloat("maxhealth"); ;
+                ITreeAttribute treeAttribute = ent.WatchedAttributes.GetTreeAttribute("health");
 
-                return (maxHealth - currentHealth) / maxHealth;
+                if (treeAttribute != null)
+                {
+                    double currentHealth = treeAttribute.GetFloat("currenthealth"); ;
+                    double maxHealth = treeAttribute.GetFloat("maxhealth"); ;
+
+                    return (maxHealth - currentHealth) / maxHealth;
+                }
             }
-
+            
             return 0.0;
         }
 
@@ -366,7 +481,7 @@ namespace ExpandedAiTasks
             return (totalMaxHealth - totalCurrentHealth) / totalMaxHealth;
         }
 
-        private double GetPoiSourceOfFearWeight()
+        private double GetTotalPoiSourceOfFearWeight()
         {
             poiSourceOfFearTotalWeight = 0;
             poiregistry.WalkPois(entity.ServerPos.XYZ, moraleRange, PoiSourceOfFearMatcher);
@@ -376,13 +491,84 @@ namespace ExpandedAiTasks
 
         public bool PoiSourceOfFearMatcher(IPointOfInterest poi)
         {  
-            if (poiSourcesOfFearWeightsByName.ContainsKey(poi.Type) )
+            if (poiSourcesOfFearWeightsByType.ContainsKey(poi.Type) )
             {
-                poiSourceOfFearTotalWeight += poiSourcesOfFearWeightsByName[poi.Type];
+                poiSourceOfFearTotalWeight += poiSourcesOfFearWeightsByType[poi.Type];
                 return true;
             }
             
             return false;
+        }
+
+        private double GetEntitySourceOfFearWeight( Entity ent)
+        {
+            //Note: When we count entities in terms of moral we are allowing entities to count themselves, this is to balance situations where the ai is fighting
+            //a single player and the combat numbers are equal. (In the longterm, we may need a more robust solution).
+
+            //We want entities such as items to be able to scare Ai, however in the case of living Ai, we only want them to scare the Ai if
+            //They are alive.
+            EntityAgent agent = ent as EntityAgent;
+            if ( agent != null)
+            {
+                if (!ent.Alive || !ent.IsInteractable || !CanSense(ent, moraleRange))
+                    return 0;
+            }           
+
+            //If the entity is a player, see if they have anything in their active hand slots we're scared of.
+            EntityPlayer player = ent as EntityPlayer;
+            if (player != null)
+            {
+                ItemSlot rightSlot = player.RightHandItemSlot;
+                if (rightSlot.Itemstack != null)
+                    itemStackSourceOfFearTotalWeight += GetItemStackSourceOfFearWeight(rightSlot.Itemstack);
+
+                ItemSlot leftSlot = player.LeftHandItemSlot;
+                if ( leftSlot.Itemstack != null )
+                    itemStackSourceOfFearTotalWeight += GetItemStackSourceOfFearWeight(leftSlot.Itemstack);
+            }
+               
+            //Try to match exact.
+            if (entitySourcesOfFearWeightsByCodeExact.ContainsKey(ent.Code.Path))
+            {
+                return entitySourcesOfFearWeightsByCodeExact[ent.Code.Path];
+            }
+
+            //Try to match partials.
+            foreach (var codePartial in entitySourcesOfFearWeightsByCodePartial)
+            {
+                if (ent.Code.Path.StartsWithFast(codePartial.Key))
+                    return codePartial.Value;
+            }
+
+            return 0;
+        }
+
+        private double GetItemStackSourceOfFearWeight(ItemStack itemStack)
+        {
+
+            string path = "";
+            if (itemStack.Item != null)
+                path = itemStack.Item.Code.Path;
+            else if (itemStack.Block != null)
+                path = itemStack.Block.Code.Path;
+
+            //Try to match exact entity codes.
+            if (itemStackSourcesOfFearWeightsByCodeExact.ContainsKey(path))
+            {
+                return itemStackSourcesOfFearWeightsByCodeExact[path];
+            }
+
+            //Try to match partials entity codes.
+            foreach (var codePartial in itemStackSourcesOfFearWeightsByCodePartial)
+            {
+                if (path.StartsWithFast(codePartial.Key))
+                {
+                    return codePartial.Value;
+                }
+
+            }
+
+            return 0;
         }
     }
 }

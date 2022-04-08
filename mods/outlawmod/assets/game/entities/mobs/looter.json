@@ -145,21 +145,34 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
-						routDistance: 64,
-						rallyTimeAfterRoutMs: 60000,
+						routDistance: 60,
+						rallyTimeAfterRoutMs: 10000,
 						minMorale: 0.3,
 						maxMorale: 0.8,
 						moraleRange: 15,
 						useGroupMorale: true,
 						canRoutFromAnyEnemy: true,
 
+						entitySourcesOfFear: [
+							{ code: "player", fearWeight: 0.1},
+							{ code: "looter", fearWeight: -0.05},
+							{ code: "bandit-*", fearWeight: 0.1},
+							{ code: "yeoman-*", fearWeight: 0.1},
+							{ code: "hound-*", fearWeight: 0.1},
+						],
+
 						//These array counts must match exactly.
-						poiSourcesOfFearNames: ["outlawSpawnBlocker"],
-						poiSourcesOfFearWeights: [0.2],
+						//poiSourcesOfFearNames: ["outlawSpawnBlocker"],
+						//poiSourcesOfFearWeights: [0.2],
+
+						poiSourcesOfFear: [
+							{ poiType: "outlawSpawnBlocker", fearWeight: 0.2}
+						],
+
 
 						animation: "sprint",
 						animationSpeed: 1,
@@ -184,7 +197,7 @@
 					/*
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 4,
 						movespeed: 0.040,
 						seekingRange: 14,

@@ -495,9 +495,23 @@ namespace ExpandedAiTasks
         {
             if (key == "pursueEntity")
             {
-                targetEntity = (Entity)data;
-                targetPos = targetEntity.ServerPos.XYZ;
-                return true;
+                //If we don't have a target, assist our group.
+                if (targetEntity == null )
+                {
+                    targetEntity = (Entity)data;
+                    targetPos = targetEntity.ServerPos.XYZ;
+                    return true;
+                }
+                
+            }
+            else if ( key == "entityRouted")
+            {
+                //If our target has routed, stop pursuing.
+                if (targetEntity == (Entity)data)
+                {
+                    stopNow = true;
+                    return true;
+                }
             }
 
             return false;

@@ -107,6 +107,54 @@
 				code: "taskai",
 				aitasks: [
 					{
+						code: "morale",
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						priority: 5.0,
+						movespeed: 0.052,
+						cancelOnHurt: false,
+						routDistance: 60,
+						rallyTimeAfterRoutMs: 10000,
+						minMorale: 0.5,
+						maxMorale: 0.8,
+						moraleRange: 15,
+						useGroupMorale: true,
+						canRoutFromAnyEnemy: true,
+
+						entitySourcesOfFear: [
+							{ code: "player", fearWeight: 0.1},
+							{ code: "looter", fearWeight: 0.05},
+							{ code: "hound-feral", fearWeight: -0.1},
+							{ code: "bandit-*", fearWeight: 0.1},
+							{ code: "yeoman-*", fearWeight: 0.1},
+						],
+
+						animation: "Run",
+						animationSpeed: 1,
+					},
+					{
+						code: "morale",
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						priority: 4.9,
+						movespeed: 0.052,
+						cancelOnHurt: false,
+						routDistance: 15,
+						rallyTimeAfterRoutMs: 10000,
+						minMorale: 1.0,
+						maxMorale: 1.0,
+						moraleRange: 5,
+						useGroupMorale: true,
+						canRoutFromAnyEnemy: true,
+
+						itemStackSourcesOfFear: [
+							{ code: "torch-crude-lit-*", fearWeight: 2.0},
+							{ code: "torch-basic-lit-*", fearWeight: 2.0},
+							{ code: "torch-cloth-lit-*", fearWeight: 2.0},
+						],
+
+						animation: "Run",
+						animationSpeed: 1,
+					},
+					{
 						code: "meleeattack",
 						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter"],
 						priority: 2,
@@ -121,17 +169,6 @@
 						animation: "Attack",
 						animationSpeed: 2.5,
 						sound: "creature/wolf/attack"
-					},
-					
-					{
-						code: "fleeentity",
-						entityCodes: ["player"],
-						priority: 1.6,
-						movespeed: 0.052,
-						seekingRange: 20,
-						animation: "Run",
-						animationSpeed: 3,
-						whenInEmotionState: "fleeondamage"
 					},
 					//Don't hunt things when we can eat dead stuff nearby.
 					{
