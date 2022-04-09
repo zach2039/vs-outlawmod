@@ -74,7 +74,7 @@
 				blendMode: "Average"  
 			},
 			{ 
-				code: "meleeattack", 
+				code: "melee", 
 				animation: "attack",
 				weight: 5,
 				blendMode: "AddAverage"	
@@ -121,7 +121,7 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
@@ -138,7 +138,7 @@
 							{ code: "player", fearWeight: 0.1},
 							{ code: "looter", fearWeight: 0.5},
 							{ code: "bandit-*", fearWeight: -0.1},
-							{ code: "hound-*", fearWeight: 0.05},
+							{ code: "hound-feral", fearWeight: 0.05},
 						],
 
 						poiSourcesOfFear: [
@@ -149,8 +149,8 @@
 						animationSpeed: 1,
 					},
 					{
-						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*"],
+						code: "melee",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
 						priority: 4.0,
 						damage: 3.5,
 						damageTier: 2,
@@ -168,7 +168,7 @@
 					//Agro When Damaged
 					{
 						code: "engageentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral" ],
 						priority: 2.5,
 						mincooldown: 0, 
 						maxcooldown: 0, 
@@ -217,6 +217,16 @@
 
 						animationSpeed: 1.0,
 						alarmHerd: true,
+					},
+					{
+						code: "stayclosetoherd",
+						priority: 1.1,
+						movespeed: 0.04,
+						animationSpeed: 1.0,
+						maxDistance: 15,
+						arriveDistance: 8,
+						searchRange: 25,
+						animation: "sprint"
 					},
 					/*
 					{
@@ -268,8 +278,9 @@
 		idle: "creature/bandit/hrh",
 		hurt: "creature/bandit/hurt",
 		death: "creature/bandit/die2",
-		meleeattack: "creature/bandit/attack",
+		melee: "creature/bandit/attack",
 		fleeentity: "creature/bandit/flee",
+		morale: "creature/bandit/flee",
 		seekentity: "creature/bandit/icanseeyou",
 		engageentity: "creature/bandit/icanseeyou",
 	},

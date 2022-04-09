@@ -12,13 +12,10 @@ using Vintagestory.GameContent;
 
 namespace ExpandedAiTasks
 {
-    public class AiTaskShootProjectileAtEntity : AiTaskBaseTargetable
+    public class AiTaskShootProjectileAtEntity : AiTaskBaseExpandedTargetable
     {
-        ICoreAPI api; //Stored for access to the logger for debug prints to game console.
-
         int durationMs;
         int releaseAtMs;
-        long lastSearchTotalMs;
 
         float minDist = 3f;
         float maxDist = 15f;
@@ -41,13 +38,15 @@ namespace ExpandedAiTasks
         bool projectileRemainsInWorld = false;
         float projectileBreakOnImpactChance = 0.0f;
 
+        bool stopIfPredictFriendlyFire = false;
+
         Entity targetLastFrame = null;
         double dtSinceTargetAquired = 0.0f;
 
         EntityPartitioning partitionUtil;
 
         float accum = 0;
-        bool didThrow;
+        bool didShoot;
 
         float minTurnAnglePerSec;
         float maxTurnAnglePerSec;
@@ -61,7 +60,6 @@ namespace ExpandedAiTasks
 
         public override void LoadConfig(JsonObject taskConfig, JsonObject aiConfig)
         {
-            this.api = entity.Api; 
             this.rnd = new Random((int)(entity.EntityId + entity.World.ElapsedMilliseconds));
 
             partitionUtil = entity.Api.ModLoader.GetModSystem<EntityPartitioning>();
@@ -84,6 +82,7 @@ namespace ExpandedAiTasks
             this.projectileItem = taskConfig["projectileItem"].AsString("arrow-copper");
             this.projectileRemainsInWorld = taskConfig["projectileRemainsInWorld"].AsBool(false);
             this.projectileBreakOnImpactChance = taskConfig[ "projectileBreakOnImpactChance"].AsFloat(0.0f);
+            this.stopIfPredictFriendlyFire = taskConfig["stopIfPredictFriendlyFire"].AsBool(false);
 
             //Error checking for bad json values.
             Debug.Assert(damageFalloffPercent >= 0.0f && damageFalloffPercent <= 1.0f, "AiTaskValue damageFalloffPercent must be a 0.0 to 1.0 value.");
@@ -109,21 +108,57 @@ namespace ExpandedAiTasks
             if (cooldownUntilMs > entity.World.ElapsedMilliseconds) 
                 return false;
 
+
             float range = maxDist;
-            lastSearchTotalMs = entity.World.ElapsedMilliseconds;
+
+            if (stopIfPredictFriendlyFire)
+            {
+                if (herdMembers.Count == 0)
+                {
+                    herdMembers = new List<Entity>();
+                    partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => CountHerdMembers(e, range));
+                }
+                else
+                {
+                    UpdateHerdCount();
+                }
+            }
 
             Vec3d ownPos = entity.ServerPos.XYZ;
 
-            targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, range / 2f));
+            if (entity.World.ElapsedMilliseconds - attackedByEntityMs > 30000)
+            {
+                attackedByEntity = null;
+            }
+            if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && IsTargetableEntity(attackedByEntity, 15, true) && hasDirectContact(attackedByEntity, range, range / 2f))
+            {
+                targetEntity = attackedByEntity;
+            }
+            else
+            {
+                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, range / 2f));
+            }
 
             if ( targetEntity != targetLastFrame)
                 dtSinceTargetAquired = 0.0f;
 
              targetLastFrame = targetEntity;
 
-            //If the target is too close to fire upon.
-            if ( targetEntity != null && ownPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= minDist * minDist)
-                return false;
+            
+            if ( targetEntity != null)
+            {
+                //If the target is too close to fire upon.
+                if( ownPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= minDist * minDist)
+                    return false;
+
+                Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
+                Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+                Vec3d shotDir = shotTargetPos - shotStartPosition;
+
+                //If we care about shooting friendlies and we are going to shoot a friendly, early out.
+                if (stopIfPredictFriendlyFire && WillFriendlyFire(shotStartPosition, shotDir, shotTargetPos))
+                    return false;
+            }
 
             return targetEntity != null;
         }
@@ -131,7 +166,7 @@ namespace ExpandedAiTasks
         public override void StartExecute()
         {
             accum = 0;
-            didThrow = false;
+            didShoot = false;
 
             if (entity?.Properties.Server?.Attributes != null)
             {
@@ -147,6 +182,7 @@ namespace ExpandedAiTasks
             curTurnRadPerSec = minTurnAnglePerSec + (float)entity.World.Rand.NextDouble() * (maxTurnAnglePerSec - minTurnAnglePerSec);
             curTurnRadPerSec *= GameMath.DEG2RAD * 50 * 0.02f;
 
+            entity.Notify("haltMovement", entity);
             entity.PlayEntitySound("shootatentity", null, true);
         }
 
@@ -168,7 +204,8 @@ namespace ExpandedAiTasks
             entity.ServerPos.Yaw += GameMath.Clamp(yawDist, -curTurnRadPerSec * dt, curTurnRadPerSec * dt);
             entity.ServerPos.Yaw = entity.ServerPos.Yaw % GameMath.TWOPI;
 
-            if (Math.Abs(yawDist) > 0.02) return true;
+            if (Math.Abs(yawDist) > 0.02) 
+                return true;
 
             if (animMeta != null)
             {
@@ -186,9 +223,9 @@ namespace ExpandedAiTasks
             if (targetEntity != null && entity.ServerPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= minDist * minDist)
                 return false;
 
-            if (accum > releaseAtMs / 1000f && !didThrow)
+            if (accum > releaseAtMs / 1000f && !didShoot)
             {
-                didThrow = true;
+                didShoot = true;
 
                 double pitchDir = 1.0;
                 double yawDir = 1.0;
@@ -224,6 +261,11 @@ namespace ExpandedAiTasks
                 double distf = Math.Pow(shotStartPosition.SquareDistanceTo(shotTargetPosWithDrift), 0.1);
 
                 Vec3d velocity = (shotTargetPosWithDrift - shotStartPosition).Normalize() * GameMath.Clamp(distf, 0.1f, maxVelocity);
+                Vec3d firePos = entity.SidedPos.BehindCopy(0.21).XYZ.Add(0, entity.LocalEyePos.Y, 0);
+
+                //If we care about shooting friendlies and we are going to shoot a friendly, early out.
+                if (stopIfPredictFriendlyFire && WillFriendlyFire(firePos.Clone(), velocity.Clone(), shotTargetPosWithDrift.Clone()))
+                    return false;
 
                 float projectileDamage = GetProjectileDamageAfterFalloff( distToTargetSqr );
 
@@ -252,7 +294,7 @@ namespace ExpandedAiTasks
                 ((EntityProjectile)projectile).DropOnImpactChance = projectileBreakOnImpactChance;
                 ((EntityProjectile)projectile).Weight = 0.0f;
 
-                projectile.ServerPos.SetPos(entity.SidedPos.BehindCopy(0.21).XYZ.Add(0, entity.LocalEyePos.Y, 0));
+                projectile.ServerPos.SetPos(firePos);
                 projectile.ServerPos.Motion.Set(velocity);
 
                 projectile.Pos.SetFrom(entity.ServerPos);
@@ -260,6 +302,17 @@ namespace ExpandedAiTasks
                 ((EntityProjectile)projectile).SetRotation();
 
                 entity.World.SpawnEntity(projectile);
+            }
+            else if (stopIfPredictFriendlyFire && !didShoot)
+            {
+
+                Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
+                Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+                Vec3d shotDir = shotTargetPos - shotStartPosition;
+
+                //If we care about shooting friendlies and we are going to shoot a friendly, early out.
+                if (WillFriendlyFire(shotStartPosition, shotDir, shotTargetPos))
+                    return false;
             }
 
             return accum < durationMs / 1000f;
@@ -282,7 +335,37 @@ namespace ExpandedAiTasks
         public override void FinishExecute(bool cancelled)
         {
             base.FinishExecute(cancelled);
+        }
 
+        public bool WillFriendlyFire( Vec3d firePos, Vec3d shotDir, Vec3d shotTargetPos)
+        {
+            foreach(Entity herdMember in herdMembers)
+            {
+                Vec3d shooterToHerdMember = ( herdMember.ServerPos.XYZ.Add(0, herdMember.LocalEyePos.Y, 0) - firePos);
+                shooterToHerdMember.Normalize();
+                double dot = shooterToHerdMember.Dot(shotDir.Normalize());
+
+                double distToFriend = firePos.SquareDistanceTo( herdMember.ServerPos.XYZ );
+
+                //If we are really bunched up, don't fire;
+                if (distToFriend <= 1.5 * 1.5)
+                    return true;
+
+                double friendlyFireDot = Math.Cos(45 * (Math.PI / 180));
+                //If our ally is in our field of fire.
+                if (dot >= friendlyFireDot)
+                {
+                    double distToTargetSqr = firePos.SquareDistanceTo(shotTargetPos);
+                    double distToFriendSqr = firePos.SquareDistanceTo(herdMember.ServerPos.XYZ);
+
+                    //If our friend seems to be between us and our target, don't fire.
+                    if ( distToTargetSqr > distToFriendSqr)
+                        return true;
+                }
+                    
+            }
+
+            return false;
         }
     }
 }

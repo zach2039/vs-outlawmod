@@ -476,12 +476,13 @@ namespace ExpandedAiTasks
                 targetEntity.GetBehavior<EntityBehaviorDeadDecay>().DecayNow();
 
                 //Notify anyting else eating this ent we are done eating.
-                entity.World.GetNearestEntity(entity.ServerPos.XYZ, 20, 20, (e) =>
+                entity.World.GetNearestEntity(entity.ServerPos.XYZ, 20, 20, (ent) =>
                 {
-                    EntityAgent agent = e as EntityAgent;
-                    if (e.EntityId != entity.EntityId && agent != null && agent.Alive)
+                    if ( ent is EntityAgent)  
                     {
-                        agent.Notify("doneEating", targetEntity);
+                        EntityAgent agent = ent as EntityAgent;
+                        if ( ent.EntityId != entity.EntityId && agent.Alive)
+                            agent.Notify("doneEating", targetEntity);
                     }
 
                     return false;

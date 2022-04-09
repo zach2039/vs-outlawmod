@@ -112,7 +112,7 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.052,
 						cancelOnHurt: false,
@@ -139,7 +139,7 @@
 					},
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 4.9,
 						movespeed: 0.052,
 						cancelOnHurt: false,
@@ -161,8 +161,8 @@
 						animationSpeed: 1,
 					},
 					{
-						code: "meleeattack",
-						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter"],
+						code: "melee",
+						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral"],
 						priority: 2,
 						damage: 2,
 						damageTier: 1,
@@ -205,6 +205,7 @@
 						movespeed: 0.02,
 						animationSpeed: 1.0,
 						maxDistance: 4,
+						arriveDistance: 4,
 						searchRange: 25,
 						animation: "Run"
 					},

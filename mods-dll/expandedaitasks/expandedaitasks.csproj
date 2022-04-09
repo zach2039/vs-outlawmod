@@ -67,6 +67,9 @@
     <Compile Include="AiTaskStayCloseToHerd.cs" />
     <Compile Include="AiTaskEatDeadEntities.cs" />
     <Compile Include="AiTaskMorale.cs" />
+    <Compile Include="AiTaskBaseExpandedTargetable.cs" />
+    <Compile Include="AiTaskExpandedMeleeAttack.cs" />
+    <Compile Include="AiTaskGuard.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

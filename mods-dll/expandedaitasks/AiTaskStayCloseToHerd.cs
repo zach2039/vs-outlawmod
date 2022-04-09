@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,9 @@ namespace ExpandedAiTasks
         protected float moveSpeed = 0.03f;
         protected float range = 8f;
         protected float maxDistance = 3f;
+        protected float arriveDistance = 3f;
         protected bool stuck = false;
+        protected bool stopNow = false;
         protected bool allowTeleport;
         protected float teleportAfterRange;
 
@@ -36,8 +39,12 @@ namespace ExpandedAiTasks
             moveSpeed = taskConfig["movespeed"].AsFloat(0.03f);
             range = taskConfig["searchRange"].AsFloat(8f);
             maxDistance = taskConfig["maxDistance"].AsFloat(3f);
+            arriveDistance = taskConfig["arriveDistance"].AsFloat(3f);
+
             allowTeleport = taskConfig["allowTeleport"].AsBool();
             teleportAfterRange = taskConfig["teleportAfterRange"].AsFloat(30f);
+
+            Debug.Assert(maxDistance >= arriveDistance, "maxDistance must be greater than or equal to arriveDistance for AiTaskStayCloseToHerd on entity " + entity.Code.Path);
         }
 
 
@@ -47,12 +54,14 @@ namespace ExpandedAiTasks
             {
                 //Get all herd members.
                 herdEnts = new List<Entity>();
-                entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (e) =>
+                entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (ent) =>
                 {
-                    EntityAgent agent = e as EntityAgent;
-                    if (e.EntityId != entity.EntityId && agent != null && agent.Alive && agent.HerdId == entity.HerdId)
+                    
+                    if (ent is EntityAgent)
                     {
-                        herdEnts.Add(agent);
+                        EntityAgent agent = ent as EntityAgent;
+                        if(agent.EntityId != entity.EntityId && agent.Alive && agent.HerdId == entity.HerdId)
+                            herdEnts.Add(agent);
                     }
 
                     return false;
@@ -110,6 +119,7 @@ namespace ExpandedAiTasks
             targetOffset.Set(entity.World.Rand.NextDouble() * 2 - 1, 0, entity.World.Rand.NextDouble() * 2 - 1);
 
             stuck = false;
+            stopNow = false;
         }
 
 
@@ -125,7 +135,7 @@ namespace ExpandedAiTasks
 
             float dist = entity.ServerPos.SquareDistanceTo(x, y, z);
 
-            if (dist < 3 * 3)
+            if (dist < arriveDistance * arriveDistance)
             {
                 pathTraverser.Stop();
                 return false;
@@ -133,13 +143,13 @@ namespace ExpandedAiTasks
 
             if (allowTeleport && dist > teleportAfterRange * teleportAfterRange && entity.World.Rand.NextDouble() < 0.05)
             {
-                tryTeleport();
+                TryTeleport();
             }
 
-            return !stuck && pathTraverser.Active;
+            return !stuck && !stopNow && pathTraverser.Active;
         }
 
-        private Vec3d findDecentTeleportPos()
+        private Vec3d FindDecentTeleportPos()
         {
             var ba = entity.World.BlockAccessor;
             var rnd = entity.World.Rand;
@@ -176,10 +186,10 @@ namespace ExpandedAiTasks
         }
 
 
-        protected void tryTeleport()
+        protected void TryTeleport()
         {
             if (!allowTeleport) return;
-            Vec3d pos = findDecentTeleportPos();
+            Vec3d pos = FindDecentTeleportPos();
             if (pos != null) entity.TeleportTo(pos);
         }
 
@@ -192,19 +202,35 @@ namespace ExpandedAiTasks
         protected void OnStuck()
         {
             stuck = true;
-            tryTeleport();
+            TryTeleport();
             pathTraverser.Stop();
         }
 
         public override void OnNoPath(Vec3d target)
         {
-            tryTeleport();
+            TryTeleport();
             pathTraverser.Stop();
         }
 
         protected void OnGoalReached()
         {
             pathTraverser.Stop();
+        }
+
+        public override bool Notify(string key, object data)
+        {
+            
+            if (key == "haltMovement")
+            {
+                //If another task has requested we halt, stop moving to herd leader.
+                if (entity == (Entity)data)
+                {
+                    stopNow = true;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -82,7 +82,7 @@
 				blendMode: "Average"  
 			},
 			{ 
-				code: "meleeattack", 
+				code: "melee", 
 				animation: "attack",
 				weight: 5,
 				blendMode: "AddAverage"
@@ -137,7 +137,7 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
@@ -154,7 +154,7 @@
 							{ code: "player", fearWeight: 0.1},
 							{ code: "looter", fearWeight: 0.05},
 							{ code: "bandit-*", fearWeight: -0.1},
-							{ code: "hound-*", fearWeight: 0.05},
+							{ code: "hound-feral", fearWeight: 0.05},
 						],
 
 						poiSourcesOfFear: [
@@ -165,8 +165,8 @@
 						animationSpeed: 1,
 					},
 					{
-						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*"],
+						code: "melee",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
 						priority: 4.0,
 						damage: 2.5,
 						damageTier: 1,
@@ -182,7 +182,7 @@
 					//disengage when injured.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
 						priority: 4.5,
 						movespeed: 0.045,
 						seekingRange: 22,
@@ -197,7 +197,7 @@
 					//Agro When Damaged
 					{
 						code: "engageentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*" ],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral" ],
 						priority: 4.0,
 						mincooldown: 0, 
 						maxcooldown: 0, 
@@ -250,6 +250,16 @@
 						//maxFollowTime: 60,
 						alarmHerd: true
 					},
+					{
+						code: "stayclosetoherd",
+						priority: 1.1,
+						movespeed: 0.04,
+						animationSpeed: 1.0,
+						maxDistance: 20,
+						arriveDistance: 8,
+						searchRange: 25,
+						animation: "sprint"
+					},
 					/*
 					{
 						code: "idle",
@@ -281,8 +291,9 @@
 		idle: "creature/bandit/idle1",
 		hurt: "creature/bandit/hurt",
 		death: "creature/bandit/die2",
-		meleeattack: "creature/bandit/attack",
+		melee: "creature/bandit/attack",
 		fleeentity: "creature/bandit/flee",
+		morale: "creature/bandit/flee",
 		seekentity: "creature/bandit/givemegold",
 		engageentity: "creature/bandit/givemegold",
 	},

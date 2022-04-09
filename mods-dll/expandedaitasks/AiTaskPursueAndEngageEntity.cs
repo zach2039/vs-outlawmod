@@ -12,7 +12,7 @@ using Vintagestory.GameContent;
 
 namespace ExpandedAiTasks
 {
-    public class AiTaskPursueAndEngageEntity : AiTaskBaseTargetable
+    public class AiTaskPursueAndEngageEntity : AiTaskBaseExpandedTargetable
     {
         protected Vec3d targetPos;
         protected Vec3d withdrawPos = new Vec3d();
@@ -54,8 +54,6 @@ namespace ExpandedAiTasks
         protected bool lowTempMode;
 
         protected int searchWaitMs = 4000;
-
-        protected List<Entity> herdMembers = new List<Entity>();
 
         private eInternalMovementState internalMovementState = eInternalMovementState.Pursuing;
 
@@ -139,7 +137,7 @@ namespace ExpandedAiTasks
             lastSearchTotalMs = entity.World.ElapsedMilliseconds;
 
 
-            if (entity.World.ElapsedMilliseconds - attackedByEntityMs > 30000)
+            if (entity.World.ElapsedMilliseconds - attackedByEntityMs > 30000 )
             {
                 attackedByEntity = null;
             }
@@ -164,18 +162,19 @@ namespace ExpandedAiTasks
 
             //Aquire a target if we don't have one.
             if ( targetEntity == null || !targetEntity.Alive || ( targetEntity != attackedByEntity ) )
-            targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsEntityTargetableByPack(e, range));
+            targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (ent) => IsEntityTargetableByPack(ent, range));
 
             if (targetEntity != null)
             {
                 if ((alarmHerd) && entity.HerdId > 0)
                 {
-                    entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (e) =>
+                    entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (ent) =>
                     {
-                        EntityAgent agent = e as EntityAgent;
-                        if (e.EntityId != entity.EntityId && agent != null && agent.Alive && agent.HerdId == entity.HerdId)
+                        if ( ent is EntityAgent)
                         {
-                            agent.Notify("pursueEntity", targetEntity);
+                            EntityAgent agent = ent as EntityAgent;
+                            if (agent.EntityId != entity.EntityId && agent.Alive && agent.HerdId == entity.HerdId)
+                                agent.Notify("pursueEntity", targetEntity);
                         }
 
                         return false;
@@ -211,34 +210,6 @@ namespace ExpandedAiTasks
             }
 
             return false;
-        }
-
-        private bool CountHerdMembers(Entity e, float range, bool ignoreEntityCode = false)
-        {
-            EntityAgent agent = e as EntityAgent;
-            if (agent != null && agent.Alive && agent.HerdId == entity.HerdId)
-            {
-                herdMembers.Add(agent);
-            }
-
-            return false;
-        }
-
-        private void UpdateHerdCount()
-        {
-            List<Entity> currentMembers = new List<Entity>();
-            foreach( Entity agent in herdMembers)
-            {
-                if (agent == null)
-                    continue;
-
-                if ( !agent.Alive )
-                    continue;
-
-                currentMembers.Add(agent);
-            }
-
-            herdMembers = currentMembers;
         }
 
         private bool IsEntityTargetableByPack(Entity e, float range, bool ignoreEntityCode = false)
@@ -508,6 +479,15 @@ namespace ExpandedAiTasks
             {
                 //If our target has routed, stop pursuing.
                 if (targetEntity == (Entity)data)
+                {
+                    stopNow = true;
+                    return true;
+                }
+            }
+            else if ( key == "haltMovement")
+            {
+                //If another task has requested we halt, stop pursuing.
+                if (entity == (Entity)data)
                 {
                     stopNow = true;
                     return true;

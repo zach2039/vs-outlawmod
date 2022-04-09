@@ -93,7 +93,7 @@ namespace OutlawMod
         public override void StartClientSide(ICoreClientAPI api)
         {
             capi = api;
-            capi.Network.GetChannel("outlawModConfig").SetMessageHandler<OutlawModConfig>(onConfigFromServer);
+            capi.Network.GetChannel("outlawModConfig").SetMessageHandler<OutlawModConfig>(OnConfigFromServer);
 
             api.Event.LevelFinalize += () =>
             {
@@ -129,6 +129,12 @@ namespace OutlawMod
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
                 AiTaskRegistry.Register<AiTaskEatDeadEntities>("eatdead");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
+                AiTaskRegistry.Register<AiTaskMorale>("morale");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
+                AiTaskRegistry.Register<AiTaskExpandedMeleeAttack>("melee");
         }
 
         public override void Dispose()
@@ -170,6 +176,9 @@ namespace OutlawMod
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
                 AiTaskRegistry.Register("morale", typeof(AiTaskMorale));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
+                AiTaskRegistry.Register("melee", typeof(AiTaskExpandedMeleeAttack));
         }
 
         private void RegisterItemsShared()
@@ -231,7 +240,7 @@ namespace OutlawMod
 
         }
 
-        private void onConfigFromServer(OutlawModConfig networkMessage)
+        private void OnConfigFromServer(OutlawModConfig networkMessage)
         {
             this.config = networkMessage;
             applyConfig();

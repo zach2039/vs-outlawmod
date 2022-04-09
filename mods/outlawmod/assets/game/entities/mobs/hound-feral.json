@@ -108,7 +108,7 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.052,
 						cancelOnHurt: false,
@@ -134,7 +134,7 @@
 					},
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 4.9,
 						movespeed: 0.052,
 						cancelOnHurt: false,
@@ -156,8 +156,8 @@
 						animationSpeed: 1,
 					},
 					{
-						code: "meleeattack",
-						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter"],
+						code: "melee",
+						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-hunting"],
 						priority: 2,
 						damage: 2,
 						damageTier: 1,
@@ -174,7 +174,7 @@
 					//Don't hunt things when we can eat dead stuff nearby.
 					{
 						code: "eatdead",
-						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter"],
+						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-hunting"],
 						priority: 1.52,
 
 						moveSpeed: 0.006,
@@ -218,7 +218,7 @@
 					},
 					{
 						code: "engageentity",
-						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter"],
+						entityCodes: ["player", "chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-hunting"],
 						priority: 1.5,
 						maxTargetHealth: 5.0,
 						packHunting: " true",
@@ -267,7 +267,8 @@
 						priority: 1.48,
 						movespeed: 0.02,
 						animationSpeed: 1.0,
-						maxDistance: 4,
+						maxDistance: 10,
+						arriveDistance: 5,
 						searchRange: 25,
 						animation: "Run"
 					},

@@ -90,7 +90,7 @@
 				blendMode: "Average"  
 			},
 			{ 
-				code: "meleeattack", 
+				code: "melee", 
 				animation: "attack",
 				weight: 5,
 				blendMode: "AddAverage"
@@ -167,7 +167,7 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-*" ],
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
@@ -183,7 +183,7 @@
 						entitySourcesOfFear: [
 							{ code: "player", fearWeight: 0.1},
 							{ code: "looter", fearWeight: 0.05},
-							{ code: "hound-*", fearWeight: 0.05},
+							{ code: "hound-feral", fearWeight: 0.05},
 							{ code: "yeoman-*", fearWeight: -0.1},
 						],
 
@@ -195,8 +195,8 @@
 						animationSpeed: 1,
 					},
 					{
-						code: "meleeattack",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*" ],
+						code: "melee",
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral" ],
 						priority: 4.0,
 						damage: 1.5,
 						damageTier: 1,
@@ -211,7 +211,7 @@
 					},
 					{
 						code: "shootatentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
 						priority: 3.75,
 						priorityForCancel: 9,
 						mincooldown: 1000, 
@@ -230,6 +230,7 @@
 						projectileItem: "arrow-copper",
 						projectileRemainsInWorld: true,
 						projectileBreakOnImpactChance: 0.90,
+						stopIfPredictFriendlyFire: true,
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						seekingRange: 15,
@@ -239,7 +240,7 @@
 					//Flee to arrow range.
 					{
 						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-*"],
+						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
 						priority: 3.0,
 						movespeed: 0.040,
 						seekingRange: 6,
@@ -259,11 +260,11 @@
 						mincooldown: 0, 
 						maxcooldown: 0, 
 						pursueSpeed: 0.040,
-						pursueRange: 22,
+						pursueRange: 40,
 						pursueAnimation: "sprint",
 						engageSpeed: 0.025,
 						engageRange: 4,
-						engageAnimation: "walk",
+						engageAnimation: "walkbowready",
 
 						withdrawIfNoPath: true,
        					withdrawDist: 20.0,
@@ -291,11 +292,11 @@
 						mincooldown: 0, 
 						maxcooldown: 0, 
 						pursueSpeed: 0.040,
-						pursueRange: 22,
+						pursueRange: 40,
 						pursueAnimation: "sprint",
 						engageSpeed: 0.025,
 						engageRange: 4,
-						engageAnimation: "walk",
+						engageAnimation: "walkbowready",
 
 						withdrawIfNoPath: true,
        					withdrawDist: 20.0,
@@ -308,15 +309,16 @@
 						whenInEmotionState: "aggressiveondamage"
 					},
 					{
-						code: "stayclosetoentity",
-						priority: 1.4,
-						entityCode: "yeoman-archer",
-						movespeed: 0.02,
-						animationSpeed: 4,
+						code: "stayclosetoherd",
+						priority: 1.1,
+						movespeed: 0.04,
+						animationSpeed: 1.0,
 						maxDistance: 15,
+						arriveDistance: 8,
 						searchRange: 25,
 						animation: "sprint"
 					},
+					/*
 					{
 						code: "idle",
 						priority: 0.7,
@@ -330,6 +332,7 @@
 						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
 						stopRange: 5
 					},
+					*/
 					{
 						code: "wander", 
 						priority: 0.5, 
@@ -370,8 +373,9 @@
 		idle: "creature/bandit/idle1",
 		hurt: "creature/bandit/hurt",
 		death: "creature/bandit/die2",
-		meleeattack: "creature/bandit/attack",
+		melee: "creature/bandit/attack",
 		fleeentity: "creature/bandit/flee",
+		morale: "creature/bandit/flee",
 		seekentity: "creature/bandit/youdead",
 	},
 	idleSoundChance: 0.08

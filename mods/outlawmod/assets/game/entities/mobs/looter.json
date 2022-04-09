@@ -91,7 +91,7 @@
 				blendMode: "Average"  
 			},
 			{ 
-				code: "meleeattack", 
+				code: "melee", 
 				animation: "attack",
 				weight: 5,
 				blendMode: "AddAverage"
@@ -175,7 +175,7 @@
 						animationSpeed: 1,
 					},
 					{
-						code: "meleeattack",
+						code: "melee",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 4.0,
 						damage: 1.5,
@@ -268,7 +268,7 @@
 						withdrawIfNoPath: true,
 						withdrawDist: 9.0,
 					 	withdrawDistDamaged: 40.0,
-						 withdrawAnimation: "idle",
+						withdrawAnimation: "idle",
 
 						animationSpeed: 1.0,
 						alarmHerd: true,
@@ -280,6 +280,7 @@
 						movespeed: 0.04,
 						animationSpeed: 1.0,
 						maxDistance: 15,
+						arriveDistance: 8,
 						searchRange: 25,
 						animation: "sprint"
 					},
@@ -332,8 +333,9 @@
 		idle: "creature/bandit/idle1",
 		hurt: "creature/bandit/hurt",
 		death: "creature/bandit/die",
-		meleeattack: "creature/bandit/attack",
+		melee: "creature/bandit/attack",
 		fleeentity: "creature/bandit/flee",
+		morale: "creature/bandit/flee",
 		seekentity: "creature/bandit/givemegold",
 		engageentity: "creature/bandit/givemegold",
 	},

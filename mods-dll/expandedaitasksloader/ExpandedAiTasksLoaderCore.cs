@@ -12,8 +12,6 @@ namespace ExpandedAiTasksLoader
 
     public class ExpandedAiTasksLoaderCore : ModSystem
     {
-        ICoreAPI api;
-
         //We need this mod to execute as early as possible so other mods can use it.
         public override double ExecuteOrder()
         {
@@ -22,10 +20,7 @@ namespace ExpandedAiTasksLoader
 
         public override void Start(ICoreAPI api)
         {
-            this.api = api;
-
             base.Start(api);
-
             RegisterAiTasksShared();
         }
 
@@ -48,6 +43,9 @@ namespace ExpandedAiTasksLoader
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
                 AiTaskRegistry.Register<AiTaskMorale>("morale");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
+                AiTaskRegistry.Register<AiTaskExpandedMeleeAttack>("melee");
         }
 
         private void RegisterAiTasksShared()
@@ -67,6 +65,9 @@ namespace ExpandedAiTasksLoader
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
                 AiTaskRegistry.Register("morale", typeof(AiTaskMorale));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
+                AiTaskRegistry.Register("melee", typeof(AiTaskExpandedMeleeAttack));
         }
     }
 }

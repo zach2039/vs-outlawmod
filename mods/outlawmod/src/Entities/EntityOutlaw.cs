@@ -156,7 +156,7 @@ namespace OutlawMod
 
                     break;
 
-                case 1004: //Flee Entity
+                case 1004: //Flee Entity, Morale Route
 
                     if (!Alive)
                         return;
@@ -208,11 +208,19 @@ namespace OutlawMod
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1003);
                             return;
 
+                        case "melee":
+                            (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1003);
+                            return;
+
                         case "shootatentity":
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1003);
                             return;
 
                         case "fleeentity":
+                            (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1004);
+                            return;
+
+                        case "morale":
                             (World.Api as ICoreServerAPI).Network.BroadcastEntityPacket(this.EntityId, 1004);
                             return;
 

@@ -11,7 +11,7 @@ using Vintagestory.GameContent;
 
 namespace ExpandedAiTasks
 {
-    public class AiTaskMorale : AiTaskBaseTargetable
+    public class AiTaskMorale : AiTaskBaseExpandedTargetable
     {
         ICoreServerAPI sapi;
         Vec3d targetPos = new Vec3d();
@@ -48,8 +48,6 @@ namespace ExpandedAiTasks
         
         long fleeStartMs;
         bool stuck;
-
-        protected List<Entity> herdMembers = new List<Entity>();
         
         static POIRegistry poiregistry;
 
@@ -196,9 +194,9 @@ namespace ExpandedAiTasks
         {
 
             //Handle case where our target is an enemy entity.
-            EntityAgent agent = ent as EntityAgent;
-            if ( agent != null )
+            if ( ent is EntityAgent )
             {
+                EntityAgent agent = ent as EntityAgent;
                 if (entitySourcesOfFearWeightsByCodeExact.Count > 0 || entitySourcesOfFearWeightsByCodePartial.Count > 0 || ent.Code.Path == "player")
                     entitySourceOfFearTotalWeight += GetEntitySourceOfFearWeight(ent);
 
@@ -212,9 +210,9 @@ namespace ExpandedAiTasks
             else
             {
                 //Handle case where our target could be an item or block.
-                EntityItem item = ent as EntityItem;
-                if ( item != null )
+                if ( ent is EntityItem )
                 {
+                    EntityItem item = ent as EntityItem;
                     if ( itemStackSourcesOfFearWeightsByCodeExact.Count > 0 || itemStackSourcesOfFearWeightsByCodePartial.Count > 0 )
                         itemStackSourceOfFearTotalWeight += GetItemStackSourceOfFearWeight(item.Itemstack);      
                 }
@@ -224,18 +222,19 @@ namespace ExpandedAiTasks
 
         }
 
-        private bool CountHerdMembers(Entity e, float range, bool ignoreEntityCode = false)
+        protected override bool CountHerdMembers(Entity e, float range, bool ignoreEntityCode = false)
         {
-            EntityAgent agent = e as EntityAgent;
-            if (agent != null && agent.Alive && agent.HerdId == entity.HerdId)
+            if (e is EntityAgent)
             {
-                herdMembers.Add(agent);
+                EntityAgent agent = e as EntityAgent;
+                if (agent.HerdId == entity.HerdId)
+                    herdMembers.Add(agent);
             }
 
             return false;
         }
 
-        private void UpdateHerdCount()
+        protected override void UpdateHerdCount()
         {
             List<Entity> currentMembers = new List<Entity>();
             foreach (Entity agent in herdMembers)
@@ -266,6 +265,8 @@ namespace ExpandedAiTasks
 
             fleeStartMs = entity.World.ElapsedMilliseconds;
             stuck = false;
+
+            entity.PlayEntitySound("morale", null, true);
         }
 
 
@@ -298,7 +299,7 @@ namespace ExpandedAiTasks
             tmpVec.Ahead(0.9, 0, yaw - GameMath.PI / 2);
 
             // Running into wall?
-            if (traversable(tmpVec))
+            if (Traversable(tmpVec))
             {
                 targetPos.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z).Ahead(10, 0, yaw - GameMath.PI / 2);
                 return;
@@ -307,7 +308,7 @@ namespace ExpandedAiTasks
             // Try 90 degrees left
             tmpVec = tmpVec.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z);
             tmpVec.Ahead(0.9, 0, yaw - GameMath.PI);
-            if (traversable(tmpVec))
+            if (Traversable(tmpVec))
             {
                 targetPos.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z).Ahead(10, 0, yaw - GameMath.PI);
                 return;
@@ -316,7 +317,7 @@ namespace ExpandedAiTasks
             // Try 90 degrees right
             tmpVec = tmpVec.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z);
             tmpVec.Ahead(0.9, 0, yaw);
-            if (traversable(tmpVec))
+            if (Traversable(tmpVec))
             {
                 targetPos.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z).Ahead(10, 0, yaw);
                 return;
@@ -337,7 +338,7 @@ namespace ExpandedAiTasks
         }
 
 
-        bool traversable(Vec3d pos)
+        bool Traversable(Vec3d pos)
         {
             return
                 !world.CollisionTester.IsColliding(world.BlockAccessor, entity.SelectionBox, pos, false) ||
@@ -431,7 +432,7 @@ namespace ExpandedAiTasks
 
         private double CalculateEntityInjuryRatio(Entity ent)
         {
-            if ( ent as EntityAgent != null )
+            if ( ent is EntityAgent )
             {
                 ITreeAttribute treeAttribute = ent.WatchedAttributes.GetTreeAttribute("health");
 
@@ -509,17 +510,16 @@ namespace ExpandedAiTasks
 
             //We want entities such as items to be able to scare Ai, however in the case of living Ai, we only want them to scare the Ai if
             //They are alive.
-            EntityAgent agent = ent as EntityAgent;
-            if ( agent != null)
+            if ( ent is EntityAgent)
             {
                 if ( (!ent.Alive && !deathsImpactMorale) || !ent.IsInteractable || !CanSense(ent, moraleRange))
                     return 0;
             }           
 
             //If the entity is a player, see if they have anything in their active hand slots we're scared of.
-            EntityPlayer player = ent as EntityPlayer;
-            if (player != null)
+            if (ent is EntityPlayer)
             {
+                EntityPlayer player = ent as EntityPlayer;
                 ItemSlot rightSlot = player.RightHandItemSlot;
                 if (rightSlot.Itemstack != null)
                     itemStackSourceOfFearTotalWeight += GetItemStackSourceOfFearWeight(rightSlot.Itemstack);
