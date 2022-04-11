@@ -229,7 +229,7 @@ namespace ExpandedAiTasks
             if (animMeta != null)
             {
                 animMeta.EaseInSpeed = 1f;
-                animMeta.EaseOutSpeed = 1f; //Investigate this and see if it's causing the model to flicker.
+                animMeta.EaseOutSpeed = 1f;
                 entity.AnimManager.StartAnimation(animMeta);
             }
 

@@ -1342,12 +1342,6 @@
 					}
 				},
 				{
-					"frame": 3,
-					"elements": {
-
-					}
-				},
-				{
 					"frame": 7,
 					"elements": {
 						"LowerTorso": { "offsetX": -8.0, "offsetY": -2.0, "offsetZ": 0.0 }
@@ -1963,33 +1957,6 @@
 						"LowerArmL": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
 						"UpperArmR": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
 						"LowerArmR": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 }
-					}
-				},
-				{
-					"frame": 60,
-					"elements": {
-						"LowerTorso": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"UpperTorso": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"UpperArmL": { "offsetX": 1.0, "offsetY": -0.26315789473684215, "offsetZ": -0.5263157894736843, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"LowerArmL": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"Neck": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"Head": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"UpperArmR": { "offsetX": 1.0, "offsetY": 0.0, "offsetZ": 0.0, "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"LowerArmR": {  },
-						"origin": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"BowGrip": {  },
-						"BowLimbUp": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"BowTipUp": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"BowStringUp1": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"BowStringUp2": {  },
-						"BowNock": { "rotationX": 0.0, "rotationY": -11.07, "rotationZ": 0.0 },
-						"BowLimbDown": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"BowTipDown": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"BowStringDown1": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"UpperFootL": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"LowerFootL": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"UpperFootR": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 },
-						"LowerFootR": { "rotationX": 0.0, "rotationY": 0.0, "rotationZ": 0.0 }
 					}
 				}
 			]

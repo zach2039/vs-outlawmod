@@ -248,7 +248,6 @@
 						stopIfPredictFriendlyFire: true,
 						durationMs: 2000,
 						releaseAtMs: 1000,
-						seekingRange: 15,
 						animationSpeed: 1.0,
 						animation: "bowattack"
 					},
