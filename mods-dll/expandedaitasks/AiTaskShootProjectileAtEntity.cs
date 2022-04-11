@@ -19,6 +19,7 @@ namespace ExpandedAiTasks
 
         float minDist = 3f;
         float maxDist = 15f;
+        float maxVertDist = 10f;
 
         //Accuracy Vars
         float minRangeDistOffTarget = 0.0f; //this is the number of blocks off target a projectile will stray at min range.
@@ -73,6 +74,7 @@ namespace ExpandedAiTasks
             this.releaseAtMs = taskConfig["releaseAtMs"].AsInt(1000);
             this.minDist = taskConfig["minDist"].AsFloat(3f);
             this.maxDist = taskConfig["maxDist"].AsFloat(15f);
+            this.maxVertDist = taskConfig["maxVertDist"].AsFloat(this.maxDist * 0.75f);
             this.minRangeDistOffTarget = taskConfig["minRangeDistOffTarget"].AsFloat(0.0f);
             this.maxRangeDistOffTarget = taskConfig["maxRangeDistOffTarget"].AsFloat(0.0f);
             this.maxVelocity = taskConfig["maxVelocity"].AsFloat(1.0f);
@@ -96,8 +98,8 @@ namespace ExpandedAiTasks
         public override bool ShouldExecute()
         {
             // React immediately on hurt, otherwise only 1/10 chance of execution
-            if (rand.NextDouble() > 0.1f && (whenInEmotionState == null || bhEmo?.IsInEmotionState(whenInEmotionState) != true)) 
-                return false;
+            //if (rand.NextDouble() > 0.1f && (whenInEmotionState == null || bhEmo?.IsInEmotionState(whenInEmotionState) != true)) 
+             //   return false;
 
             if (whenInEmotionState != null && bhEmo?.IsInEmotionState(whenInEmotionState) != true) 
                 return false;
@@ -113,6 +115,7 @@ namespace ExpandedAiTasks
 
 
             float range = maxDist;
+            float vertRange = maxVertDist;
             targetEntity = null;
 
             if (stopIfPredictFriendlyFire)
@@ -135,7 +138,7 @@ namespace ExpandedAiTasks
                 attackedByEntity = null;
             }
 
-            if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && IsTargetableEntity(attackedByEntity, 15, true) && hasDirectContact(attackedByEntity, range, range / 2f))
+            if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && IsTargetableEntity(attackedByEntity, 15, true) && hasDirectContact(attackedByEntity, range, vertRange))
             {
                 targetEntity = attackedByEntity;
             }
@@ -151,7 +154,7 @@ namespace ExpandedAiTasks
 
             if (targetEntity == null || !targetEntity.Alive)
             {
-                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, range / 2f));
+                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, vertRange));
             }
 
             if ( targetEntity != targetLastFrame)
@@ -226,7 +229,7 @@ namespace ExpandedAiTasks
             if (animMeta != null)
             {
                 animMeta.EaseInSpeed = 1f;
-                animMeta.EaseOutSpeed = 1f;
+                animMeta.EaseOutSpeed = 1f; //Investigate this and see if it's causing the model to flicker.
                 entity.AnimManager.StartAnimation(animMeta);
             }
 
