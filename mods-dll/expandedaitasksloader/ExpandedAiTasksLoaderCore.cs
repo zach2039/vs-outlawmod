@@ -5,6 +5,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 using Vintagestory.GameContent;
+using HarmonyLib;
 using ExpandedAiTasks;
 
 namespace ExpandedAiTasksLoader
@@ -12,6 +13,9 @@ namespace ExpandedAiTasksLoader
 
     public class ExpandedAiTasksLoaderCore : ModSystem
     {
+
+        private Harmony harmony;
+
         //We need this mod to execute as early as possible so other mods can use it.
         public override double ExecuteOrder()
         {
@@ -21,6 +25,11 @@ namespace ExpandedAiTasksLoader
         public override void Start(ICoreAPI api)
         {
             base.Start(api);
+
+            //Apply AiExpandedTask Patches if they haven't already been applied.
+            if (ExpandedAiTasksHarmonyPatcher.ShouldPatch())
+                ExpandedAiTasksHarmonyPatcher.ApplyPatches();
+
             RegisterAiTasksShared();
         }
 
@@ -46,6 +55,9 @@ namespace ExpandedAiTasksLoader
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
                 AiTaskRegistry.Register<AiTaskExpandedMeleeAttack>("melee");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("guard"))
+                AiTaskRegistry.Register<AiTaskGuard>("guard");
         }
 
         private void RegisterAiTasksShared()
@@ -68,6 +80,9 @@ namespace ExpandedAiTasksLoader
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
                 AiTaskRegistry.Register("melee", typeof(AiTaskExpandedMeleeAttack));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("guard"))
+                AiTaskRegistry.Register("guard", typeof(AiTaskGuard));
         }
     }
 }

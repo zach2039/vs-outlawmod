@@ -27,11 +27,12 @@ namespace ExpandedAiTasks
         protected int attackDurationMs = 1500;
         protected int damagePlayerAtMs = 500;
 
-
-
         public EnumDamageType damageType = EnumDamageType.BluntAttack;
         public int damageTier = 0;
 
+        Entity guardTargetAttackedByEntity = null;
+
+        bool stopNow;
 
         public AiTaskExpandedMeleeAttack(EntityAgent entity) : base(entity)
         {
@@ -63,6 +64,7 @@ namespace ExpandedAiTasks
         public override bool ShouldExecute()
         {
             long ellapsedMs = entity.World.ElapsedMilliseconds;
+
             if (ellapsedMs - lastCheckOrAttackMs < attackDurationMs || cooldownUntilMs > ellapsedMs)
             {
                 return false;
@@ -75,16 +77,28 @@ namespace ExpandedAiTasks
                 return false;
 
             Vec3d pos = entity.ServerPos.XYZ.Add(0, entity.SelectionBox.Y2 / 2, 0).Ahead(entity.SelectionBox.XSize / 2, 0, entity.ServerPos.Yaw);
+            targetEntity = null;
 
             if (entity.World.ElapsedMilliseconds - attackedByEntityMs > 30000)
             {
                 attackedByEntity = null;
             }
+
             if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && IsTargetableEntity(attackedByEntity, 15, true) && hasDirectContact(attackedByEntity, minDist, minVerDist))
             {
                 targetEntity = attackedByEntity;
             }
+            else if (guardTargetAttackedByEntity != null && guardTargetAttackedByEntity.Alive)
+            {
+                if (IsTargetableEntity(guardTargetAttackedByEntity, 15, false) && hasDirectContact(guardTargetAttackedByEntity, minDist, minVerDist))
+                    targetEntity = guardTargetAttackedByEntity;
+            }
             else
+            {
+                guardTargetAttackedByEntity = null;
+            }
+
+            if (targetEntity == null || !targetEntity.Alive )
             {
                 targetEntity = entity.World.GetNearestEntity(pos, minDist, minVerDist, (e) =>
                 {
@@ -105,6 +119,7 @@ namespace ExpandedAiTasks
         public override void StartExecute()
         {
             didStartAnim = false;
+            stopNow = false;
             curTurnRadPerSec = entity.GetBehavior<EntityBehaviorTaskAI>().PathTraverser.curTurnRadPerSec;
             entity.PlayEntitySound("melee", null, true);
         }
@@ -156,7 +171,36 @@ namespace ExpandedAiTasks
                 damageInflicted = true;
             }
 
-            if (lastCheckOrAttackMs + attackDurationMs > entity.World.ElapsedMilliseconds) return true;
+            if (lastCheckOrAttackMs + attackDurationMs > entity.World.ElapsedMilliseconds) 
+                return true && !stopNow;
+            
+            return false;
+        }
+
+        public override bool Notify(string key, object data)
+        {
+
+            if (key == "entityAttackedGuardedEntity")
+            {
+                //If a guard task tells us our guard target has been attacked, engage the target as if they attacked us.
+                if ((Entity)data != null && guardTargetAttackedByEntity != (Entity)data)
+                {
+                    guardTargetAttackedByEntity = (Entity)data;
+                    targetEntity = guardTargetAttackedByEntity;
+                    return false;
+                }
+            }
+
+            //Clear the entity that attacked our guard target.
+            else if (key == "guardChaseStop")
+            {
+                if (targetEntity == guardTargetAttackedByEntity)
+                    stopNow = true;
+
+                guardTargetAttackedByEntity = null;
+                return false;
+            }
+
             return false;
         }
     }

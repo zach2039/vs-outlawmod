@@ -1,6 +1,6 @@
 {
 	code: "poacher-spear",
-	class: "EntityOutlaw",
+	class: "EntityOutlawPoacher",
 	canClimb: true,
 	hitboxSize: { x: 0.6, y: 1.75 },
 	deadHitboxSize: { x: 0.75, y: 0.5 },
@@ -354,7 +354,7 @@
 				maxTemp: 28,
 				minRain: 0,
 				minForestOrShrubs: 0.25,
-				companions: ["hound-hunting"]
+				companions: []
 			}
 		}
 	},

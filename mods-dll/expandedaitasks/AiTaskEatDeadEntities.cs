@@ -630,10 +630,10 @@ namespace ExpandedAiTasks
 
                     BlockEntity blockEnt = blockAccessor.GetBlockEntity(blockPos);
                     if ( pathEndBlock is BlockMicroBlock)
-                    {
-                        BlockEntityMicroBlock microBlockEnt = blockAccessor.GetBlockEntity(blockPos) as BlockEntityMicroBlock;  
-                        if ( microBlockEnt != null )
+                    { 
+                        if (blockAccessor.GetBlockEntity(blockPos) is BlockEntityMicroBlock)
                         {
+                            BlockEntityMicroBlock microBlockEnt = blockAccessor.GetBlockEntity(blockPos) as BlockEntityMicroBlock;
                             if (microBlockEnt.sideAlmostSolid[facing.Index] == true )
                             {
                                 confirmedSolid = true;

@@ -49,7 +49,12 @@
 	"item-creature-hound-feral": "Feral Hound",
 	"itemdesc-creature-hound-feral": "<font color=\"#99c9f9\"><i>Feral hounds have no owner to bring them to heel. They roam the lands in packs, attacking weak prey for easy meals.</i></font><br>",
 	"item-dead-creature-hound-feral": "Dead Feral Hound",
-	"deadcreature-eaten-houndferal": "They've been mauled by a feral hound.\n",	
+	"deadcreature-eaten-houndferal": "They've been mauled by a hound.\n",	
+
+	"item-creature-hound-hunting": "Hunting Hound",
+	"itemdesc-creature-hound-hunting": "<font color=\"#99c9f9\"><i>Hunting hounds are the loyal companions of huntsmen the world over. They will risk their lives to protect their owners.</i></font><br>",
+	"item-dead-creature-hound-hunting": "Dead Hunting Hound",
+	"deadcreature-eaten-houndhunting": "They've been mauled by a hound.\n",	
 
 	"block-carcass-human": "Carcass (Human)",
 

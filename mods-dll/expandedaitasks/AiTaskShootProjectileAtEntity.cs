@@ -47,12 +47,15 @@ namespace ExpandedAiTasks
 
         float accum = 0;
         bool didShoot;
+        bool stopNow;
 
         float minTurnAnglePerSec;
         float maxTurnAnglePerSec;
         float curTurnRadPerSec;
 
         Random rnd;
+
+        Entity guardTargetAttackedByEntity = null;
 
         public AiTaskShootProjectileAtEntity(EntityAgent entity) : base(entity)
         {
@@ -110,6 +113,7 @@ namespace ExpandedAiTasks
 
 
             float range = maxDist;
+            targetEntity = null;
 
             if (stopIfPredictFriendlyFire)
             {
@@ -130,11 +134,22 @@ namespace ExpandedAiTasks
             {
                 attackedByEntity = null;
             }
+
             if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && IsTargetableEntity(attackedByEntity, 15, true) && hasDirectContact(attackedByEntity, range, range / 2f))
             {
                 targetEntity = attackedByEntity;
             }
+            else if (guardTargetAttackedByEntity != null && guardTargetAttackedByEntity.Alive)
+            {
+                if ( hasDirectContact(guardTargetAttackedByEntity, range, range / 2f))
+                    targetEntity = guardTargetAttackedByEntity;
+            }
             else
+            {
+                guardTargetAttackedByEntity = null;
+            }
+
+            if (targetEntity == null || !targetEntity.Alive)
             {
                 targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, range / 2f));
             }
@@ -167,6 +182,7 @@ namespace ExpandedAiTasks
         {
             accum = 0;
             didShoot = false;
+            stopNow = false;
 
             if (entity?.Properties.Server?.Attributes != null)
             {
@@ -315,7 +331,7 @@ namespace ExpandedAiTasks
                     return false;
             }
 
-            return accum < durationMs / 1000f;
+            return accum < durationMs / 1000f && !stopNow;
         }
 
 
@@ -363,6 +379,32 @@ namespace ExpandedAiTasks
                         return true;
                 }
                     
+            }
+
+            return false;
+        }
+
+        public override bool Notify(string key, object data)
+        {
+
+            if (key == "entityAttackedGuardedEntity")
+            {
+                //If a guard task tells us our guard target has been attacked, engage the target as if they attacked us.
+                if ((Entity)data != null && guardTargetAttackedByEntity != (Entity)data)
+                {
+                    guardTargetAttackedByEntity = (Entity)data;
+                    targetEntity = guardTargetAttackedByEntity;
+                    return false;
+                }
+            }
+            //Clear the entity that attacked our guard target.
+            else if (key == "guardChaseStop")
+            {
+                if (targetEntity == guardTargetAttackedByEntity)
+                    stopNow = true;
+
+                guardTargetAttackedByEntity = null;
+                return false;
             }
 
             return false;

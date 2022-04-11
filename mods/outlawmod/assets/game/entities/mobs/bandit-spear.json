@@ -247,6 +247,8 @@
 						animationSpeed: 1.0,
 						maxDistance: 15,
 						searchRange: 25,
+						allowStrayFromHerdInCombat: true,
+						allowHerdConsolidation: true,
 						animation: "sprint"
 					},
 					{

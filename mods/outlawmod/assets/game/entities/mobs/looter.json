@@ -282,6 +282,8 @@
 						maxDistance: 15,
 						arriveDistance: 8,
 						searchRange: 25,
+						allowHerdConsolidation: true,
+						allowHerdConsolidation: true,
 						animation: "sprint"
 					},
 					/*
@@ -319,7 +321,7 @@
 				"__comment": "Make them spawn away from artifical light, both day and night",
 				maxLightLevel: 7,
 				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "verynarrowgaussian", avg: 4, var: 4 },
+				groupSize: { dist: "gaussian", avg: 4, var: 4 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*"],
 				minTemp: -15,
 				maxTemp: 28,

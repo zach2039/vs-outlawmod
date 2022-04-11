@@ -17,6 +17,8 @@ namespace ExpandedAiTasks
         protected Vec3d targetPos;
         protected Vec3d withdrawPos = new Vec3d();
 
+        Entity guardTargetAttackedByEntity = null;
+
         //Json Fields
         protected float pursueSpeed = 0.2f;
         protected float pursueRange = 25f;
@@ -133,9 +135,9 @@ namespace ExpandedAiTasks
 
 
             float range = pursueRange;
+            targetEntity = null;
 
             lastSearchTotalMs = entity.World.ElapsedMilliseconds;
-
 
             if (entity.World.ElapsedMilliseconds - attackedByEntityMs > 30000 )
             {
@@ -145,6 +147,14 @@ namespace ExpandedAiTasks
             if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && entity.World.Rand.NextDouble() < 0.5 && IsTargetableEntity(attackedByEntity, range, true))
             {
                 targetEntity = attackedByEntity;
+            }
+            else if (guardTargetAttackedByEntity != null && guardTargetAttackedByEntity.Alive)
+            {
+                targetEntity = guardTargetAttackedByEntity;
+            }
+            else
+            {
+                guardTargetAttackedByEntity = null;
             }
 
             if (packHunting)
@@ -161,8 +171,8 @@ namespace ExpandedAiTasks
             }
 
             //Aquire a target if we don't have one.
-            if ( targetEntity == null || !targetEntity.Alive || ( targetEntity != attackedByEntity ) )
-            targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (ent) => IsEntityTargetableByPack(ent, range));
+            if ( targetEntity == null || !targetEntity.Alive )
+                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (ent) => IsEntityTargetableByPack(ent, range));
 
             if (targetEntity != null)
             {
@@ -212,12 +222,9 @@ namespace ExpandedAiTasks
             return false;
         }
 
-        private bool IsEntityTargetableByPack(Entity e, float range, bool ignoreEntityCode = false)
+        private bool IsEntityTargetableByPack(Entity ent, float range, bool ignoreEntityCode = false)
         {
-
-            EntityAgent agent = e as EntityAgent;
-
-            if (agent == null)
+            if (!(ent is EntityAgent))
                 return false;
 
             //If we are pack hunting.
@@ -225,7 +232,7 @@ namespace ExpandedAiTasks
             {
                 float packTargetMaxHealth = maxTargetHealth * herdMembers.Count;
 
-                ITreeAttribute treeAttribute = agent.WatchedAttributes.GetTreeAttribute("health");
+                ITreeAttribute treeAttribute = ent.WatchedAttributes.GetTreeAttribute("health");
 
                 if (treeAttribute == null)
                     return false;
@@ -240,7 +247,7 @@ namespace ExpandedAiTasks
             {
                 if ( maxTargetHealth > 0 )
                 {
-                    ITreeAttribute treeAttribute = agent.WatchedAttributes.GetTreeAttribute("health");
+                    ITreeAttribute treeAttribute = ent.WatchedAttributes.GetTreeAttribute("health");
                     
                     if (treeAttribute == null)
                         return false;
@@ -252,10 +259,10 @@ namespace ExpandedAiTasks
                 }
             }
 
-            if (!IsTargetableEntity(e, range, ignoreEntityCode))
+            if (!IsTargetableEntity(ent, range, ignoreEntityCode))
                 return false;
 
-            return hasDirectContact(e, range, range / 2);
+            return hasDirectContact(ent, range, range / 2);
         }
 
         public float MinDistanceToTarget()
@@ -492,6 +499,26 @@ namespace ExpandedAiTasks
                     stopNow = true;
                     return true;
                 }
+            }
+            else if (key == "entityAttackedGuardedEntity")
+            {
+                //If a guard task tells us our guard target has been attacked, pursue and engage the attacker.
+                if ((Entity)data != null && guardTargetAttackedByEntity != (Entity)data)
+                {
+                    guardTargetAttackedByEntity = (Entity)data;
+                    targetEntity = guardTargetAttackedByEntity;
+                    targetPos = targetEntity.ServerPos.XYZ;
+                    return true;
+                }
+            }
+            //Clear the entity that attacked our guard target.
+            else if (key == "guardChaseStop")
+            {
+                if (targetEntity == guardTargetAttackedByEntity)
+                    stopNow = true;
+
+                guardTargetAttackedByEntity = null;
+                return false;
             }
 
             return false;

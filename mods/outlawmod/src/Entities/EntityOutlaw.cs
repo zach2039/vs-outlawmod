@@ -100,8 +100,25 @@ namespace OutlawMod
                     
                     return;
                 }
+
+                AssetLocation code = new AssetLocation("hound-hunting");
+                EntityProperties houndProperties = this.World.GetEntityType(code);
+
+                Debug.Assert(houndProperties != null, "Hound Properties are null");
+
+
+                Entity houndEnt = this.World.ClassRegistry.CreateEntity(houndProperties);
+                houndEnt.ServerPos.SetFrom(this.ServerPos);
+                houndEnt.Pos.SetFrom(houndEnt.ServerPos);
+
+                if (houndEnt is EntityAgent)
+                {
+                    EntityAgent houndAgent = (EntityAgent)houndEnt;
+                    houndAgent.HerdId = this.HerdId;
+                }
             }
         }
+
 
         /// <summary>
         /// Called when the entity despawns

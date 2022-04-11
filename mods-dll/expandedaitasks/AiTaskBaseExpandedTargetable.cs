@@ -13,7 +13,7 @@ namespace ExpandedAiTasks
     {
         protected List<Entity> herdMembers = new List<Entity>();
 
-        public AiTaskBaseExpandedTargetable(EntityAgent entity) : base(entity)
+    public AiTaskBaseExpandedTargetable(EntityAgent entity) : base(entity)
         {
         }
 
@@ -76,9 +76,9 @@ namespace ExpandedAiTasks
         //This is an override for the default OnEntityHurt func that prevents Ai from aggoing on friendly herd members.
         public override void OnEntityHurt(DamageSource source, float damage)
         {
-            EntityAgent attacker = source.SourceEntity as EntityAgent;
-            if (attacker != null)
+            if (source.SourceEntity is EntityAgent)
             {
+                EntityAgent attacker = source.SourceEntity as EntityAgent;
                 if ( attacker.HerdId != entity.HerdId)
                 {
                     attackedByEntity = source.SourceEntity;

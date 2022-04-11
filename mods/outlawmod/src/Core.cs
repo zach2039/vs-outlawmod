@@ -71,6 +71,10 @@ namespace OutlawMod
             harmony = new Harmony("com.grifthegnome.outlawmod.causeofdeath");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
+            //Apply AiExpandedTask Patches if they haven't already been applied.
+            if (ExpandedAiTasksHarmonyPatcher.ShouldPatch())
+                ExpandedAiTasksHarmonyPatcher.ApplyPatches();
+
             ModSystem expandedAiTasksMod = api.ModLoader.GetModSystem("ExpandedAiTasksLoader.ExpandedAiTasksLoaderCore");
 
             if (expandedAiTasksMod != null)
@@ -135,6 +139,9 @@ namespace OutlawMod
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
                 AiTaskRegistry.Register<AiTaskExpandedMeleeAttack>("melee");
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("guard"))
+                AiTaskRegistry.Register<AiTaskGuard>("guard");
         }
 
         public override void Dispose()
@@ -146,6 +153,7 @@ namespace OutlawMod
         private void RegisterEntitiesShared()
         {
             api.RegisterEntity("EntityOutlaw", typeof(EntityOutlaw));
+            api.RegisterEntity("EntityOutlawPoacher", typeof(EntityOutlawPoacher));
         }
 
         private void RegisterBlocksShared()
@@ -179,6 +187,9 @@ namespace OutlawMod
 
             if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
                 AiTaskRegistry.Register("melee", typeof(AiTaskExpandedMeleeAttack));
+
+            if (!AiTaskRegistry.TaskTypes.ContainsKey("guard"))
+                AiTaskRegistry.Register("guard", typeof(AiTaskGuard));
         }
 
         private void RegisterItemsShared()

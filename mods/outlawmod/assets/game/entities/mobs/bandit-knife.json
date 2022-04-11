@@ -258,6 +258,8 @@
 						maxDistance: 20,
 						arriveDistance: 8,
 						searchRange: 25,
+						allowStrayFromHerdInCombat: true,
+						allowHerdConsolidation: true,
 						animation: "sprint"
 					},
 					/*

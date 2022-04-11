@@ -12,6 +12,7 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
+using ExpandedAiTasks;
 
 namespace OutlawMod
 {
@@ -175,4 +176,29 @@ namespace OutlawMod
             }
         }
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    ///PATCHING TO ADD A UNIVERAL SET LOCATION FOR LAST ENTITY TO ATTACK ON ENTITY AGENT//
+    //////////////////////////////////////////////////////////////////////////////////////
+    /*
+    [HarmonyPatch(typeof(EntityAgent))]
+    public class ReceiveDamageOverride
+    {
+        [HarmonyPrepare]
+        static bool Prepare(MethodBase original, Harmony harmony)
+        {
+            return true;
+        }
+
+        [HarmonyPatch("ReceiveDamage")]
+        [HarmonyPostfix]
+        static void OverrideReceiveDamage(EntityAgent __instance, DamageSource damageSource, float damage)
+        {
+            if (__instance.Alive)
+            {
+                AiUtility.SetLastAttacker(__instance, damageSource);
+            }
+        }
+    }
+    */
 }

@@ -316,6 +316,8 @@
 						maxDistance: 15,
 						arriveDistance: 8,
 						searchRange: 25,
+						allowStrayFromHerdInCombat: true,
+						allowHerdConsolidation: true,
 						animation: "sprint"
 					},
 					/*
@@ -359,7 +361,7 @@
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
 				maxLightLevel: 5,
 				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "verynarrowgaussian", avg: 4, var: 2 },
+				groupSize: { dist: "gaussian", avg: 4, var: 2 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*"],
 				minTemp: -15,
 				maxTemp: 28,
