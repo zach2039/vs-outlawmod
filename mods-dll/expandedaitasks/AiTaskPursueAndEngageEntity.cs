@@ -109,6 +109,21 @@ namespace ExpandedAiTasks
             retaliateAttacks = taskConfig["retaliateAttacks"].AsBool(true);
 
             Debug.Assert(pursueRange > engageRange, "pursueRange must be a greater value to engageRange.");
+
+            //Get Turning Speed Values
+            if (entity?.Properties.Server?.Attributes != null)
+            {
+                minTurnAnglePerSec = entity.Properties.Server.Attributes.GetTreeAttribute("pathfinder").GetFloat("minTurnAnglePerSec", 250);
+                maxTurnAnglePerSec = entity.Properties.Server.Attributes.GetTreeAttribute("pathfinder").GetFloat("maxTurnAnglePerSec", 450);
+            }
+            else
+            {
+                minTurnAnglePerSec = 250;
+                maxTurnAnglePerSec = 450;
+            }
+
+            curTurnRadPerSec = minTurnAnglePerSec + (float)entity.World.Rand.NextDouble() * (maxTurnAnglePerSec - minTurnAnglePerSec);
+            curTurnRadPerSec *= GameMath.DEG2RAD * 50 * 0.02f;
         }
 
 
@@ -194,22 +209,6 @@ namespace ExpandedAiTasks
                 targetPos = targetEntity.ServerPos.XYZ;
                 withdrawPos = targetPos.Clone();
                 withdrawTargetMoveDistBeforeEncroaching = Math.Max(1.0f, withdrawDist / 4);
-
-                //Get Turning Speed
-                if (entity?.Properties.Server?.Attributes != null)
-                {
-                    minTurnAnglePerSec = entity.Properties.Server.Attributes.GetTreeAttribute("pathfinder").GetFloat("minTurnAnglePerSec", 250);
-                    maxTurnAnglePerSec = entity.Properties.Server.Attributes.GetTreeAttribute("pathfinder").GetFloat("maxTurnAnglePerSec", 450);
-                }
-                else
-                {
-                    minTurnAnglePerSec = 250;
-                    maxTurnAnglePerSec = 450;
-                }
-
-                curTurnRadPerSec = minTurnAnglePerSec + (float)entity.World.Rand.NextDouble() * (maxTurnAnglePerSec - minTurnAnglePerSec);
-                curTurnRadPerSec *= GameMath.DEG2RAD * 50 * 0.02f;
-
 
                 if (entity.ServerPos.SquareDistanceTo(targetPos) <= MinDistanceToTarget())
                 {

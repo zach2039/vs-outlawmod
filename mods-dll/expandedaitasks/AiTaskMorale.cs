@@ -487,7 +487,9 @@ namespace ExpandedAiTasks
         private double GetTotalPoiSourceOfFearWeight()
         {
             poiSourceOfFearTotalWeight = 0;
-            poiregistry.WalkPois(entity.ServerPos.XYZ, moraleRange, PoiSourceOfFearMatcher);
+
+            //We have to overshoot our morale bounds so that we can enclude all the chunks that might fall anywhere within our search.
+            poiregistry.WalkPois(entity.ServerPos.XYZ, moraleRange + 16, PoiSourceOfFearMatcher);
 
             return poiSourceOfFearTotalWeight;
         }
@@ -496,8 +498,12 @@ namespace ExpandedAiTasks
         {  
             if (poiSourcesOfFearWeightsByType.ContainsKey(poi.Type) )
             {
-                poiSourceOfFearTotalWeight += poiSourcesOfFearWeightsByType[poi.Type];
-                return true;
+                //We have to do the morale range search in here because of the way chunk searching works.
+                if ( poi.Position.SquareDistanceTo( entity.ServerPos.XYZ ) <= moraleRange * moraleRange )
+                {
+                    poiSourceOfFearTotalWeight += poiSourcesOfFearWeightsByType[poi.Type];
+                    return true;
+                }  
             }
             
             return false;

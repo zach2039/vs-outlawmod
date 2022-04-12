@@ -1,7 +1,7 @@
 {
 	code: "hound-hunting",
 	class: "EntityAgent",
-	hitboxSize: { x: 1.2, y: 1 },
+	hitboxSize: { x: 0.7, y: 1 },
 	deadHitboxSize: { x: 1, y: 0.75 },
 	eyeHeight: 0.9,
 	drops: [],
@@ -16,7 +16,7 @@
 		behaviors: [
 			{ code: "nametag", selectFromRandomName: ["Hunting Hound"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
-			{ code: "controlledphysics", stepHeight: 1.1251 }, 
+			{ code: "controlledphysics", stepHeight: 1.5 }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "interpolateposition" },
 			{ code: "harvestable" },
@@ -65,7 +65,7 @@
 		behaviors: [
 			{ code: "nametag", selectFromRandomName: ["Hunting Hound"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
-			{ code: "controlledphysics", stepHeight: 1.1251 },
+			{ code: "controlledphysics", stepHeight: 1.5 },
 			{ code: "despawn", minPlayerDistance: 8, belowLightLevel: 8, minSeconds: 300 },
 			{ code: "health", currenthealth: 12, maxhealth: 12, },
 			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-medium" },
@@ -138,29 +138,6 @@
 						animationSpeed: 1,
 					},
 					{
-						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "yeoman-*", "looter", "hound-feral" ],
-						priority: 4.9,
-						movespeed: 0.052,
-						cancelOnHurt: false,
-						routDistance: 15,
-						rallyTimeAfterRoutMs: 10000,
-						minMorale: 1.0,
-						maxMorale: 1.0,
-						moraleRange: 5,
-						useGroupMorale: true,
-						canRoutFromAnyEnemy: true,
-
-						itemStackSourcesOfFear: [
-							{ code: "torch-crude-lit-*", fearWeight: 2.0},
-							{ code: "torch-basic-lit-*", fearWeight: 2.0},
-							{ code: "torch-cloth-lit-*", fearWeight: 2.0},
-						],
-
-						animation: "Run",
-						animationSpeed: 1,
-					},
-					{
 						code: "guard",
 						entityCodes: ["poacher-*"],
 						priority: 2.5,
@@ -207,10 +184,11 @@
 						engageRange: 4,
 						engageAnimation: "Run",
 
-						withdrawIfNoPath: false,
-						//withdrawDist: 12.0,
-        				//withdrawDistDamaged: 20.0,
-						//withdrawAnimation: "idle",
+						//This currently breaks because of the hound's collision box. 
+						withdrawIfNoPath: true,
+						withdrawDist: 12.0,
+        				withdrawDistDamaged: 30.0,
+						withdrawAnimation: "idle",
 
 						animationSpeed: 2.2,
 						alarmHerd: true,
@@ -228,28 +206,6 @@
 						allowHerdConsolidation: true,
 						animation: "Run",
 						animationSpeed: 1.5
-					},
-					//Eat dead game that poachers kill.
-					{
-						code: "eatdead",
-						entityCodes: ["chicken-*", "hare-*", "fox-*", "pig-*", "raccoon-*", "sheep-*"],
-						priority: 1.47,
-
-						moveSpeed: 0.006,
-						moveAnimation: "walk",
-						minDist: 15.0,
-						maxDist: 30.0,
-				
-						eatDuration: 60.0,
-						eatAnimation: "eat",
-						eatAnimMinInterval: 1.0,
-						eatAnimMaxInterval: 3.5,
-
-						eatEveryting: false,
-        				allowCannibalism: false,
-
-						whenNotInEmotionState: "saturated"
-
 					},
 					{
 						code: "idle",
