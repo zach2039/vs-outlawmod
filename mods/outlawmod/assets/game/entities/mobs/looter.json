@@ -165,7 +165,10 @@
 							{ code: "yeoman-*", fearWeight: 0.1},
 							{ code: "hound-*", fearWeight: 0.1},
 						],
-
+						itemStackSourcesOfFear: [
+							{ code: "outlawhead-*", fearWeight: 0.2},
+							{ code: "headonspear-*", fearWeight: 0.2},
+						],
 						poiSourcesOfFear: [
 							{ poiType: "outlawSpawnBlocker", fearWeight: 0.2}
 						],

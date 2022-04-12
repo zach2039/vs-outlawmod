@@ -171,7 +171,38 @@
 			{ 
 				code: "taskai",
 				aitasks: [
+					{
+						code: "morale",
+						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
+						priority: 5.0,
+						movespeed: 0.040,
+						cancelOnHurt: false,
+						routDistance: 30,
+						rallyTimeAfterRoutMs: 10000,
+						minMorale: 0.8,
+						maxMorale: 1.0,
+						moraleRange: 15,
+						useGroupMorale: true,
+						deathsImpactMorale: true,
+						canRoutFromAnyEnemy: true,
 
+						entitySourcesOfFear: [
+							{ code: "player", fearWeight: 1.0},
+							{ code: "looter", fearWeight: 0.05},
+							{ code: "bandit-*", fearWeight: -0.1},
+							{ code: "hound-feral", fearWeight: 0.05},
+						],
+						itemStackSourcesOfFear: [
+							{ code: "outlawhead-*", fearWeight: 0.2},
+							{ code: "headonspear-*", fearWeight: 0.2},
+						],
+						poiSourcesOfFear: [
+							{ poiType: "outlawSpawnBlocker", fearWeight: 0.2}
+						],
+
+						animation: "sprint",
+						animationSpeed: 1,
+					},
 					{
 						code: "shootatentity",
 						entityCodes: ["wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 

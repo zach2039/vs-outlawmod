@@ -160,7 +160,10 @@
 							{ code: "bandit-*", fearWeight: -0.1},
 							{ code: "hound-feral", fearWeight: 0.05},
 						],
-
+						itemStackSourcesOfFear: [
+							{ code: "outlawhead-*", fearWeight: 0.2},
+							{ code: "headonspear-*", fearWeight: 0.2},
+						],
 						poiSourcesOfFear: [
 							{ poiType: "outlawSpawnBlocker", fearWeight: 0.2}
 						],
