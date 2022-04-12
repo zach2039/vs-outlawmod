@@ -489,7 +489,7 @@ namespace ExpandedAiTasks
             poiSourceOfFearTotalWeight = 0;
 
             //We have to overshoot our morale bounds so that we can enclude all the chunks that might fall anywhere within our search.
-            poiregistry.WalkPois(entity.ServerPos.XYZ, moraleRange + 16, PoiSourceOfFearMatcher);
+            poiregistry.WalkPois(entity.ServerPos.XYZ, moraleRange + entity.World.BlockAccessor.ChunkSize, PoiSourceOfFearMatcher);
 
             return poiSourceOfFearTotalWeight;
         }
