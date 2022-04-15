@@ -78,6 +78,7 @@
     <Compile Include="src\BlockEntities\BlockEntityOutlawSpawnBlocker.cs" />
     <Compile Include="src\Blocks\BlockStocks.cs" />
     <Compile Include="src\Blocks\BlockHeadOnSpear.cs" />
+    <Compile Include="src\Entities\EntityHound.cs" />
     <Compile Include="src\Entities\EntityOutlawPoacher.cs" />
     <Compile Include="src\OMGlobalConstants.cs" />
     <Compile Include="src\Item\ItemOutlawHead.cs" />

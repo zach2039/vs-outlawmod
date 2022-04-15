@@ -9,7 +9,7 @@
 	},
 	"textures": {
 		"collar": "entity/hound/collar_red",
-		"skin": "entity/hound/hound6"
+		"skin": "entity/hound/hound_hunting_brown"
 	},
 	"elements": [
 		{
@@ -203,16 +203,16 @@
 							"name": "tail",
 							"from": [ 9.801, 3.564, 1.782 ], 
 							"to": [ 14.256, 5.346, 3.564 ], 
-							"uv": [ 0.0, 0.0 ],
+							"uv": [ 41.5, 1.0 ],
 							"rotationOrigin": [ 11.583, 4.455, 2.673 ],
 							"rotationZ": -20.0,
 							"faces": {
-								"north": { "texture": "#skin", "uv": [ 27.0, 2.0, 31.95, 3.98 ] },
-								"east": { "texture": "#skin", "uv": [ 32.0, 2.0, 33.98, 3.98 ] },
-								"south": { "texture": "#skin", "uv": [ 34.0, 2.0, 38.95, 3.98 ] },
-								"west": { "texture": "#skin", "uv": [ 39.0, 2.0, 40.98, 3.98 ] },
-								"up": { "texture": "#skin", "uv": [ 27.0, 0.0, 31.95, 1.98 ] },
-								"down": { "texture": "#skin", "uv": [ 32.0, 0.0, 36.95, 1.98 ] }
+								"north": { "texture": "#skin", "uv": [ 41.5, 2.5, 45.5, 4.0 ] },
+								"east": { "texture": "#skin", "uv": [ 45.5, 2.5, 47.0, 4.0 ] },
+								"south": { "texture": "#skin", "uv": [ 47.0, 2.5, 51.0, 4.0 ] },
+								"west": { "texture": "#skin", "uv": [ 51.0, 2.5, 52.5, 4.0 ] },
+								"up": { "texture": "#skin", "uv": [ 41.5, 1.0, 45.5, 2.5 ] },
+								"down": { "texture": "#skin", "uv": [ 45.5, 1.0, 49.5, 2.5 ] }
 							},
 							"children": [
 								{

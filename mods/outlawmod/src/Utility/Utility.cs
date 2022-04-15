@@ -89,6 +89,10 @@ namespace OutlawMod
                     return OMGlobalConstants.enableBrigands;
                 case "yeoman-archer":
                     return OMGlobalConstants.enableYeomen;
+                case "hound-feral":
+                    return OMGlobalConstants.enableFeralHounds;
+                case "hound-hunting":
+                    return OMGlobalConstants.enableHuntingHounds;
 
                 default:
                     

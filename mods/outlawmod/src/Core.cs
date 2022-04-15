@@ -29,24 +29,30 @@ namespace OutlawMod
         public bool EnableYeomen = true;
 
         [ProtoMember(5)]
-        public float StartingSpawnSafeZoneRadius = 500f;
+        public bool EnableFeralHounds = true;
 
         [ProtoMember(6)]
-        public bool StartingSafeZoneHasLifetime = true;
+        public bool EnableHuntingHounds = true;
 
         [ProtoMember(7)]
-        public bool StartingSafeZoneShrinksOverLifetime = true;
+        public float StartingSpawnSafeZoneRadius = 500f;
 
         [ProtoMember(8)]
-        public float StartingSpawnSafeZoneLifetimeInDays = 180f;
+        public bool StartingSafeZoneHasLifetime = true;
 
         [ProtoMember(9)]
-        public bool ClaimedLandBlocksOutlawSpawns = true;
+        public bool StartingSafeZoneShrinksOverLifetime = true;
 
         [ProtoMember(10)]
-        public bool OutlawsUseClassicVintageStoryVoices = false;
+        public float StartingSpawnSafeZoneLifetimeInDays = 180f;
 
         [ProtoMember(11)]
+        public bool ClaimedLandBlocksOutlawSpawns = true;
+
+        [ProtoMember(12)]
+        public bool OutlawsUseClassicVintageStoryVoices = false;
+
+        [ProtoMember(13)]
         public bool DevMode = false;
     }
 
@@ -154,6 +160,7 @@ namespace OutlawMod
         {
             api.RegisterEntity("EntityOutlaw", typeof(EntityOutlaw));
             api.RegisterEntity("EntityOutlawPoacher", typeof(EntityOutlawPoacher));
+            api.RegisterEntity("EntityHound", typeof(EntityHound));
         }
 
         private void RegisterBlocksShared()
@@ -232,6 +239,8 @@ namespace OutlawMod
             OMGlobalConstants.enablePoachers    = config.EnablePoachers;
             OMGlobalConstants.enableBrigands    = config.EnableBrigands;
             OMGlobalConstants.enableYeomen      = config.EnableYeomen;
+            OMGlobalConstants.enableFeralHounds = config.EnableFeralHounds;
+            OMGlobalConstants.enableHuntingHounds = config.EnableHuntingHounds;
 
             //Start Spawn Safe Zone Vars
             OMGlobalConstants.startingSpawnSafeZoneRadius           = config.StartingSpawnSafeZoneRadius;

@@ -1,7 +1,7 @@
 {
 	code: "hound-hunting",
-	class: "EntityAgent",
-	hitboxSize: { x: 0.7, y: 1 },
+	class: "EntityHound",
+	hitboxSize: { x: 1.2, y: 1 },
 	deadHitboxSize: { x: 1, y: 0.75 },
 	eyeHeight: 0.9,
 	drops: [],
@@ -9,7 +9,7 @@
 		renderer: "Shape",
 		shape: { base: "entity/land/hound-hunting" },
 		textures: {
-			"skin": { base: "entity/hound/hound1", alternates: [ { base: "entity/hound/hound2" }, { base: "entity/hound/hound3" }, { base: "entity/hound/hound4" }, { base: "entity/hound/hound5" }, { base: "entity/hound/hound6" }, { base: "entity/hound/hound7" }, { base: "entity/hound/hound8" }, { base: "entity/hound/hound9" } ] },
+			"skin": { base: "entity/hound/hound_hunting_brown", alternates: [ { base: "entity/hound/hound_hunting_brown_docked" }, { base: "entity/hound/hound_hunting_black" }, { base: "entity/hound/hound_hunting_black_docked" } ] },
 			"collar": { base: "entity/hound/collar_red", alternates: [ { base: "entity/hound/collar_green"}, { base: "entity/hound/collar_blue"}, { base: "entity/hound/collar_yellow"}] },
 		},
 		
@@ -185,10 +185,10 @@
 						engageAnimation: "Run",
 
 						//This currently breaks because of the hound's collision box. 
-						withdrawIfNoPath: true,
-						withdrawDist: 12.0,
-        				withdrawDistDamaged: 30.0,
-						withdrawAnimation: "idle",
+						withdrawIfNoPath: false,
+						//withdrawDist: 12.0,
+        				//withdrawDistDamaged: 30.0,
+						//withdrawAnimation: "idle",
 
 						animationSpeed: 2.2,
 						alarmHerd: true,

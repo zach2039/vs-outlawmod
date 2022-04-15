@@ -41,6 +41,9 @@ namespace OutlawMod
                 case "bandit-knife":
                 case "yeoman-archer":
                     return ShouldSpawnOutlawOfType(ref properties, spawnPosition);
+                case "hound-feral":
+                case "hound-hunting":
+                    return ShouldSpawnHoundOfType(ref properties, spawnPosition);
             }
 
             return true;
@@ -59,6 +62,19 @@ namespace OutlawMod
 
             //Check spawn rules.
             return OutlawSpawnEvaluator.CanSpawn(spawnPosition, properties.Code);
+        }
+
+        private bool ShouldSpawnHoundOfType( ref EntityProperties properties, Vec3d spawnPosition)
+        {
+            string type = properties.Code.FirstPathPart();
+
+            if (Utility.OutlawTypeEnabled(type) == false)
+            {
+                Utility.DebugLogMessage(sapi as ICoreAPI, "Cannot Spawn " + properties.Code.Path + " at: " + spawnPosition + ". This Hound type is disabled in the config.");
+                return false;
+            }
+
+            return true;
         }
 
     }
