@@ -99,7 +99,7 @@ namespace ExpandedAiTasks
             //Get the individual we have to guard, if they exist.
             guardedEntity = GetGuardedEntity();
 
-            if (guardHerd && guardedEntity == null)
+            if (guardHerd && ( guardedEntity == null || !guardedEntity.Alive) )
             {
                 //if we are the only member of our herd, look for other members.
                 herdMembers = new List<Entity>();
@@ -109,7 +109,7 @@ namespace ExpandedAiTasks
                     guardedEntity = GetBestGuardTargetFromHerd();
             }
 
-            if (guardedEntity == null)
+            if (guardedEntity == null || !guardedEntity.Alive)
                 return false;
 
             //If someone has attacked our guard entity, tell our targeting behaviors to target the enemy and early out.
