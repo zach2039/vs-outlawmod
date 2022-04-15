@@ -16,6 +16,8 @@ EnableLooters: true/false
 EnablePoachers: true/false
 EnableBrigands: true/false
 EnableYeomen: true/false
+EnableFeralHounds: true/false
+EnableHuntingHounds: true/false
 
 //START SPAWN SAFE ZONE SETTINGS
 So OutlawMod adds a zone around your start spawn in your survival world that blocks Outlaw spawns. This is so you can get a foothold in the world and start doing your thing.
