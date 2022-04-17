@@ -153,7 +153,7 @@ namespace ExpandedAiTasks
                                 continue;
 
                             //If we have a target entity and hostile intent, then we are in combat.
-                            if (baseTargetable.TargetEntity != null)
+                            if (baseTargetable.TargetEntity != null && baseTargetable.TargetEntity.Alive)
                                 return true;
                         }
                     }

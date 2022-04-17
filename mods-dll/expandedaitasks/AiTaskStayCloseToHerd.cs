@@ -138,6 +138,10 @@ namespace ExpandedAiTasks
                 Entity bestCanidate = entity;
                 foreach ( Entity herdMember in herdEnts )
                 {
+
+                    if ( !herdMember.Alive )
+                        continue;
+
                     if ( herdMember.EntityId < bestEntityId)
                     {
                         bestEntityId = herdMember.EntityId;

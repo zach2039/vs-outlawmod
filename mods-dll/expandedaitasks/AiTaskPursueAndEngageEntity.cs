@@ -496,11 +496,16 @@ namespace ExpandedAiTasks
                 //If we don't have a target, assist our group.
                 if (targetEntity == null )
                 {
-                    targetEntity = (Entity)data;
-                    targetPos = targetEntity.ServerPos.XYZ;
-                    return true;
+                    //If we are in range to respond.
+                    Entity newTarget = (Entity)data;
+                    double distSqr = entity.ServerPos.XYZ.SquareDistanceTo(newTarget.ServerPos.XYZ);
+                    if ( distSqr <= pursueRange * pursueRange )
+                    {
+                        targetEntity = newTarget;
+                        targetPos = targetEntity.ServerPos.XYZ;
+                        return true;
+                    }
                 }
-                
             }
             else if ( key == "entityRouted")
             {
