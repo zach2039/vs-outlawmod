@@ -77,25 +77,12 @@ namespace OutlawMod
             harmony = new Harmony("com.grifthegnome.outlawmod.causeofdeath");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            //Apply AiExpandedTask Patches if they haven't already been applied.
-            if (ExpandedAiTasksHarmonyPatcher.ShouldPatch())
-                ExpandedAiTasksHarmonyPatcher.ApplyPatches();
-
-            ModSystem expandedAiTasksMod = api.ModLoader.GetModSystem("ExpandedAiTasksLoader.ExpandedAiTasksLoaderCore");
-
-            if (expandedAiTasksMod != null)
-            {
-                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasksMod Found, we will skip our internal ai task registration so that ExpandedAiTasks mod can handle-intermod dependencies.");
-            }
-            else
-            {
-                api.World.Logger.Warning("Outlaw Mod: ExpandedAiTasksMod Not Found. No Worries! we will register our ai tasks ourselves instead. Nothing to worry about here.");
-            }
+            //Deploy Expanded Ai Tasks
+            ExpandedAiTasksDeployment.Deploy(api);
 
             RegisterEntitiesShared();
             RegisterBlocksShared();
             RegisterBlockEntitiesShared();
-            RegisterAiTasksShared();
             RegisterItemsShared();
 
         }
@@ -126,28 +113,6 @@ namespace OutlawMod
                 //Initialize our static instance of our spawn evaluator.
                 OutlawSpawnEvaluator.Initialize(api as ICoreServerAPI);
             });
-
-            //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") )
-                AiTaskRegistry.Register<AiTaskShootProjectileAtEntity>("shootatentity");
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
-                AiTaskRegistry.Register<AiTaskPursueAndEngageEntity>("engageentity");
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("stayclosetoherd"))
-                AiTaskRegistry.Register<AiTaskStayCloseToHerd>("stayclosetoherd");
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
-                AiTaskRegistry.Register<AiTaskEatDeadEntities>("eatdead");
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
-                AiTaskRegistry.Register<AiTaskMorale>("morale");
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
-                AiTaskRegistry.Register<AiTaskExpandedMeleeAttack>("melee");
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("guard"))
-                AiTaskRegistry.Register<AiTaskGuard>("guard");
         }
 
         public override void Dispose()
@@ -173,32 +138,6 @@ namespace OutlawMod
         {
             api.RegisterBlockEntityClass("BlockEntityOutlawSpawnBlocker", typeof(BlockEntityOutlawSpawnBlocker));
         }
-
-        private void RegisterAiTasksShared()
-        {
-            //We need to make sure we don't double register with Expanded Ai Tasks, if that mod loaded first.
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("shootatentity") )
-                AiTaskRegistry.Register("shootatentity", typeof(AiTaskShootProjectileAtEntity));
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("engageentity"))
-                AiTaskRegistry.Register("engageentity", typeof(AiTaskPursueAndEngageEntity));
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("stayclosetoherd"))
-                AiTaskRegistry.Register("stayclosetoherd", typeof(AiTaskStayCloseToHerd));
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("eatdead"))
-                AiTaskRegistry.Register("eatdead", typeof(AiTaskEatDeadEntities));
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("morale"))
-                AiTaskRegistry.Register("morale", typeof(AiTaskMorale));
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("melee"))
-                AiTaskRegistry.Register("melee", typeof(AiTaskExpandedMeleeAttack));
-
-            if (!AiTaskRegistry.TaskTypes.ContainsKey("guard"))
-                AiTaskRegistry.Register("guard", typeof(AiTaskGuard));
-        }
-
         private void RegisterItemsShared()
         {
             api.RegisterItemClass("ItemOutlawHead", typeof(ItemOutlawHead));

@@ -74,6 +74,7 @@
     <Compile Include="AiTaskExpandedMeleeAttack.cs" />
     <Compile Include="AiTaskGuard.cs" />
     <Compile Include="AiUtility.cs" />
+    <Compile Include="Deployment.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="MathUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
