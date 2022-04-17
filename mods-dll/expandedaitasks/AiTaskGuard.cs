@@ -101,9 +101,8 @@ namespace ExpandedAiTasks
 
             if (guardHerd && ( guardedEntity == null || !guardedEntity.Alive) )
             {
-                //if we are the only member of our herd, look for other members.
-                herdMembers = new List<Entity>();
-                partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, detectionDistance, (e) => CountHerdMembers(e, detectionDistance));
+
+                UpdateHerdCount();
 
                 if ( guardedEntity == null )
                     guardedEntity = GetBestGuardTargetFromHerd();

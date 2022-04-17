@@ -175,7 +175,7 @@
 						code: "melee",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
 						priority: 4.0,
-						damage: 4.0,
+						damage: 5.0,
 						damageTier: 2,
 						damageType: "PiercingAttack",
 						minDist: 2.0,
@@ -196,11 +196,14 @@
 						mincooldown: 0, 
 						maxcooldown: 0, 
 						pursueSpeed: 0.040,
-						pursueRange: 22,
+						pursueRange: 40,
 						pursueAnimation: "sprint",
 						engageSpeed: 0.025,
 						engageRange: 4,
 						engageAnimation: "walk",
+
+						arriveRange: 1.5,
+						arriveVerticalRange: 1.0,
 
 						withdrawIfNoPath: true,
 						withdrawDist: 15.0,
@@ -234,6 +237,9 @@
 						engageRange: 4,
 						engageAnimation: "walk",
 
+						arriveRange: 1.5,
+						arriveVerticalRange: 1.0,
+
 						withdrawIfNoPath: true,
 						withdrawDist: 15.0,
         				withdrawDistDamaged: 40.0,
@@ -252,6 +258,7 @@
 						searchRange: 25,
 						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
+						consolidationRange: 40,
 						animation: "sprint"
 					},
 					{

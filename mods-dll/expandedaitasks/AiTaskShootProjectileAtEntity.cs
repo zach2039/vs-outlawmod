@@ -120,15 +120,7 @@ namespace ExpandedAiTasks
 
             if (stopIfPredictFriendlyFire)
             {
-                if (herdMembers.Count == 0)
-                {
-                    herdMembers = new List<Entity>();
-                    partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => CountHerdMembers(e, range));
-                }
-                else
-                {
-                    UpdateHerdCount();
-                }
+                UpdateHerdCount();
             }
 
             Vec3d ownPos = entity.ServerPos.XYZ;

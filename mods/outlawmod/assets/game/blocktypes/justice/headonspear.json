@@ -99,7 +99,7 @@
 		"*-south": { x1: 0.47, y1: 0, z1: 0.455, x2: 0.56, y2: 2.8125, z2: 0.5465 , rotateY: 90 },
 		"*-east": { x1: 0.47, y1: 0, z1: 0.455, x2: 0.56, y2: 2.8125, z2: 0.5465 , rotateY: 180 }
 	},
-	maxStackSize: 4,
+	maxStackSize: 1,
 	materialDensity: 600,
 	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
 	guiTransform: {

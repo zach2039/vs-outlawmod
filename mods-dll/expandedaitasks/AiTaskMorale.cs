@@ -141,15 +141,7 @@ namespace ExpandedAiTasks
 
             if (useGroupMorale)
             {
-                if (herdMembers.Count == 0)
-                {
-                    herdMembers = new List<Entity>();
-                    partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, moraleRange, (e) => CountHerdMembers(e, moraleRange));
-                }
-                else
-                {
-                    UpdateHerdCount();
-                }
+                UpdateHerdCount();
             }
 
             fearLevel = 0;
@@ -157,9 +149,9 @@ namespace ExpandedAiTasks
             //We need to calculate the Ai's fear level and route if we are too scared.
             double injuryRatio = 0.0;
             if (useGroupMorale)
-                injuryRatio = CalculateHerdInjuryRatio();
+                injuryRatio = AiUtility.CalculateHerdInjuryRatio( AiUtility.GetHerdMembersInRangeOfPos(herdMembers, entity.ServerPos.XYZ, moraleRange) );
             else
-                injuryRatio = CalculateIndividualInjuryRatio();
+                injuryRatio = AiUtility.CalculateInjuryRatio( entity );
 
             Vec3d ownPos = entity.ServerPos.XYZ;
 
@@ -172,7 +164,7 @@ namespace ExpandedAiTasks
             if (targetEntity != null)
             {
                 //Take the target's injury ratio into account.
-                double targetInjuryRatio = CalculateEntityInjuryRatio(targetEntity);
+                double targetInjuryRatio = AiUtility.CalculateInjuryRatio(targetEntity);
                 double poiSourcesOfFearWeight = GetTotalPoiSourceOfFearWeight();
 
                 //We should be less scared if we're winning.
@@ -221,31 +213,30 @@ namespace ExpandedAiTasks
             return true;
 
         }
-
-        protected override bool CountHerdMembers(Entity e, float range, bool ignoreEntityCode = false)
+        protected override void UpdateHerdCount(float range = 60f)
         {
-            if (e is EntityAgent)
+            //Try to get herd ents from saved master list.
+            herdMembers = AiUtility.GetMasterHerdList(entity, true);
+
+            if (herdMembers.Count == 0)
             {
-                EntityAgent agent = e as EntityAgent;
-                if (agent.HerdId == entity.HerdId)
-                    herdMembers.Add(agent);
+                //Get all herd members.
+                herdMembers = new List<Entity>();
+                entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (ent) =>
+                {
+                    if (ent is EntityAgent)
+                    {
+                        EntityAgent agent = ent as EntityAgent;
+                        if (agent.Alive && agent.HerdId == entity.HerdId)
+                            herdMembers.Add(agent);
+                    }
+
+                    return false;
+                });
+
+                //Set new master list.
+                AiUtility.SetMasterHerdList(entity, herdMembers);
             }
-
-            return false;
-        }
-
-        protected override void UpdateHerdCount()
-        {
-            List<Entity> currentMembers = new List<Entity>();
-            foreach (Entity agent in herdMembers)
-            {
-                if (agent == null)
-                    continue;
-
-                currentMembers.Add(agent);
-            }
-
-            herdMembers = currentMembers;
         }
 
         public override void StartExecute()
@@ -428,39 +419,6 @@ namespace ExpandedAiTasks
                     poiSourcesOfFearWeightsByType.Add(poiType, weight);
                 }
             }
-        }
-
-        private double CalculateEntityInjuryRatio(Entity ent)
-        {
-            if ( ent is EntityAgent )
-            {
-                ITreeAttribute treeAttribute = ent.WatchedAttributes.GetTreeAttribute("health");
-
-                if (treeAttribute != null)
-                {
-                    double currentHealth = treeAttribute.GetFloat("currenthealth"); ;
-                    double maxHealth = treeAttribute.GetFloat("maxhealth"); ;
-
-                    return (maxHealth - currentHealth) / maxHealth;
-                }
-            }
-            
-            return 0.0;
-        }
-
-        private double CalculateIndividualInjuryRatio()
-        {
-            ITreeAttribute treeAttribute = entity.WatchedAttributes.GetTreeAttribute("health");
-
-            if (treeAttribute != null)
-            {
-                double currentHealth = treeAttribute.GetFloat("currenthealth"); ;
-                double maxHealth = treeAttribute.GetFloat("maxhealth"); ;
-
-                return (maxHealth - currentHealth) / maxHealth;
-            }
-
-            return 0.0;
         }
 
         private double CalculateHerdInjuryRatio()

@@ -181,7 +181,7 @@
 						code: "melee",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 4.0,
-						damage: 1.5,
+						damage: 2.5,
 						damageTier: 1,
 						damageType: "BluntAttack",
 						minDist: 1.5,
@@ -231,7 +231,7 @@
 						mincooldown: 0, 
 						maxcooldown: 0, 
 						pursueSpeed: 0.040,
-						pursueRange: 22,
+						pursueRange: 40,
 						pursueAnimation: "sprint",
 						engageSpeed: 0.025,
 						engageRange: 4,
@@ -285,8 +285,9 @@
 						maxDistance: 15,
 						arriveDistance: 8,
 						searchRange: 25,
+						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
-						allowHerdConsolidation: true,
+						consolidationRange: 40,
 						animation: "sprint"
 					},
 					/*

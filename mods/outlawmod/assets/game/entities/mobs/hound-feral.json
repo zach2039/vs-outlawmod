@@ -251,6 +251,7 @@
 						searchRange: 25,
 						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
+						consolidationRange: 40,
 						animation: "Run"
 					},
 					{

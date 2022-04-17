@@ -23,6 +23,7 @@ namespace ExpandedAiTasks
         protected float arriveDistance = 3f;
         protected bool allowStrayFromHerdInCombat = true;
         protected bool allowHerdConsolidation = false;
+        protected float consolidationRange = 40f;
 
 
         protected bool stuck = false;
@@ -46,6 +47,8 @@ namespace ExpandedAiTasks
             arriveDistance = taskConfig["arriveDistance"].AsFloat(3f);
             allowStrayFromHerdInCombat = taskConfig["allowStrayFromHerdInCombat"].AsBool(true);
             allowHerdConsolidation = taskConfig["allowHerdConsolidation"].AsBool(false);
+            consolidationRange = taskConfig["consolidationRange"].AsFloat(40f);
+
 
             allowTeleport = taskConfig["allowTeleport"].AsBool();
             teleportAfterRange = taskConfig["teleportAfterRange"].AsFloat(30f);
@@ -74,23 +77,62 @@ namespace ExpandedAiTasks
                 return false;
             }
 
-            if (herdLeaderEntity == null || !herdLeaderEntity.Alive)
+            //Try to get herd ents from saved master list.
+            herdEnts = AiUtility.GetMasterHerdList(entity, false);
+
+            if (herdEnts.Count == 0)
             {
                 //Get all herd members.
                 herdEnts = new List<Entity>();
                 entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (ent) =>
                 {
-                    
                     if (ent is EntityAgent)
                     {
                         EntityAgent agent = ent as EntityAgent;
-                        if(agent.Alive && agent.HerdId == entity.HerdId)
+                        if (agent.Alive && agent.HerdId == entity.HerdId)
                             herdEnts.Add(agent);
                     }
 
                     return false;
                 });
 
+                //Set new master list.
+                AiUtility.SetMasterHerdList(entity, herdEnts);
+            }
+
+            //If we can consolidate herds and we are the last one left or our herd is at half strength.
+            if (allowHerdConsolidation)
+            {
+                double herdAliveRatio = AiUtility.PercentOfHerdAlive(herdEnts);
+
+                if ( herdAliveRatio <= 0.5 || herdEnts.Count == 1)
+                {
+                    Entity newHerdMember = entity.World.GetNearestEntity(entity.ServerPos.XYZ, consolidationRange, consolidationRange, (ent) =>
+                    {
+
+                        if (ent is EntityAgent)
+                        {
+                            //If this is the same kind of Ai as us, we can try to join the herd.
+                            EntityAgent agent = ent as EntityAgent;
+                            if (agent.EntityId != entity.EntityId && agent.Alive && agent.HerdId != entity.HerdId && agent.Code.Path == entity.Code.Path)
+                                return true;
+                        }
+
+                        return false;
+                    });
+
+                    if (newHerdMember is EntityAgent)
+                    {
+                        AiUtility.JoinSameHerdAsEntity(entity, newHerdMember);
+                        herdLeaderEntity = null;
+                        herdEnts = null;
+                        return false;
+                    }
+                }                
+            }
+
+            if (herdLeaderEntity == null || !herdLeaderEntity.Alive)
+            {
                 //Determine who the herd leader is
                 long bestEntityId = entity.EntityId;
                 Entity bestCanidate = entity;
@@ -106,32 +148,6 @@ namespace ExpandedAiTasks
                 //Set herd leader
                 if (bestCanidate != null)
                     herdLeaderEntity = bestCanidate;
-
-            }
-
-            //If we can consolidate herds and we are the last one left
-            if (allowHerdConsolidation && herdEnts.Count == 1)
-            {
-                Entity newHerdMember = entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (ent) =>
-                {
-
-                    if (ent is EntityAgent)
-                    {
-                        //If this is the same kind of Ai as us, we can try to join the herd.
-                        EntityAgent agent = ent as EntityAgent;
-                        if (agent.EntityId != entity.EntityId && agent.Alive && agent.Code.Path == entity.Code.Path)
-                            return true;
-                            
-                    }
-
-                    return false;
-                });
-
-                if (newHerdMember is EntityAgent)
-                {
-                    herdLeaderEntity = null;
-                    entity.HerdId = (newHerdMember as EntityAgent).HerdId;
-                }
             }
 
             //If we are the herd leader, then we lead the herd.
@@ -144,8 +160,8 @@ namespace ExpandedAiTasks
             if (herdLeaderEntity == null) 
                 return false;
 
-            if (pathTraverser.Active == true)
-                return false;
+            //if (pathTraverser.Active == true)
+            //    return false;
 
             double x = herdLeaderEntity.ServerPos.X;
             double y = herdLeaderEntity.ServerPos.Y;

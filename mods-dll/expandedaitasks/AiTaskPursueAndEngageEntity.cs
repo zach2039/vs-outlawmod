@@ -26,7 +26,10 @@ namespace ExpandedAiTasks
         protected float engageSpeed = 0.1f;
         protected float engageRange = 5f;
         protected string engageAnimation = "walk";
-        
+
+        protected float arriveRange = 1.0f;
+        protected float arriveVerticalRange = 1.0f;
+
         protected float maxFollowTime = 60;
         protected float maxTargetHealth = -1.0f;
 
@@ -55,14 +58,15 @@ namespace ExpandedAiTasks
 
         protected bool lowTempMode;
 
-        protected int searchWaitMs = 4000;
+        protected int searchWaitMs = 250;
 
         private eInternalMovementState internalMovementState = eInternalMovementState.Pursuing;
 
         private enum eInternalMovementState
         {
             Pursuing,
-            Engaging
+            Engaging,
+            Arrived
         }
 
         bool hasPath = false;
@@ -92,6 +96,10 @@ namespace ExpandedAiTasks
             engageSpeed = taskConfig["engageSpeed"].AsFloat(0.01f);
             engageRange = taskConfig["engageRange"].AsFloat(5f);
             engageAnimation = taskConfig["engageAnimation"].AsString("walk");
+
+            arriveRange = taskConfig["arriveRange"].AsFloat(1.0f);
+            arriveVerticalRange = taskConfig["arriveVerticalRange"].AsFloat(1.0f);
+
             maxTargetHealth = taskConfig["maxTargetHealth"].AsFloat(-1.0f);
 
             withdrawIfNoPath = taskConfig["withdrawIfNoPath"].AsBool(false);
@@ -172,17 +180,9 @@ namespace ExpandedAiTasks
                 guardTargetAttackedByEntity = null;
             }
 
-            if (packHunting)
+            if (packHunting || alarmHerd)
             {
-                if (herdMembers.Count == 0)
-                {
-                    herdMembers = new List<Entity>();
-                    partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => CountHerdMembers(e, range));
-                }
-                else
-                {
-                    UpdateHerdCount();
-                }
+                UpdateHerdCount();
             }
 
             //Aquire a target if we don't have one.
@@ -191,29 +191,11 @@ namespace ExpandedAiTasks
 
             if (targetEntity != null)
             {
-                if ((alarmHerd) && entity.HerdId > 0)
-                {
-                    entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (ent) =>
-                    {
-                        if ( ent is EntityAgent)
-                        {
-                            EntityAgent agent = ent as EntityAgent;
-                            if (agent.EntityId != entity.EntityId && agent.Alive && agent.HerdId == entity.HerdId)
-                                agent.Notify("pursueEntity", targetEntity);
-                        }
-
-                        return false;
-                    });
-                }
-
+                TryAlarmHerd();
+                
                 targetPos = targetEntity.ServerPos.XYZ;
                 withdrawPos = targetPos.Clone();
                 withdrawTargetMoveDistBeforeEncroaching = Math.Max(1.0f, withdrawDist / 4);
-
-                if (entity.ServerPos.SquareDistanceTo(targetPos) <= MinDistanceToTarget())
-                {
-                    return false;
-                }
 
                 return true;
             }
@@ -300,6 +282,7 @@ namespace ExpandedAiTasks
 
             currentFollowTime = 0;
             currentWithdrawTime = 0;
+            consecutivePathFailCount = 0;
 
             if ( !stopNow )
             {
@@ -311,6 +294,7 @@ namespace ExpandedAiTasks
 
         float lastPathUpdateSeconds;
         bool reachedWithdrawPosition = false;
+        Entity targetLastUpdate = null;
         public override bool ContinueExecute(float dt)
         {
             currentFollowTime += dt;
@@ -327,7 +311,8 @@ namespace ExpandedAiTasks
             bool activelyMoving = targetPos.SquareDistanceTo(targetEntity.ServerPos.X, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z) >= minRecomputeNavDistance;
 
             if ( lastPathUpdateSeconds >= 0.75f ||
-                activelyMoving || internalMovementState != lastMovementState)
+                activelyMoving || internalMovementState != lastMovementState ||
+                targetEntity != targetLastUpdate)
             {
                 if (activelyMoving)
                     targetPos.Set(targetEntity.ServerPos.X + targetEntity.ServerPos.Motion.X * 10, targetEntity.ServerPos.Y, targetEntity.ServerPos.Z + targetEntity.ServerPos.Motion.Z * 10);
@@ -349,6 +334,9 @@ namespace ExpandedAiTasks
                 }
             
             }
+
+            //Update our tareget this update.
+            targetLastUpdate = targetEntity;
 
             if ( hasPath || !withdrawIfNoPath )
             {
@@ -405,8 +393,6 @@ namespace ExpandedAiTasks
                     if (withdrawAnimation != null)
                         entity.AnimManager.StartAnimation(new AnimationMetaData() { Animation = withdrawAnimation, Code = withdrawAnimation }.Init());
 
-                    //todo: Need to make ai turn to face target.
-
                     //Turn to face target.
                     Vec3f targetVec = new Vec3f();
 
@@ -426,10 +412,45 @@ namespace ExpandedAiTasks
                 }
             }
 
-            //If our path keeps failing, every 10 failures see if we can aquire a new target.
-            if ( consecutivePathFailCount / 10 >= 1.0f && consecutivePathFailCount % 10 == 0 )
+            //if we have reached our target for the time being.
+            if (internalMovementState == eInternalMovementState.Arrived)
             {
-                if (CanAquireNewTarget())
+                pathTraverser.Stop();
+
+                //Turn to face target.
+                Vec3f targetVec = new Vec3f();
+
+                targetVec.Set(
+                    (float)(targetEntity.ServerPos.X - entity.ServerPos.X),
+                    (float)(targetEntity.ServerPos.Y - entity.ServerPos.Y),
+                    (float)(targetEntity.ServerPos.Z - entity.ServerPos.Z)
+                );
+
+                targetVec.Normalize();
+
+                float desiredYaw = (float)Math.Atan2(targetVec.X, targetVec.Z);
+
+                float yawDist = GameMath.AngleRadDistance(entity.ServerPos.Yaw, desiredYaw);
+                entity.ServerPos.Yaw += GameMath.Clamp(yawDist, -curTurnRadPerSec * dt, curTurnRadPerSec * dt);
+                entity.ServerPos.Yaw = entity.ServerPos.Yaw % GameMath.TWOPI;
+            }
+
+            // If we have been attacked by a new target, try transitioning aggro without canceling our behavior
+            if ( attackedByEntity != null && attackedByEntity.Alive && attackedByEntity != targetEntity )
+            {
+                Entity newTarget = AquireNewTarget();
+                if (newTarget != null && newTarget != targetEntity)
+                {
+                    targetEntity = newTarget;
+                    TryAlarmHerd();
+                }
+                    
+            }
+            //If our path keeps failing, every 10 failures see if we can aquire a new target.
+            else if ( consecutivePathFailCount / 10 >= 1.0f && consecutivePathFailCount % 10 == 0 )
+            {
+                Entity newTarget = AquireNewTarget();
+                if (newTarget != null && newTarget != targetEntity)
                     stopNow = true;
             }
                 
@@ -439,14 +460,14 @@ namespace ExpandedAiTasks
 
             bool inCreativeMode = (targetEntity as EntityPlayer)?.Player?.WorldData.CurrentGameMode == EnumGameMode.Creative;
 
-            float minDist = MinDistanceToTarget();
+            //float minDist = MinDistanceToTarget();
             float range = pursueRange;
 
             return
                 currentFollowTime < maxFollowTime &&
                 currentWithdrawTime < withdrawEndTime &&
                 distance < range * range &&
-                (distance > minDist || (targetEntity is EntityAgent ea && ea.ServerControls.TriesToMove)) &&
+                //(distance > minDist || (targetEntity is EntityAgent ea && ea.ServerControls.TriesToMove) &&
                 targetEntity.Alive &&
                 !inCreativeMode &&
                 !stopNow
@@ -536,7 +557,26 @@ namespace ExpandedAiTasks
 
         private void UpdateMovementState()
         {
-            if (this.entity.Pos.SquareDistanceTo(targetPos) <= engageRange * engageRange)
+            Vec3d entityVertival = new Vec3d(0, this.entity.ServerPos.XYZ.Y, 0);
+            Vec3d targetVertival = new Vec3d(0, targetEntity.ServerPos.XYZ.Y, 0);
+
+            double distSqr = this.entity.ServerPos.SquareDistanceTo(targetPos);
+            double distSqrVertical = targetVertival.SquareDistanceTo(entityVertival);
+
+            if ( distSqr <= arriveRange * arriveRange && distSqrVertical <= arriveVerticalRange * arriveVerticalRange)
+            {
+                internalMovementState = eInternalMovementState.Arrived;
+
+                if (pursueAnimation != null)
+                    entity.AnimManager.StopAnimation(pursueAnimation);
+
+                if (engageAnimation != null)
+                    entity.AnimManager.StopAnimation(engageAnimation);
+
+                if (withdrawAnimation != null)
+                    entity.AnimManager.StopAnimation(withdrawAnimation);
+            }
+            else if (distSqr <= engageRange * engageRange)
             {
                 //Engage State
                 internalMovementState = eInternalMovementState.Engaging;
@@ -570,6 +610,8 @@ namespace ExpandedAiTasks
         {
             switch (movementState)
             {
+                case eInternalMovementState.Arrived:
+                    return 0.0f;
                 case eInternalMovementState.Engaging:
                     return engageSpeed;
                 case eInternalMovementState.Pursuing:
@@ -628,11 +670,24 @@ namespace ExpandedAiTasks
             ;
         }
 
-        private bool CanAquireNewTarget()
+        private Entity AquireNewTarget()
         {
             float range = pursueRange;
             Entity target = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsEntityTargetableByPack(e, range));
-            return target != null && target != targetEntity;
+            return target;
+        }
+
+        private void TryAlarmHerd()
+        {
+            if ((alarmHerd) && entity.HerdId > 0)
+            {
+
+                foreach ( EntityAgent herdMember in herdMembers)
+                {
+                   if (herdMember.EntityId != entity.EntityId && herdMember.Alive && herdMember.HerdId == entity.HerdId)
+                    herdMember.Notify("pursueEntity", targetEntity);
+                }
+            }
         }
     }
 }

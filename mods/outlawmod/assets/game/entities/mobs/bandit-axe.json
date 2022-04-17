@@ -136,7 +136,7 @@
 
 						entitySourcesOfFear: [
 							{ code: "player", fearWeight: 0.1},
-							{ code: "looter", fearWeight: 0.5},
+							{ code: "looter", fearWeight: 0.05},
 							{ code: "bandit-*", fearWeight: -0.1},
 							{ code: "hound-feral", fearWeight: 0.05},
 						],
@@ -155,7 +155,7 @@
 						code: "melee",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
 						priority: 4.0,
-						damage: 3.5,
+						damage: 4.5,
 						damageTier: 2,
 						damageType: "SlashingAttack",
 						minDist: 1.5,
@@ -176,7 +176,7 @@
 						mincooldown: 0, 
 						maxcooldown: 0, 
 						pursueSpeed: 0.040,
-						pursueRange: 22,
+						pursueRange: 40,
 						pursueAnimation: "sprint",
 						engageSpeed: 0.025,
 						engageRange: 4,
@@ -231,6 +231,7 @@
 						searchRange: 25,
 						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
+						consolidationRange: 40,
 						animation: "sprint"
 					},
 					/*
@@ -269,7 +270,7 @@
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
 				maxLightLevel: 5,
 				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "gaussian", avg: 2, var: 2 },
+				groupSize: { dist: "gaussian", avg: 3, var: 2 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*"],
 				minTemp: -15,
 				maxTemp: 28,

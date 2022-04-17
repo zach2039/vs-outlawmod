@@ -11,6 +11,8 @@ namespace ExpandedAiTasks
  
     public class AiTaskBaseExpandedTargetable : AiTaskBaseTargetable
     {
+        private const float HERD_SEARCH_RANGE_DEFAULT = 60f;
+
         protected List<Entity> herdMembers = new List<Entity>();
 
     public AiTaskBaseExpandedTargetable(EntityAgent entity) : base(entity)
@@ -27,50 +29,30 @@ namespace ExpandedAiTasks
             return false;
         }
 
-        /// <summary>
-        /// //This function should be called the first time you initilize this Ai's herd.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="range"></param>
-        /// <param name="ignoreEntityCode"></param>
-        /// <returns></returns>
-
-        protected virtual bool CountHerdMembers(Entity ent, float range, bool ignoreEntityCode = false)
+        protected virtual void UpdateHerdCount(float range = HERD_SEARCH_RANGE_DEFAULT)
         {
-            
-            if ( ent is EntityAgent)
+            //Try to get herd ents from saved master list.
+            herdMembers = AiUtility.GetMasterHerdList(entity, false);
+
+            if (herdMembers.Count == 0)
             {
-                EntityAgent agent = ent as EntityAgent;
-                if(agent.Alive && agent.HerdId == entity.HerdId)
-                    herdMembers.Add(agent);
+                //Get all herd members.
+                herdMembers = new List<Entity>();
+                entity.World.GetNearestEntity(entity.ServerPos.XYZ, range, range, (ent) =>
+                {
+                    if (ent is EntityAgent)
+                    {
+                        EntityAgent agent = ent as EntityAgent;
+                        if (agent.Alive && agent.HerdId == entity.HerdId)
+                            herdMembers.Add(agent);
+                    }
+
+                    return false;
+                });
+
+                //Set new master list.
+                AiUtility.SetMasterHerdList(entity, herdMembers);
             }
-
-            return false;
-        }
-
-        /// <summary>
-        /// //This function should be called when we need to update the count of valid herd members.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="range"></param>
-        /// <param name="ignoreEntityCode"></param>
-        /// <returns></returns>
-
-        protected virtual void UpdateHerdCount()
-        {
-            List<Entity> currentMembers = new List<Entity>();
-            foreach (Entity agent in herdMembers)
-            {
-                if (agent == null)
-                    continue;
-
-                if (!agent.Alive)
-                    continue;
-
-                currentMembers.Add(agent);
-            }
-
-            herdMembers = currentMembers;
         }
 
         //This is an override for the default OnEntityHurt func that prevents Ai from aggoing on friendly herd members.

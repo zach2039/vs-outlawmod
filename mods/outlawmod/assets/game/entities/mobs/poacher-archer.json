@@ -177,7 +177,7 @@
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
-						routDistance: 30,
+						routDistance: 60,
 						rallyTimeAfterRoutMs: 10000,
 						minMorale: 0.8,
 						maxMorale: 1.0,

@@ -320,6 +320,8 @@ AI Tasks Documentation:
             	float engageSpeed: The speed at which the Ai should engage and fight its target.
             	float engageRange: The range, in blocks, at which the Ai should transition from pursue speed to engage speed.
             	string engageAnimation: The movement animation to play while engaging a target.
+		float arriveRange: The distance away from its target, in blocks, at which the Ai will halt movement. This is generally used to create a small amount of space between the Ai and its melee target so it doesn't look derpy.
+            	float arriveVerticalRange: The vertical distance away from its target, in blocks at which the Ai will halt movement.
             	float maxTargetHealth: The max health of a target we are willing to fight.
 		bool withdrawIfNoPath: If true, Ai will engage in a withdraw and siege behavior when it cannot get a path to target. (Does not work well with Ai that have hitboxes larget than one block)
             	float withdrawDist: The distance away from our target, in blocks, to which the Ai will withdraw and wait when we don't have a path.
@@ -384,9 +386,10 @@ AI Tasks Documentation:
             	float maxDistance: The distance, in blocks, at which an Ai will be forced to return to its herd leader.
             	float arriveDistance: The distance, in blocks, at which an Ai will be considered to have "arrived" at its herd leader's location.
             	bool allowStrayFromHerdInCombat: If true, the Ai will not return to or follow its herd leader while it has a combat target, it will return to the leader when combat ends.
-            	allowHerdConsolidation: If true, when an Ai is the last member of its herd, it can join a new herd within searchRange, as long as its entity code matches at lease one member of that herd.
-            	allowTeleport: If true, the Ai can teleport to its herd leader if it cannot reach it with normal pathing.
-            	teleportAfterRange: The distance, in blocks, beyond which the Ai will teleport to reach its herd leader.
+            	bool allowHerdConsolidation: If true, when an Ai is the last member of its herd or the herd is below 50% spawn strength, it can join a new herd within consolidationRange, as long as its entity code matches at lease one member of that herd.
+		float consolidationRange: The range at which this Ai can consolidate into another herd.
+            	bool allowTeleport: If true, the Ai can teleport to its herd leader if it cannot reach it with normal pathing.
+            	float teleportAfterRange: The distance, in blocks, beyond which the Ai will teleport to reach its herd leader.
 
 	Use Example from OutlawMod, yeoman-archer.json
 	{
@@ -399,5 +402,6 @@ AI Tasks Documentation:
 		searchRange: 25,
 		allowStrayFromHerdInCombat: true,
 		allowHerdConsolidation: true,
+		consolidationRange: 40,
 		animation: "sprint"
 	},
