@@ -205,6 +205,7 @@
 						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
 						consolidationRange: 40,
+						consolidationEntityCodes: ["poacher-*", "hound-hunting"],
 						animation: "Run",
 						animationSpeed: 1.5
 					},

@@ -9,6 +9,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
 namespace ExpandedAiTasks
@@ -25,6 +26,9 @@ namespace ExpandedAiTasks
         protected bool allowHerdConsolidation = false;
         protected float consolidationRange = 40f;
 
+        //Data for entities this ai is allowed to consolidate its herd with.
+        protected HashSet<string> consolidationEntitiesByCodeExact = new HashSet<string>();
+        protected string[] consolidationEntitiesByCodePartial = new string[0];
 
         protected bool stuck = false;
         protected bool stopNow = false;
@@ -49,6 +53,7 @@ namespace ExpandedAiTasks
             allowHerdConsolidation = taskConfig["allowHerdConsolidation"].AsBool(false);
             consolidationRange = taskConfig["consolidationRange"].AsFloat(40f);
 
+            BuildConsolidationTable(taskConfig);
 
             allowTeleport = taskConfig["allowTeleport"].AsBool();
             teleportAfterRange = taskConfig["teleportAfterRange"].AsFloat(30f);
@@ -56,6 +61,28 @@ namespace ExpandedAiTasks
             Debug.Assert(maxDistance >= arriveDistance, "maxDistance must be greater than or equal to arriveDistance for AiTaskStayCloseToHerd on entity " + entity.Code.Path);
         }
 
+        private void BuildConsolidationTable(JsonObject taskConfig)
+        {
+            if (taskConfig["consolidationEntityCodes"] != null)
+            {
+                string[] array = taskConfig["consolidationEntityCodes"].AsArray(new string[0]);
+                
+                List<string> list = new List<string>();
+                foreach (string text in array)
+                {
+                    if (text.EndsWith("*"))
+                    {
+                        list.Add(text.Substring(0, text.Length - 1));
+                    }
+                    else
+                    {
+                        consolidationEntitiesByCodeExact.Add(text);
+                    }
+                }
+
+                consolidationEntitiesByCodePartial = list.ToArray();
+            }
+        }
 
         public override bool ShouldExecute()
         {
@@ -78,7 +105,7 @@ namespace ExpandedAiTasks
             }
 
             //Try to get herd ents from saved master list.
-            herdEnts = AiUtility.GetMasterHerdList(entity, false);
+            herdEnts = AiUtility.GetMasterHerdList(entity, true);
 
             if (herdEnts.Count == 0)
             {
@@ -112,9 +139,9 @@ namespace ExpandedAiTasks
 
                         if (ent is EntityAgent)
                         {
-                            //If this is the same kind of Ai as us, we can try to join the herd.
+                            //If this Ai is a valid Ai whose herd we can join, we can try to join the herd.
                             EntityAgent agent = ent as EntityAgent;
-                            if (agent.EntityId != entity.EntityId && agent.Alive && agent.HerdId != entity.HerdId && agent.Code.Path == entity.Code.Path)
+                            if (CanJoinThisEntityInHerd(agent))
                                 return true;
                         }
 
@@ -254,6 +281,28 @@ namespace ExpandedAiTasks
             return null;
         }
 
+        public virtual bool CanJoinThisEntityInHerd(EntityAgent herdMember)
+        {
+            if (!herdMember.Alive || !herdMember.IsInteractable || herdMember.EntityId == entity.EntityId || herdMember.HerdId == entity.HerdId)
+            {
+                return false;
+            }
+
+            if (consolidationEntitiesByCodeExact.Contains(herdMember.Code.Path))
+            {
+                return true;
+            }
+
+            for (int i = 0; i < consolidationEntitiesByCodePartial.Length; i++)
+            {
+                if (herdMember.Code.Path.StartsWithFast(consolidationEntitiesByCodePartial[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         protected void TryTeleport()
         {

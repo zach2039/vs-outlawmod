@@ -177,6 +177,12 @@ namespace ExpandedAiTasks
             return false;
         }
 
+        public override void FinishExecute(bool cancelled)
+        {
+            base.FinishExecute(cancelled);
+            targetEntity = null;
+        }
+
         public override bool Notify(string key, object data)
         {
 

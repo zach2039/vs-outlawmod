@@ -204,7 +204,7 @@
 						moveSpeed: 0.006,
 						moveAnimation: "walk",
 						minDist: 15.0,
-						maxDist: 30.0,
+						maxDist: 60.0,
 				
 						eatDuration: 60.0,
 						eatAnimation: "eat",
@@ -252,6 +252,7 @@
 						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
 						consolidationRange: 40,
+						consolidationEntityCodes: ["hound-feral"],
 						animation: "Run"
 					},
 					{

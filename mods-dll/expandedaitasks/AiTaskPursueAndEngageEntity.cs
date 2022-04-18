@@ -485,6 +485,7 @@ namespace ExpandedAiTasks
             if ( pursueAnimation != null)
                 entity.AnimManager.StopAnimation(pursueAnimation);
 
+            targetEntity = null;
             pathTraverser.Stop();
         }
 

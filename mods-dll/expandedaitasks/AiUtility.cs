@@ -153,7 +153,7 @@ namespace ExpandedAiTasks
                                 continue;
 
                             //If we have a target entity and hostile intent, then we are in combat.
-                            if (baseTargetable.TargetEntity != null && baseTargetable.TargetEntity.Alive)
+                            if (baseTargetable.TargetEntity != null && baseTargetable.TargetEntity.Alive && !AreMembersOfSameHerd(ent, baseTargetable.TargetEntity))
                                 return true;
                         }
                     }
@@ -212,6 +212,20 @@ namespace ExpandedAiTasks
             }
 
             return aliveCount / herdMembers.Count;
+        }
+
+        public static bool AreMembersOfSameHerd( Entity ent1, Entity ent2 )
+        {
+            if (!(ent1 is EntityAgent))
+                return false;
+
+            if (!(ent2 is EntityAgent))
+                return false;
+
+            EntityAgent agent1 = ent1 as EntityAgent;
+            EntityAgent agent2 = ent2 as EntityAgent;
+
+            return agent1.HerdId == agent2.HerdId;
         }
 
         public static List<Entity> GetHerdMembersInRangeOfPos( List<Entity> herdMembers, Vec3d pos, float range )

@@ -346,6 +346,7 @@ namespace ExpandedAiTasks
         public override void FinishExecute(bool cancelled)
         {
             base.FinishExecute(cancelled);
+            targetEntity = null;
         }
 
         public bool WillFriendlyFire( Vec3d firePos, Vec3d shotDir, Vec3d shotTargetPos)

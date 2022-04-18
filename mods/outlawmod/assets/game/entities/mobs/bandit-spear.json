@@ -259,6 +259,7 @@
 						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
 						consolidationRange: 40,
+						consolidationEntityCodes: ["yeoman-archer", "bandit-*"],
 						animation: "sprint"
 					},
 					{

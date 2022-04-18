@@ -205,7 +205,7 @@
 						mincooldown: 0, 
 						maxcooldown: 0, 
 						pursueSpeed: 0.048,
-						pursueRange: 44,
+						pursueRange: 40,
 						pursueAnimation: "sprint",
 						engageSpeed: 0.035,
 						engageRange: 4,
@@ -238,7 +238,7 @@
 						mincooldown: 0, 
 						maxcooldown: 0, 
 						pursueSpeed: 0.048,
-						pursueRange: 44,
+						pursueRange: 22,
 						pursueAnimation: "sprint",
 						engageSpeed: 0.035,
 						engageRange: 4,
@@ -264,6 +264,7 @@
 						allowStrayFromHerdInCombat: true,
 						allowHerdConsolidation: true,
 						consolidationRange: 40,
+						consolidationEntityCodes: ["yeoman-archer", "bandit-*"],
 						animation: "sprint"
 					},
 					/*
