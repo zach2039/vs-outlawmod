@@ -497,9 +497,12 @@ namespace ExpandedAiTasks
                 //If we don't have a target, assist our group.
                 if (targetEntity == null )
                 {
-                    //If we are in range to respond.
-                    Entity newTarget = (Entity)data;
-                    double distSqr = entity.ServerPos.XYZ.SquareDistanceTo(newTarget.ServerPos.XYZ);
+                    //If we are in range of our ally, respond.
+                    EntityTargetPairing targetPairing = (EntityTargetPairing)data;
+                    Entity herdMember = targetPairing.entityTargeting;
+                    Entity newTarget = targetPairing.targetEntity;
+
+                    double distSqr = entity.ServerPos.XYZ.SquareDistanceTo(herdMember.ServerPos.XYZ);
                     if ( distSqr <= pursueRange * pursueRange )
                     {
                         targetEntity = newTarget;
@@ -690,8 +693,12 @@ namespace ExpandedAiTasks
 
                 foreach ( EntityAgent herdMember in herdMembers)
                 {
-                   if (herdMember.EntityId != entity.EntityId && herdMember.Alive && herdMember.HerdId == entity.HerdId)
-                    herdMember.Notify("pursueEntity", targetEntity);
+                    if (herdMember.EntityId != entity.EntityId && herdMember.Alive && herdMember.HerdId == entity.HerdId)
+                    {
+                        EntityTargetPairing targetPairing = new EntityTargetPairing( entity, targetEntity );
+                        herdMember.Notify("pursueEntity", targetPairing);
+                    }
+                        
                 }
             }
         }

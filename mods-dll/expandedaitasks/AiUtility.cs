@@ -10,6 +10,31 @@ using Vintagestory.GameContent;
 
 namespace ExpandedAiTasks
 {
+    public struct EntityTargetPairing
+    {
+
+        Entity _entityTargeting;
+        Entity _targetEntity;
+
+        public Entity entityTargeting
+        {
+            get { return _entityTargeting; }
+            private set { _entityTargeting = value; }
+        }
+
+        public Entity targetEntity
+        {
+            get { return _targetEntity; }
+            set { _targetEntity = value; }
+        }
+
+        public EntityTargetPairing( Entity entityTargeting, Entity targetEntity)
+        {
+            _entityTargeting = entityTargeting;
+            _targetEntity = targetEntity;
+        }
+    }
+
     public static class AiUtility
     {
         public static void SetGuardedEntity(Entity ent, Entity entToGuarded)
