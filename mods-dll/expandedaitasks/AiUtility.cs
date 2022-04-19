@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Vintagestory.API.Common;
@@ -99,6 +100,26 @@ namespace ExpandedAiTasks
             return lastAttackedMs;
         }
 
+        public static void UpdateLastTimeEntityInCombatMs( Entity ent )
+        {
+            ent.Attributes.SetDouble("lastTimeInCombatMs", ent.World.ElapsedMilliseconds);
+        }
+
+        public static double GetLastTimeEntityInCombatMs(Entity ent)
+        {
+            //There's an issue where where lastTimeInCombatMs this is saved on the ent, which we don't want.
+            //Until we can find a way to store and update this at runtime without native behavior saving it,
+            //we have to manually zero out the loaded bad value. 
+            double lastInCombatMs = ent.Attributes.GetDouble("lastTimeInCombatMs");
+            if (lastInCombatMs > ent.World.ElapsedMilliseconds)
+            {
+                ent.Attributes.SetDouble("lastTimeInCombatMs", 0);
+                lastInCombatMs = 0;
+            }
+
+            return lastInCombatMs;
+        }
+
         public static void SetMasterHerdList( Entity ent, List<Entity> herdList )
         {
             List<long> herdListEntIds = new List<long>();
@@ -112,7 +133,7 @@ namespace ExpandedAiTasks
             ent.Attributes.SetBytes("herdMembers", SerializerUtil.Serialize(herdEntIdArray));
         }
 
-        public static List<Entity> GetMasterHerdList( Entity ent, bool includeDead )
+        public static List<Entity> GetMasterHerdList( Entity ent )
         {
             List<Entity> herdMembers = new List<Entity>();
             if ( ent.Attributes.HasAttribute("herdMembers") )
@@ -123,7 +144,7 @@ namespace ExpandedAiTasks
                 {
                     Entity herdMember = ent.World.GetEntityById(id);
 
-                    if ( herdMember != null && ( herdMember.Alive || includeDead ) )
+                    if ( herdMember != null )
                         herdMembers.Add( herdMember );
                 }
             }
@@ -142,7 +163,7 @@ namespace ExpandedAiTasks
             newMemberAgent.HerdId = currentMemberAgent.HerdId;
 
             //Remove me from my old herd.
-            List<Entity> oldHerdMembers = GetMasterHerdList(newMember, true);
+            List<Entity> oldHerdMembers = GetMasterHerdList(newMember);
             oldHerdMembers.Remove(newMember);
 
             //Inform members of my old herd.
@@ -150,7 +171,7 @@ namespace ExpandedAiTasks
                 SetMasterHerdList(herdMember, oldHerdMembers);
 
             //Add me to the new herd.
-            List<Entity> newHerdMembers = GetMasterHerdList(currentMember, true);
+            List<Entity> newHerdMembers = GetMasterHerdList(currentMember);
             newHerdMembers.Add(newMember);
 
             //Inform members of my new herd.
@@ -160,6 +181,9 @@ namespace ExpandedAiTasks
 
         public static bool IsInCombat( Entity ent )
         {
+            if (ent is EntityPlayer)
+                return false;
+
             if ( ent is EntityAgent)
             {
                 AiTaskManager taskManager = ent.GetBehavior<EntityBehaviorTaskAI>().TaskManager;
@@ -179,6 +203,32 @@ namespace ExpandedAiTasks
 
                             //If we have a target entity and hostile intent, then we are in combat.
                             if (baseTargetable.TargetEntity != null && baseTargetable.TargetEntity.Alive && !AreMembersOfSameHerd(ent, baseTargetable.TargetEntity))
+                                return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsRoutingFromBattle(Entity ent)
+        {
+            if (ent is EntityPlayer)
+                return false;
+
+            if (ent is EntityAgent)
+            {
+                AiTaskManager taskManager = ent.GetBehavior<EntityBehaviorTaskAI>().TaskManager;
+
+                if (taskManager != null)
+                {
+                    List<IAiTask> tasks = taskManager.AllTasks;
+                    foreach (IAiTask task in tasks)
+                    {
+                        if (task is AiTaskMorale)
+                        {
+                            if (taskManager.IsTaskActive(task.Id))
                                 return true;
                         }
                     }
@@ -236,7 +286,8 @@ namespace ExpandedAiTasks
                     aliveCount++;
             }
 
-            return aliveCount / herdMembers.Count;
+            double percentLiving = (double)aliveCount / (double)herdMembers.Count;
+            return percentLiving;
         }
 
         public static bool AreMembersOfSameHerd( Entity ent1, Entity ent2 )
@@ -263,6 +314,69 @@ namespace ExpandedAiTasks
                 herdMembersInRange.Add(herdMember);
             }
             return herdMembersInRange;
+        }
+
+        private static BlockSelection blockSel = new BlockSelection();
+        private static EntitySelection entitySel = new EntitySelection();
+
+        public static bool IsPlayerWithinRangeOfPos(EntityPlayer player, Vec3d pos, float range)
+        {
+            double distSqr = player.ServerPos.XYZ.SquareDistanceTo(pos);
+            if (distSqr <= range * range)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsAnyPlayerWithinRangeOfPos(Vec3d pos, float range, IWorldAccessor world)
+        {
+            IPlayer[] playersOnline = world.AllOnlinePlayers;
+            foreach (IPlayer player in playersOnline)
+            {
+                EntityPlayer playerEnt = player.Entity;
+                if (IsPlayerWithinRangeOfPos(playerEnt, pos, range))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool CanAnyPlayerSeePos( Vec3d pos, float autoPassRange, IWorldAccessor world )
+        {
+            IPlayer[] playersOnline = world.AllOnlinePlayers;
+            foreach (IPlayer player in playersOnline)
+            {
+                EntityPlayer playerEnt = player.Entity;
+                Vec3d playerEyePos = playerEnt.ServerPos.XYZ.Add(0, playerEnt.LocalEyePos.Y, 0);
+
+                if (IsPlayerWithinRangeOfPos(playerEnt, pos, autoPassRange))
+                {
+                    Vec3d playerForward = playerEnt.ServerPos.AheadCopy(1.0).XYZ - playerEnt.ServerPos.XYZ;
+                    playerForward = playerForward.Normalize();
+
+                    Vec3d playerToPos = pos - playerEyePos;
+                    playerToPos = playerToPos.Normalize();
+
+                    double maxViewDot = 1.0 + Math.Cos(160 * (Math.PI / 180));
+                    double dot = playerToPos.Dot(playerForward);
+
+                    if (dot > maxViewDot)
+                    {
+                        world.RayTraceForSelection(playerEyePos, pos, ref blockSel, ref entitySel);
+
+                        if (blockSel == null)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool CanAnyPlayerSeeMe( Entity ent, float autoPassRange )
+        {
+            Vec3d myEyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
+            return CanAnyPlayerSeePos( myEyePos, autoPassRange, ent.World);
         }
     }
 }

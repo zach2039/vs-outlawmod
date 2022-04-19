@@ -29,10 +29,22 @@ namespace ExpandedAiTasks
             return false;
         }
 
+        public override bool IsTargetableEntity(Entity e, float range, bool ignoreEntityCode = false)
+        {
+            //We can never target our friends.
+            if ( e != null && e is EntityAgent )
+            {
+                if (((EntityAgent)e).HerdId == entity.HerdId)
+                    return false;
+            }
+
+            return base.IsTargetableEntity(e, range, ignoreEntityCode);
+        }
+
         protected virtual void UpdateHerdCount(float range = HERD_SEARCH_RANGE_DEFAULT)
         {
             //Try to get herd ents from saved master list.
-            herdMembers = AiUtility.GetMasterHerdList(entity, false);
+            herdMembers = AiUtility.GetMasterHerdList(entity);
 
             if (herdMembers.Count == 0)
             {
@@ -72,6 +84,13 @@ namespace ExpandedAiTasks
                 attackedByEntity = source.SourceEntity;
                 attackedByEntityMs = entity.World.ElapsedMilliseconds;
             }
+        }
+
+        public virtual void ClearTargetHistory()
+        {
+            targetEntity = null;
+            attackedByEntity = null;
+            attackedByEntityMs = 0;
         }
     }
 }

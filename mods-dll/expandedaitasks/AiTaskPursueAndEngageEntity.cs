@@ -187,7 +187,10 @@ namespace ExpandedAiTasks
 
             //Aquire a target if we don't have one.
             if ( targetEntity == null || !targetEntity.Alive )
-                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (ent) => IsEntityTargetableByPack(ent, range));
+            {
+                targetEntity = AquireNewTarget();
+            }
+                
 
             if (targetEntity != null)
             {
@@ -297,6 +300,8 @@ namespace ExpandedAiTasks
         Entity targetLastUpdate = null;
         public override bool ContinueExecute(float dt)
         {
+            AiUtility.UpdateLastTimeEntityInCombatMs(entity);
+
             currentFollowTime += dt;
             lastPathUpdateSeconds += dt;
 
@@ -436,7 +441,8 @@ namespace ExpandedAiTasks
             }
 
             // If we have been attacked by a new target, try transitioning aggro without canceling our behavior
-            if ( attackedByEntity != null && attackedByEntity.Alive && attackedByEntity != targetEntity )
+            // Do the same if our current target has started routing from the battle.
+            if ( attackedByEntity != null && attackedByEntity.Alive && attackedByEntity != targetEntity || AiUtility.IsRoutingFromBattle(targetEntity))
             {
                 Entity newTarget = AquireNewTarget();
                 if (newTarget != null && newTarget != targetEntity)
@@ -547,6 +553,11 @@ namespace ExpandedAiTasks
                     stopNow = true;
 
                 guardTargetAttackedByEntity = null;
+                return false;
+            }
+            else if (key == "clearTargetHistory")
+            {
+                ClearTargetHistory();
                 return false;
             }
 
@@ -679,11 +690,67 @@ namespace ExpandedAiTasks
             ;
         }
 
+        private List<Entity> potentialTargets = new List<Entity>();
+        private List<Entity> potentialRoutingTargets = new List<Entity>();
+
         private Entity AquireNewTarget()
         {
             float range = pursueRange;
-            Entity target = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsEntityTargetableByPack(e, range));
+            potentialTargets.Clear();
+            potentialRoutingTargets.Clear();
+            partitionUtil.WalkEntityPartitions(entity.ServerPos.XYZ, range, (e) => BucketTargetBasedOnCombatState(e, range));
+
+            Entity target = null;
+            if ( potentialTargets.Count > 0 )
+            {
+                Entity bestTarget = potentialTargets[0];
+                double bestDistSqr = entity.ServerPos.XYZ.SquareDistanceTo(bestTarget.ServerPos.XYZ);
+                foreach (Entity ent in potentialTargets )
+                {
+                    double distSqr = entity.ServerPos.XYZ.SquareDistanceTo(ent.ServerPos.XYZ);
+                    if ( distSqr <= bestDistSqr)
+                    {
+                        bestTarget = ent;
+                        bestDistSqr = distSqr;
+                    }    
+                }
+
+                target = bestTarget;
+            }
+            else if( potentialRoutingTargets.Count > 0 )
+            {
+                Entity bestTarget = potentialRoutingTargets[0];
+                double bestDistSqr = entity.ServerPos.XYZ.SquareDistanceTo(bestTarget.ServerPos.XYZ);
+                foreach (Entity ent in potentialRoutingTargets)
+                {
+                    double distSqr = entity.ServerPos.XYZ.SquareDistanceTo(ent.ServerPos.XYZ);
+                    if (distSqr <= bestDistSqr)
+                    {
+                        bestTarget = ent;
+                        bestDistSqr = distSqr;
+                    }
+                }
+
+                target = bestTarget;
+            }
+
             return target;
+        }
+
+        private void BucketTargetBasedOnCombatState( Entity ent, float range )
+        {
+            if (!IsEntityTargetableByPack(ent, range))
+                return;
+
+            //Don't Chase Ai that are already routing.
+            if (AiUtility.IsRoutingFromBattle(ent))
+            {
+                potentialRoutingTargets.Add(ent);
+            }
+            else
+            {
+                potentialTargets.Add(ent);
+            }
         }
 
         private void TryAlarmHerd()

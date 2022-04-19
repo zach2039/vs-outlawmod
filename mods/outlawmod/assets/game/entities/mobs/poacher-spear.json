@@ -230,37 +230,30 @@
 						animationSpeed: 1.0,
 						whenInEmotionState: "aggressiveondamage",
 					},
+					//Agro When Damaged
+					{
+						code: "engageentity",
+						entityCodes:  ["player", "drifter-*", "looter", "hound-feral" ],
+						priority: 4.0,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.040,
+						pursueRange: 22,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.025,
+						engageRange: 4,
+						engageAnimation: "walk",
 
-					//Seek game to hunt.
-					{
-						code: "seekentity",
-						entityCodes: [ "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
-							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female"],
-						priority: 2.0,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 60,
-						movespeed: 0.045,
-						animation: "sprint",
+						withdrawIfNoPath: true,
+						withdrawDist: 9.0,
+						withdrawDistDamaged: 40.0,
+						withdrawAnimation: "idle",
+
 						animationSpeed: 1.0,
-						//maxFollowTime: 60,
 						alarmHerd: true,
-						whenNotInEmotionState: "saturated"
-					},
-					//Keep distance from the player when player approaches.
-					{
-						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "looter", "hound-feral"],
-						priority: 3.0,
-						movespeed: 0.040,
-						seekingRange: 6,
-						cancelOnHurt: false,
-						fleeingDistance: 14,
-						fleeDurationMs: 12000,
-						animation: "sprint",
-						animationSpeed: 1.0,
-						executionChance: 1.0,
-						whenNotInEmotionState: "aggressiveondamage"
+						soundStartMs: 950,
+						whenInEmotionState: "aggressiveondamage"
+
 					},
 					//Run from the player if we take damage.
 					{
@@ -280,20 +273,46 @@
 						whenInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
 					},
-					//Agro When Damaged
+					//Keep distance from the player when player approaches.
 					{
-						code: "seekentity",
-						entityCodes: ["player", "drifter-*", "looter", "hound-feral" ],
-						priority: 4.0,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 22,
+						code: "fleeentity",
+						entityCodes: ["player", "drifter-*", "looter", "hound-feral"],
+						priority: 3.0,
 						movespeed: 0.040,
+						seekingRange: 6,
+						cancelOnHurt: false,
+						fleeingDistance: 14,
+						fleeDurationMs: 12000,
 						animation: "sprint",
 						animationSpeed: 1.0,
-						//maxFollowTime: 60,
+						executionChance: 1.0,
+						whenNotInEmotionState: "aggressiveondamage"
+					},
+					//Seek game to hunt.
+					{
+						code: "engageentity",
+						entityCodes: [ "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
+							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female"],
+						priority: 2.0,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.045,
+						pursueRange: 60,
+						pursueAnimation: "sprint",
+						engageSpeed: 0.045,
+						engageRange: 4,
+						engageAnimation: "sprint",
+	
+						withdrawIfNoPath: true,
+						withdrawDist: 9.0,
+						withdrawDistDamaged: 40.0,
+						withdrawAnimation: "idle",
+	
+						animationSpeed: 1.0,
 						alarmHerd: true,
-						whenInEmotionState: "aggressiveondamage",
+						soundStartMs: 950,
+						whenNotInEmotionState: "saturated"	
+	
 					},
 					{
 						code: "getoutofwater",
@@ -301,19 +320,6 @@
 						movespeed: 0.040,
 						animation: "swim",
 						animationSpeed: 0.3
-					},
-					//Slow down to Engage the player, if the have attacked us.
-					{
-						code: "seekentity",
-						entityCodes: ["player"],
-						priority: 4.5,
-						seekingRange: 8,
-						movespeed: 0.035,
-						animation: "walk",
-						animationSpeed: 1.0,
-						maxFollowTime: 50,
-						soundStartMs: 950,
-						whenInEmotionState: "aggressiveondamage"
 					},
 					{
 						code: "stayclosetoentity",

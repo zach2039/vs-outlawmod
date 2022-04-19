@@ -216,7 +216,7 @@ namespace ExpandedAiTasks
         protected override void UpdateHerdCount(float range = 60f)
         {
             //Try to get herd ents from saved master list.
-            herdMembers = AiUtility.GetMasterHerdList(entity, true);
+            herdMembers = AiUtility.GetMasterHerdList(entity);
 
             if (herdMembers.Count == 0)
             {
@@ -263,6 +263,8 @@ namespace ExpandedAiTasks
 
         public override bool ContinueExecute(float dt)
         {
+            AiUtility.UpdateLastTimeEntityInCombatMs(entity);
+
             if (world.Rand.NextDouble() < 0.2)
             {
                 UpdateTargetPos();
@@ -343,6 +345,9 @@ namespace ExpandedAiTasks
             base.FinishExecute(cancelled);
             pathTraverser.Stop();
             targetEntity = null;
+
+            //Clear are whole target history, so we don't attempt to re-engage pre-rout targets.
+            entity.Notify("clearTargetHistory", entity);
         }
 
 
@@ -420,27 +425,6 @@ namespace ExpandedAiTasks
                     poiSourcesOfFearWeightsByType.Add(poiType, weight);
                 }
             }
-        }
-
-        private double CalculateHerdInjuryRatio()
-        {
-            if (herdMembers.Count == 0)
-                return 0f;
-
-            double totalCurrentHealth = 0f;
-            double totalMaxHealth = 0f;
-            foreach ( Entity herdMember in herdMembers )
-            {
-                ITreeAttribute treeAttribute = entity.WatchedAttributes.GetTreeAttribute("health");
-
-                if (treeAttribute != null)
-                {
-                    totalCurrentHealth += treeAttribute.GetFloat("currenthealth"); ;
-                    totalMaxHealth += treeAttribute.GetFloat("maxhealth"); ;
-                }
-            }
-
-            return (totalMaxHealth - totalCurrentHealth) / totalMaxHealth;
         }
 
         private double GetTotalPoiSourceOfFearWeight()

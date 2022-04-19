@@ -264,24 +264,6 @@
 						whenInEmotionState: "aggressiveondamage",
 						//sound: "creature/bandit/attack"
 					},
-
-					//Seek game to hunt.
-					{
-						code: "seekentity",
-						entityCodes: [ "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
-							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female"],
-						priority: 2.0,
-						priorityForCancel: 3.0,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						seekingRange: 60,
-						movespeed: 0.010,
-						animation: "sneakwalk",
-						animationSpeed: 1.0,
-						//maxFollowTime: 60,
-						alarmHerd: true,
-						whenNotInEmotionState: "saturated"
-					},
 					//Keep distance from any target that approaches.
 					{
 						code: "fleeentity",
@@ -314,6 +296,33 @@
 						executionChance: 1.0,
 						whenInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
+					},
+					//Seek game to hunt.
+					{
+						code: "engageentity",
+						entityCodes: [ "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
+							"fox-male", "fox-female", "fox-arctic-male", "fox-arctic-female", "pig-wild-male", "pig-wild-female", "raccoon-male", "raccoon-female", "sheep-bighorn-male", "sheep-bighorn-female"],
+						priority: 2.0,
+						priorityForCancel: 3.0,
+						mincooldown: 0, 
+						maxcooldown: 0, 
+						pursueSpeed: 0.010,
+						pursueRange: 60,
+						pursueAnimation: "sneakwalk",
+						engageSpeed: 0.010,
+						engageRange: 4,
+						engageAnimation: "sneakwalk",
+
+						withdrawIfNoPath: true,
+						withdrawDist: 9.0,
+						withdrawDistDamaged: 40.0,
+						withdrawAnimation: "sneakidle",
+
+						animationSpeed: 1.0,
+						alarmHerd: true,
+						soundStartMs: 950,
+						whenNotInEmotionState: "saturated"	
+
 					},
 					{
 						code: "getoutofwater",

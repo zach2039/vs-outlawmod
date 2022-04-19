@@ -96,12 +96,13 @@
 			{
 				code: "walk",
 				animation: "walk",
+				blendMode: "Average",
 				SupressDefaultAnimation: true
 			},
 			{ 
 				code: "idle", 
 				animation: "idle",
-				blendMode: "AddAverage",
+				blendMode: "Average",
 				triggeredBy: { defaultAnim: true }
 			}
 		]

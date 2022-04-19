@@ -163,10 +163,9 @@ namespace ExpandedAiTasks
 
                 Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
                 Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
-                Vec3d shotDir = shotTargetPos - shotStartPosition;
 
                 //If we care about shooting friendlies and we are going to shoot a friendly, early out.
-                if (stopIfPredictFriendlyFire && WillFriendlyFire(shotStartPosition, shotDir, shotTargetPos))
+                if (stopIfPredictFriendlyFire && WillFriendlyFire(shotStartPosition, shotTargetPos))
                     return false;
             }
 
@@ -201,6 +200,8 @@ namespace ExpandedAiTasks
 
         public override bool ContinueExecute(float dt)
         {
+            AiUtility.UpdateLastTimeEntityInCombatMs(entity);
+
             Vec3f targetVec = new Vec3f();
 
             targetVec.Set(
@@ -275,7 +276,7 @@ namespace ExpandedAiTasks
                 Vec3d firePos = entity.SidedPos.BehindCopy(0.21).XYZ.Add(0, entity.LocalEyePos.Y, 0);
 
                 //If we care about shooting friendlies and we are going to shoot a friendly, early out.
-                if (stopIfPredictFriendlyFire && WillFriendlyFire(firePos.Clone(), velocity.Clone(), shotTargetPosWithDrift.Clone()))
+                if (stopIfPredictFriendlyFire && WillFriendlyFire(firePos.Clone(), shotTargetPosWithDrift.Clone()))
                     return false;
 
                 float projectileDamage = GetProjectileDamageAfterFalloff( distToTargetSqr );
@@ -319,10 +320,9 @@ namespace ExpandedAiTasks
 
                 Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
                 Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
-                Vec3d shotDir = shotTargetPos - shotStartPosition;
 
                 //If we care about shooting friendlies and we are going to shoot a friendly, early out.
-                if (WillFriendlyFire(shotStartPosition, shotDir, shotTargetPos))
+                if (WillFriendlyFire(shotStartPosition, shotTargetPos))
                     return false;
             }
 
@@ -349,13 +349,19 @@ namespace ExpandedAiTasks
             targetEntity = null;
         }
 
-        public bool WillFriendlyFire( Vec3d firePos, Vec3d shotDir, Vec3d shotTargetPos)
+        public bool WillFriendlyFire( Vec3d firePos, Vec3d shotTargetPos)
         {
+            Vec3d shooterToTarget = shotTargetPos - firePos;
+            shooterToTarget = shooterToTarget.Normalize();
+
             foreach(Entity herdMember in herdMembers)
             {
+                if (!herdMember.Alive)
+                    continue;
+
                 Vec3d shooterToHerdMember = ( herdMember.ServerPos.XYZ.Add(0, herdMember.LocalEyePos.Y, 0) - firePos);
-                shooterToHerdMember.Normalize();
-                double dot = shooterToHerdMember.Dot(shotDir.Normalize());
+                shooterToHerdMember = shooterToHerdMember.Normalize();
+                double dot = shooterToHerdMember.Dot(shooterToTarget);
 
                 double distToFriend = firePos.SquareDistanceTo( herdMember.ServerPos.XYZ );
 
@@ -363,7 +369,7 @@ namespace ExpandedAiTasks
                 if (distToFriend <= 1.5 * 1.5)
                     return true;
 
-                double friendlyFireDot = Math.Cos(45 * (Math.PI / 180));
+                double friendlyFireDot = Math.Cos(15 * (Math.PI / 180));
                 //If our ally is in our field of fire.
                 if (dot >= friendlyFireDot)
                 {
@@ -400,6 +406,12 @@ namespace ExpandedAiTasks
                     stopNow = true;
 
                 guardTargetAttackedByEntity = null;
+                return false;
+            }
+
+            else if (key == "clearTargetHistory")
+            {
+                ClearTargetHistory();
                 return false;
             }
 

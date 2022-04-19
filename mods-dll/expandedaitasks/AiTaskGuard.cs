@@ -408,6 +408,11 @@ namespace ExpandedAiTasks
                     return true;
                 }
             }
+            else if (key == "clearTargetHistory")
+            {
+                ClearTargetHistory();
+                return false;
+            }
 
             return false;
         }

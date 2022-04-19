@@ -126,6 +126,11 @@ namespace ExpandedAiTasks
 
         public override bool ContinueExecute(float dt)
         {
+            AiUtility.UpdateLastTimeEntityInCombatMs(entity);
+
+            if (targetEntity == null)
+                return false;
+
             EntityPos own = entity.ServerPos;
             EntityPos his = targetEntity.ServerPos;
 
@@ -204,6 +209,12 @@ namespace ExpandedAiTasks
                     stopNow = true;
 
                 guardTargetAttackedByEntity = null;
+                return false;
+            }
+
+            else if (key == "clearTargetHistory")
+            {
+                ClearTargetHistory();
                 return false;
             }
 

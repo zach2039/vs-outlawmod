@@ -21,18 +21,6 @@ namespace ExpandedAiTasks
             harmony = new Harmony("com.grifthegnome.expandedaitasks.aitaskpatches");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
-        
-    /*
-        var original = typeof(TheClass).GetMethod("TheMethod");
-        var prefix = typeof(MyPatchClass1).GetMethod("SomeMethod");
-        var postfix = typeof(MyPatchClass2).GetMethod("SomeMethod");
-
-        harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
-
-        // You can use named arguments to specify certain patch types only:
-        harmony.Patch(original, postfix: new HarmonyMethod(postfix));
-        harmony.Patch(original, prefix: new HarmonyMethod(prefix), transpiler: new HarmonyMethod(transpiler));
-    */
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
