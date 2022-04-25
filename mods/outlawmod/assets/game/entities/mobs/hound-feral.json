@@ -352,7 +352,7 @@
 				maxLightLevel: 7,
 				lightLevelType: "onlyBlockLight",					
 				groupSize: { dist: "gaussian", avg: 4, var: 2 },
-				insideBlockCodes: ["air", "tallgrass-*"],
+				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
 				minTemp: -15,
 				maxTemp: 28,
 				minRain: 0,
