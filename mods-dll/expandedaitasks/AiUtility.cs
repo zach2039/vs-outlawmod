@@ -316,9 +316,6 @@ namespace ExpandedAiTasks
             return herdMembersInRange;
         }
 
-        private static BlockSelection blockSel = new BlockSelection();
-        private static EntitySelection entitySel = new EntitySelection();
-
         public static bool IsPlayerWithinRangeOfPos(EntityPlayer player, Vec3d pos, float range)
         {
             double distSqr = player.ServerPos.XYZ.SquareDistanceTo(pos);
@@ -347,26 +344,11 @@ namespace ExpandedAiTasks
             foreach (IPlayer player in playersOnline)
             {
                 EntityPlayer playerEnt = player.Entity;
-                Vec3d playerEyePos = playerEnt.ServerPos.XYZ.Add(0, playerEnt.LocalEyePos.Y, 0);
 
                 if (IsPlayerWithinRangeOfPos(playerEnt, pos, autoPassRange))
                 {
-                    Vec3d playerForward = playerEnt.ServerPos.AheadCopy(1.0).XYZ - playerEnt.ServerPos.XYZ;
-                    playerForward = playerForward.Normalize();
-
-                    Vec3d playerToPos = pos - playerEyePos;
-                    playerToPos = playerToPos.Normalize();
-
-                    double maxViewDot = 1.0 + Math.Cos(160 * (Math.PI / 180));
-                    double dot = playerToPos.Dot(playerForward);
-
-                    if (dot > maxViewDot)
-                    {
-                        world.RayTraceForSelection(playerEyePos, pos, ref blockSel, ref entitySel);
-
-                        if (blockSel == null)
-                            return true;
-                    }
+                    if (CanEntSeePos(playerEnt, pos, 160))
+                        return true;
                 }
             }
 
@@ -377,6 +359,59 @@ namespace ExpandedAiTasks
         {
             Vec3d myEyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
             return CanAnyPlayerSeePos( myEyePos, autoPassRange, ent.World);
+        }
+
+        private static BlockSelection blockSel = new BlockSelection();
+        private static EntitySelection entitySel = new EntitySelection();
+
+        public static bool CanEntSeePos( Entity ent, Vec3d pos, float fov)
+        {
+            Vec3d entEyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
+            Vec3d entViewForward = GetEntityForwardViewVector(ent);
+
+            Vec3d entToPos = pos - entEyePos;
+            entToPos = entToPos.Normalize();
+
+            double maxViewDot = Math.Cos( (fov / 2) * (Math.PI / 180));
+            double dot = entViewForward.Dot(entToPos);
+
+            if (dot > maxViewDot)
+            {
+                ent.World.RayTraceForSelection(entEyePos, pos, ref blockSel, ref entitySel);
+
+                if (blockSel == null)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static Vec3d GetCenterMass( Entity ent)
+        {
+            if (ent.SelectionBox.Empty)
+                return ent.SidedPos.XYZ;
+
+            float heightOffset = ent.SelectionBox.Y2 - ent.SelectionBox.Y1;
+            return ent.SidedPos.XYZ.Add(0, heightOffset, 0);
+        }
+
+        public static Vec3d GetEntityForwardViewVector(Entity ent)
+        {
+            //WORK AROUND FOR VS ENGINE BUG:
+            //This split in the view vector function is to adress more VS core engine badness.
+            //With ents other than the player, their forward vector is offset by 90 degrees in yaw to the right of their forward, i.e. you get their right vector, not their forward.
+            //It's really messy and bad, but we're correcting for it here because it's not clear how deep the issue goes and we can't modify the core engine to fix it.
+
+            if ( ent is EntityPlayer)
+            {
+                Vec3d playerEyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
+                Vec3d playerAheadPos = playerEyePos.AheadCopy(1, ent.ServerPos.Pitch, ent.ServerPos.Yaw);
+                return (playerAheadPos - playerEyePos).Normalize();
+            }
+            
+            Vec3d eyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
+            Vec3d aheadPos = eyePos.AheadCopy(1, ent.ServerPos.Pitch, ent.ServerPos.Yaw + (90 * (Math.PI / 180)));
+            return (aheadPos - eyePos).Normalize();
         }
     }
 }

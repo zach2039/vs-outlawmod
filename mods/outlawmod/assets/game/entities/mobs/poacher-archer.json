@@ -165,7 +165,7 @@
 				states: [
 					{ code: "aggressiveondamage", duration: 15, chance: 1.00, slot: 0, priority: 4.0, accumType: "noaccum", whenHealthRelBelow: 0.75 },
 					{ code: "fleeondamage", duration: 15.0, chance: 1.00, slot: 0, priority: 2.0, accumType: "max", whenHealthRelBelow: 1.00 },
-					{ code: "saturated", duration: 1200, chance: 1, slot: 0, priority: 1, accumType: "sum" }
+					{ code: "saturated", duration: 300, chance: 1, slot: 0, priority: 1, accumType: "sum" }
 				],
 			},
 			{ 
@@ -215,7 +215,7 @@
 						maxDist: 18,
 						minRangeDistOffTarget: 0.5,
 						maxRangeDistOffTarget: 0.75,
-						maxVelocity: 1.25,
+						maxVelocity: 0.9,
 						newTargetDistOffTarget: 0.0,
 						newTargetZeroingTime: 0.0,
 						damage: 6.0,
@@ -223,14 +223,20 @@
 						damageFalloffStartDist: 18,
 						damageFalloffEndDist: 28,
 						projectileItem: "arrow-copper",
+						dummyProjectile: "dummyarrow-copper",
 						projectileRemainsInWorld: true,
 						projectileBreakOnImpactChance: 0.90,
 						stopIfPredictFriendlyFire: true,
+
+						leadTarget: true,
+            			arcShots: true,
+
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						seekingRange: 15,
 						animationSpeed: 1.0,
-						animation: "bowattack"
+						animation: "bowattack",
+						whenNotInEmotionState: "saturated"
 					},
 
 					//Poacher only attacks non-animals to aggro first.
@@ -245,7 +251,7 @@
 						maxDist: 32,
 						minRangeDistOffTarget: 0.25,
 						maxRangeDistOffTarget: 0.75,
-						maxVelocity: 1.25,
+						maxVelocity: 0.9,
 						newTargetDistOffTarget: 0.75,
 						newTargetZeroingTime: 5.0,
 						damage: 3.0,
@@ -256,6 +262,11 @@
 						projectileRemainsInWorld: true,
 						projectileBreakOnImpactChance: 0.90,
 						stopIfPredictFriendlyFire: true,
+
+						leadTarget: true,
+            			arcShots: true,
+            			arcGravityScalar: 0.3666,
+
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						seekingRange: 15,
@@ -391,7 +402,7 @@
 				group: "neutral",
 				tryOnlySurface: true,
 				chance: 0.0012,
-				maxQuantity: 2,
+				maxQuantity: 1,
 				"__comment": "Make them spawn away from artifical light",
 				maxLightLevel: 7,
 				lightLevelType: "onlyBlockLight",					

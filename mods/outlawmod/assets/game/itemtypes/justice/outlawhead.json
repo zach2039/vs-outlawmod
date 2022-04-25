@@ -1,6 +1,7 @@
 {
 	code: "outlawhead",
 	class: "ItemOutlawHead",
+	"storageFlags": 257,
 	attributesByType: {
 
         "*-looter": {
@@ -85,6 +86,11 @@
 		translation: { x: -1, y: -0.55, z: -0.25 },
 		rotation: { x: -170, y: -26, z: -102 },
 		scale: 0.91
+	},
+	tpOffHandTransform: {
+		translation: { x: -0.7, y: -0.55, z: -0.5 },
+		rotation: { x: -180, y: 15, z: -92 },
+		scale: 0.87
 	},
 	groundTransform: {
 		translation: { x: 0, y: 0.17, z: 0 },

@@ -3,6 +3,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 
 namespace OutlawMod
 {
@@ -27,6 +28,18 @@ namespace OutlawMod
 
         private bool Event_OnTrySpawnEntity(ref EntityProperties properties, Vec3d spawnPosition, long herdId)
         {
+
+            if (OMGlobalConstants.devMode)
+            {
+                if (properties.Code.Path.StartsWithFast("drifter"))
+                    return true;
+
+                if (properties.Code.Path.StartsWithFast("butterfly"))
+                    return true;
+
+                string message = "[Outlaw Mod Debug] Attempting to spawn entity " + properties.Code.Path;
+                sapi.Logger.Debug(message);
+            }
 
             string type = properties.Code.FirstPathPart();
 

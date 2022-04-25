@@ -346,6 +346,7 @@ namespace ExpandedAiTasks
 
         public override void FinishExecute(bool cancelled)
         {
+            pathTraverser.Stop();
             base.FinishExecute(cancelled);
         }
 

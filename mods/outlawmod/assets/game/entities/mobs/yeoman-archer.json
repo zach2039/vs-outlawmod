@@ -240,7 +240,7 @@
 						maxVertDist: 30,
 						minRangeDistOffTarget: 0.25,
 						maxRangeDistOffTarget: 0.75,
-						maxVelocity: 1.25,
+						maxVelocity: 0.9,
 						newTargetDistOffTarget: 0.75,
 						newTargetZeroingTime: 5.0,
 						damage: 4.0,
@@ -248,9 +248,14 @@
 						damageFalloffStartDist: 18,
 						damageFalloffEndDist: 28,
 						projectileItem: "arrow-copper",
+						dummyProjectile: "dummyarrow-copper",
 						projectileRemainsInWorld: true,
 						projectileBreakOnImpactChance: 0.90,
 						stopIfPredictFriendlyFire: true,
+
+						leadTarget: true,
+            			arcShots: true,
+
 						durationMs: 2000,
 						releaseAtMs: 1000,
 						animationSpeed: 1.0,

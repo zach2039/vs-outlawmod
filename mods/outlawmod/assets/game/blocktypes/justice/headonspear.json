@@ -2,6 +2,7 @@
 	code: "headonspear",
 	class: "BlockHeadOnSpear",
 	entityClass: "BlockEntityOutlawSpawnBlocker",
+	"storageFlags": 257,
 	attributesByType:
 	{
 		"*-looter-*": {
@@ -109,12 +110,17 @@
 	},
 	fpHandTransform: {
 		translation: { x: 0, y: -1.15, z: 0.5 },
-		rotation: { x: -22, y: -108, z: 0 },
+		rotation: { x: -22, y: -31, z: 0 },
 		scale: 2.23
 	},
 	tpHandTransform: {
-		translation: { x: 0, y: -0.45, z: -0.8 },
-		rotation: { x: 2, y: 27, z: -92 },
+		translation: { x: 0, y: -0.4, z: -0.65 },
+		rotation: { x: -89, y: 1, z: -109 },
+		scale: 1
+	},
+	tpOffHandTransform: {
+		translation: { x: 0, y: -0.6, z: -0.5 },
+		rotation: { x: -91, y: 18, z: -86 },
 		scale: 1
 	},
 	drops: [{ type: "block", code: "headonspear-{type}-{material}-north"}]

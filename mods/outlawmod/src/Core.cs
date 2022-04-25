@@ -44,7 +44,7 @@ namespace OutlawMod
         public bool StartingSafeZoneShrinksOverLifetime = true;
 
         [ProtoMember(10)]
-        public float StartingSpawnSafeZoneLifetimeInDays = 180f;
+        public float StartingSpawnSafeZoneLifetimeInDays = 45f;
 
         [ProtoMember(11)]
         public bool ClaimedLandBlocksOutlawSpawns = true;

@@ -154,7 +154,7 @@
 				states: [
 					{ code: "aggressiveondamage", duration: 15, chance: 1.00, slot: 0, priority: 4.0, accumType: "noaccum", whenHealthRelBelow: 0.75 },
 					{ code: "fleeondamage", duration: 15.0, chance: 1.00, slot: 0, priority: 2.0, accumType: "max", whenHealthRelBelow: 1.00 },
-					{ code: "saturated", duration: 1200, chance: 1, slot: 0, priority: 1, accumType: "sum" }
+					{ code: "saturated", duration: 300, chance: 1, slot: 0, priority: 1, accumType: "sum" }
 				],
 			},
 			{ 
@@ -382,7 +382,7 @@
 				group: "neutral",
 				tryOnlySurface: true,
 				chance: 0.0012,
-				maxQuantity: 2,
+				maxQuantity: 1,
 				"__comment": "Make them spawn away from artifical light",
 				maxLightLevel: 7,
 				lightLevelType: "onlyBlockLight",					
