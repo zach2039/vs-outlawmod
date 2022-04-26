@@ -74,36 +74,6 @@ namespace OutlawMod
             api.Logger.Debug(message);
         }
 
-        public static bool OutlawTypeEnabled( string type )
-        {
-            switch( type )
-            {
-                case "looter":
-                    return OMGlobalConstants.enableLooters;
-                case "poacher-spear":
-                case "poacher-archer":
-                    return OMGlobalConstants.enablePoachers;
-                case "bandit-axe":
-                case "bandit-spear":
-                case "bandit-knife":
-                    return OMGlobalConstants.enableBrigands;
-                case "yeoman-archer":
-                    return OMGlobalConstants.enableYeomen;
-                case "hound-feral":
-                    return OMGlobalConstants.enableFeralHounds;
-                case "hound-hunting":
-                    return OMGlobalConstants.enableHuntingHounds;
-
-                default:
-                    
-                    //This hard failure is good for dev, but bad for players.
-                    if ( OMGlobalConstants.devMode )
-                        Debug.Assert(false, "Outlaw type " + type + " does not exist.");
-                    
-                    return false;
-            }
-        }
-
         //We want a function that looks at the average levels of all the tools on the player and decided which "era" they are currently in.
         //We could then use this to decide which Outlaws to spawn based on player tech level.
         /*

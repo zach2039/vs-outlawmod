@@ -1,6 +1,6 @@
 {
 	code: "hound-hunting",
-	class: "EntityHound",
+	class: "EntityAgent",
 	hitboxSize: { x: 1.2, y: 1 },
 	deadHitboxSize: { x: 1, y: 0.75 },
 	eyeHeight: 0.9,
@@ -285,38 +285,7 @@
 				]
 			},
 		],
-		/*
-		spawnconditions: {
-			worldgen: {
-				TriesPerChunk: { avg: 0.07, var: 0 },
-				tryOnlySurface: true,
-				groupSize: { dist: "verynarrowgaussian", avg: 4, var: 2 },
-				insideBlockCodes: ["air", "tallgrass-*"],
-				minTemp: -15,
-				maxTemp: 15,
-				minRain: 0,
-				minForest: 0.0,
-				companions: []
-			},
-			runtime: {
-				group: "hostile",
-				tryOnlySurface: true,
-				chance: 0.0008,
-				maxQuantity: 8,
-				"__comment": "Make them spawn away from artifical light so they don't spawn inside farmland",
-				maxLightLevel: 7,
-				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "verynarrowgaussian", avg: 4, var: 2 },
-				insideBlockCodes: ["air", "tallgrass-*"],
-				minTemp: -15,
-				maxTemp: 15,
-				minRain: 0,
-				minForest: 0.0,
-				companions: []
-			}
-		}
 	},
-	*/
 	sounds: {
 		hurt: "creature/wolf/hurt",
 		death: "creature/wolf/hurt",

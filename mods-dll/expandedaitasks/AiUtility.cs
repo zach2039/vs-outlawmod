@@ -310,8 +310,9 @@ namespace ExpandedAiTasks
             foreach( Entity herdMember in herdMembers)
             {
                 double distSqr = herdMember.ServerPos.XYZ.SquareDistanceTo(pos);
-                if (distSqr <= range * range) ;
-                herdMembersInRange.Add(herdMember);
+                
+                if (distSqr <= range * range)
+                    herdMembersInRange.Add(herdMember);
             }
             return herdMembersInRange;
         }

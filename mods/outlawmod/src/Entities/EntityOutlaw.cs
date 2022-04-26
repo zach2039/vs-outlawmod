@@ -62,14 +62,6 @@ namespace OutlawMod
         public override void OnEntityLoaded()
         {
             base.OnEntityLoaded();
-
-            if (!Utility.OutlawTypeEnabled( this.Code.FirstPathPart() ) && Api.Side == EnumAppSide.Server )
-            {
-                Utility.DebugLogToPlayerChat(Api as ICoreServerAPI, "Attempted to load " + this.Code.Path + " at: " + this.Pos + ". This Outlaw type is disabled in the config, removing.");
-                this.Die(EnumDespawnReason.Removed, null);
-                
-                return;
-            }
         }
 
         /// <summary>
@@ -83,15 +75,6 @@ namespace OutlawMod
             //We want this debug functionality for dev purposes, but it should not run during a normal game.
             if ( OMGlobalConstants.devMode && Api.Side == EnumAppSide.Server)
             {
-                //Check if the Outlaw is disabled in the config.
-                if (!Utility.OutlawTypeEnabled(this.Code.FirstPathPart()))
-                {
-                    Utility.DebugLogToPlayerChat(Api as ICoreServerAPI, "Cannot Spawn " + this.Code.Path + " at: " + this.Pos + ". This Outlaw type is disabled in the config.");
-                    this.Die(EnumDespawnReason.Removed, null);
-                    
-                    return;
-                }
-
                 //Check if the Outlaw is blocked by spawn rules.
                 if ( !OutlawSpawnEvaluator.CanSpawn( Pos.XYZ, this.Code ) )
                 {

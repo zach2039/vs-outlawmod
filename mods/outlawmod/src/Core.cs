@@ -59,11 +59,24 @@ namespace OutlawMod
     public class Core : ModSystem
     {
         ICoreAPI api;
+        ICoreServerAPI sapi;
         ICoreClientAPI capi;
 
         private Harmony harmony;
 
         OutlawModConfig config = new OutlawModConfig();
+
+        public override double ExecuteOrder()
+        {
+            return 0.1;
+        }
+
+        public override void StartPre(ICoreAPI api)
+        {
+            base.StartPre(api);
+            ReadConfigFromJson(api);
+            ApplyConfigPatchFlags(api);
+        }
 
         public override void Start(ICoreAPI api)
         {
@@ -100,13 +113,12 @@ namespace OutlawMod
 
         public override void StartServerSide(ICoreServerAPI api)
         {
+            sapi = api;
+
             base.StartServerSide(api);
 
-            api.Event.ServerRunPhase(EnumServerRunPhase.ModsAndConfigReady, loadConfig);
-
             api.Event.ServerRunPhase(EnumServerRunPhase.GameReady, () => {
-                applyConfig();
-                //config.ResolveStartItems(api.World);
+                ApplyConfigGlobals();
             });
             api.Event.ServerRunPhase(EnumServerRunPhase.GameReady, () =>
             {
@@ -125,7 +137,6 @@ namespace OutlawMod
         {
             api.RegisterEntity("EntityOutlaw", typeof(EntityOutlaw));
             api.RegisterEntity("EntityOutlawPoacher", typeof(EntityOutlawPoacher));
-            api.RegisterEntity("EntityHound", typeof(EntityHound));
         }
 
         private void RegisterBlocksShared()
@@ -143,7 +154,7 @@ namespace OutlawMod
             api.RegisterItemClass("ItemOutlawHead", typeof(ItemOutlawHead));
         }
 
-        private void loadConfig()
+        private void ReadConfigFromJson(ICoreAPI api)
         {
             try
             {
@@ -170,17 +181,19 @@ namespace OutlawMod
             // Called on both sides
         }
 
-
-        private void applyConfig()
+        private void ApplyConfigPatchFlags(ICoreAPI api)
         {
             //Enable/Disable Outlaw Types
-            OMGlobalConstants.enableLooters     = config.EnableLooters;
-            OMGlobalConstants.enablePoachers    = config.EnablePoachers;
-            OMGlobalConstants.enableBrigands    = config.EnableBrigands;
-            OMGlobalConstants.enableYeomen      = config.EnableYeomen;
-            OMGlobalConstants.enableFeralHounds = config.EnableFeralHounds;
-            OMGlobalConstants.enableHuntingHounds = config.EnableHuntingHounds;
+            api.World.Config.SetBool("enableLooters", config.EnableLooters);
+            api.World.Config.SetBool("enablePoachers", config.EnablePoachers);
+            api.World.Config.SetBool("enableBrigands", config.EnableBrigands);
+            api.World.Config.SetBool("enableYeoman", config.EnableYeomen);
+            api.World.Config.SetBool("enableFeralHounds", config.EnableFeralHounds);
+            api.World.Config.SetBool("enableHuntingHounds", config.EnableHuntingHounds);
+        }
 
+        private void ApplyConfigGlobals()
+        {
             //Start Spawn Safe Zone Vars
             OMGlobalConstants.startingSpawnSafeZoneRadius           = config.StartingSpawnSafeZoneRadius;
             OMGlobalConstants.startingSafeZoneHasLifetime           = config.StartingSafeZoneHasLifetime;
@@ -202,7 +215,7 @@ namespace OutlawMod
         private void OnConfigFromServer(OutlawModConfig networkMessage)
         {
             this.config = networkMessage;
-            applyConfig();
+            ApplyConfigGlobals();
         }
     }
 }

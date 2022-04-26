@@ -34,7 +34,12 @@ namespace OutlawMod
 
         protected void AttemptSpawnHuntingHound(float dt)
         {
+            //Don't spawn hounds if hounds are disabled.
+            if (!Api.World.Config.GetBool("enableHuntingHounds", true))
+                return;
+
             AssetLocation code = new AssetLocation("hound-hunting");
+
             EntityProperties houndProperties = this.World.GetEntityType(code);
 
             Debug.Assert(houndProperties != null, "Hound Properties are null");
