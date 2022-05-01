@@ -279,10 +279,11 @@ namespace ExpandedAiTasks
             lastPathUpdateSeconds += dt;
 
             eInternalTaskState lastState = internalTaskState;
-            UpdateState();
 
             if (targetEntity == null || attackedByEntity != null)
                 return false;
+
+            UpdateState();
 
             //Turn to face target.
             Vec3f targetVec = new Vec3f();

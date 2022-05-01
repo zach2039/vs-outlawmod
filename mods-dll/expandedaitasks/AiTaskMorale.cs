@@ -265,6 +265,9 @@ namespace ExpandedAiTasks
         {
             AiUtility.UpdateLastTimeEntityInCombatMs(entity);
 
+            if (targetEntity == null)
+                return false;
+
             if (world.Rand.NextDouble() < 0.2)
             {
                 UpdateTargetPos();

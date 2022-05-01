@@ -204,6 +204,9 @@ namespace ExpandedAiTasks
         {
             AiUtility.UpdateLastTimeEntityInCombatMs(entity);
 
+            if (targetEntity == null)
+                return false;
+
             Vec3f targetVec = new Vec3f();
 
             targetVec.Set(

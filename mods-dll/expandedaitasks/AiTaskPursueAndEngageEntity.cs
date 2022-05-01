@@ -302,6 +302,9 @@ namespace ExpandedAiTasks
         {
             AiUtility.UpdateLastTimeEntityInCombatMs(entity);
 
+            if (targetEntity == null)
+                return false;
+
             currentFollowTime += dt;
             lastPathUpdateSeconds += dt;
 

@@ -225,6 +225,9 @@ namespace ExpandedAiTasks
 
         public override bool ContinueExecute(float dt)
         {
+            if (herdLeaderEntity == null)
+                return false;
+
             double x = herdLeaderEntity.ServerPos.X + targetOffset.X;
             double y = herdLeaderEntity.ServerPos.Y;
             double z = herdLeaderEntity.ServerPos.Z + targetOffset.Z;
