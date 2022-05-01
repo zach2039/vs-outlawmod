@@ -34,45 +34,48 @@ namespace OutlawMod
 
         protected void AttemptSpawnHuntingHound(float dt)
         {
-            //Don't spawn hounds if hounds are disabled.
-            if (!Api.World.Config.GetBool("enableHuntingHounds", true))
-                return;
-
-            AssetLocation code = new AssetLocation("hound-hunting");
-            if (code == null)
-                return;
-
-            EntityProperties houndProperties = this.World.GetEntityType(code);
-
-            Debug.Assert(houndProperties != null, "Hound Properties are null");
-
-            Cuboidf collisionBox = houndProperties.SpawnCollisionBox;
-
-            // Delay hound spawning if we're colliding
-            if (this.World.CollisionTester.IsColliding(this.World.BlockAccessor, collisionBox, this.ServerPos.XYZ, false))
+            if( Api.Side == EnumAppSide.Server)
             {
-                long callbackId = this.World.RegisterCallback(AttemptSpawnHuntingHound, 3000);
-                callbacks.Add(callbackId);
-                return;
-            }
+                //Don't spawn hounds if hounds are disabled.
+                if (!Api.World.Config.GetBool("enableHuntingHounds", true))
+                    return;
 
-            Entity houndEnt = this.World.ClassRegistry.CreateEntity(houndProperties);
+                AssetLocation code = new AssetLocation("hound-hunting");
+                if (code == null)
+                    return;
 
-            if (houndEnt == null)
-                return;
+                EntityProperties houndProperties = this.World.GetEntityType(code);
+
+                Debug.Assert(houndProperties != null, "Hound Properties are null");
+
+                Cuboidf collisionBox = houndProperties.SpawnCollisionBox;
+
+                // Delay hound spawning if we're colliding
+                if (this.World.CollisionTester.IsColliding(this.World.BlockAccessor, collisionBox, this.ServerPos.XYZ, false))
+                {
+                    long callbackId = this.World.RegisterCallback(AttemptSpawnHuntingHound, 3000);
+                    callbacks.Add(callbackId);
+                    return;
+                }
+
+                Entity houndEnt = this.World.ClassRegistry.CreateEntity(houndProperties);
+
+                if (houndEnt == null)
+                    return;
             
-            houndEnt.ServerPos.SetFrom(this.ServerPos);
-            houndEnt.Pos.SetFrom(houndEnt.ServerPos);
+                houndEnt.ServerPos.SetFrom(this.ServerPos);
+                houndEnt.Pos.SetFrom(houndEnt.ServerPos);
 
-            if (houndEnt is EntityAgent)
-            {
-                EntityAgent houndAgent = (EntityAgent)houndEnt;
-                houndAgent.HerdId = this.HerdId;
+                if (houndEnt is EntityAgent)
+                {
+                    EntityAgent houndAgent = (EntityAgent)houndEnt;
+                    houndAgent.HerdId = this.HerdId;
 
-                AiUtility.SetGuardedEntity(houndAgent, this);
+                    AiUtility.SetGuardedEntity(houndAgent, this);
+                }
+
+                this.World.SpawnEntity(houndEnt);
             }
-
-            this.World.SpawnEntity(houndEnt);
         }
 
         public override void OnEntityDespawn(EntityDespawnReason despawn)
