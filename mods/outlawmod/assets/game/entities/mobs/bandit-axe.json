@@ -263,14 +263,25 @@
 			}
 		],
 		spawnconditions: {
+			worldgen: {
+				TriesPerChunk: { avg: 0.014, var: 0 },
+				tryOnlySurface: true,				
+				groupSize: { dist: "stronginvexp", avg: 2, var: 3 },
+				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
+				minTemp: -15,
+				maxTemp: 28,
+				minRain: 0,
+				minForestOrShrubs: 0.25,
+				companions: ["bandit-knife", "bandit-spear"]
+			},
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
 				chance: 0.0008,
 				maxQuantity: 4,
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
-				maxLightLevel: 5,
-				lightLevelType: "onlyBlockLight",					
+				maxLightLevel: 3,
+				lightLevelType: "MaxTimeOfDayLight",					
 				groupSize: { dist: "stronginvexp", avg: 2, var: 3 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
 				minTemp: -15,

@@ -318,14 +318,25 @@
 			}
 		],
 		spawnconditions: {
+			worldgen: {
+				TriesPerChunk: { avg: 0.05, var: 0 },
+				tryOnlySurface: true,				
+				groupSize: { dist: "stronginvexp", avg: 4, var: 4 },
+				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
+				minTemp: -15,
+				maxTemp: 28,
+				minRain: 0,
+				minForest: 0.0,
+				companions: []
+			},
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
 				chance: 0.0022,
 				maxQuantity: 16,
-				"__comment": "Make them spawn away from artifical light, both day and night",
-				maxLightLevel: 6,
-				lightLevelType: "onlyBlockLight",					
+				"__comment": "Make them spawn away from artifical light, at night",
+				maxLightLevel: 3,
+				lightLevelType: "MaxTimeOfDayLight",					
 				groupSize: { dist: "stronginvexp", avg: 4, var: 4 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
 				minTemp: -15,

@@ -335,7 +335,7 @@
 			worldgen: {
 				TriesPerChunk: { avg: 0.07, var: 0 },
 				tryOnlySurface: true,
-				groupSize: { dist: "invexp", avg: 2, var: 2 },
+				groupSize: { dist: "stronginvexp", avg: 2, var: 2 },
 				insideBlockCodes: ["air", "tallgrass-*"],
 				minTemp: -15,
 				maxTemp: 15,
