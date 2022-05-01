@@ -324,14 +324,15 @@
 				chance: 0.0022,
 				maxQuantity: 16,
 				"__comment": "Make them spawn away from artifical light, both day and night",
-				maxLightLevel: 7,
+				maxLightLevel: 6,
 				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "gaussian", avg: 4, var: 4 },
+				groupSize: { dist: "stronginvexp", avg: 4, var: 4 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
 				minTemp: -15,
 				maxTemp: 28,
 				minRain: 0,
 				minForest: 0.0,
+				MinDistanceToPlayer: 50,
 				companions: []
 			}
 		}

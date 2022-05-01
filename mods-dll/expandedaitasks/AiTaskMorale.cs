@@ -206,7 +206,7 @@ namespace ExpandedAiTasks
                 {
                     EntityItem item = ent as EntityItem;
                     if ( itemStackSourcesOfFearWeightsByCodeExact.Count > 0 || itemStackSourcesOfFearWeightsByCodePartial.Count > 0 )
-                        itemStackSourceOfFearTotalWeight += GetItemStackSourceOfFearWeight(item.Itemstack);      
+                        itemStackSourceOfFearTotalWeight += item.Itemstack != null ? GetItemStackSourceOfFearWeight(item.Itemstack) : 0;      
                 }
             }
 
@@ -514,6 +514,8 @@ namespace ExpandedAiTasks
                 path = itemStack.Item.Code.Path;
             else if (itemStack.Block != null)
                 path = itemStack.Block.Code.Path;
+            else
+                return 0;
 
             //Try to match exact entity codes.
             if (itemStackSourcesOfFearWeightsByCodeExact.ContainsKey(path))

@@ -71,12 +71,10 @@ namespace OutlawMod
         {
             base.OnEntitySpawn();
 
-            //Allow us to block spawns for debugging purposes post OnTrySpawn callback.
-            //We want this debug functionality for dev purposes, but it should not run during a normal game.
-            if ( OMGlobalConstants.devMode && Api.Side == EnumAppSide.Server)
+            if ( !OMGlobalConstants.devMode && Api.Side == EnumAppSide.Server)
             {
                 //Check if the Outlaw is blocked by spawn rules.
-                if ( !OutlawSpawnEvaluator.CanSpawn( Pos.XYZ, this.Code ) )
+                if ( !OutlawSpawnEvaluator.CanSpawnOutlaw( Pos.XYZ, this.Code ) )
                 {
                     Utility.DebugLogToPlayerChat(Api as ICoreServerAPI, "Cannot Spawn " + this.Code.Path + " at: " + this.Pos + ". See Debug Log for Details.");
                     this.Die(EnumDespawnReason.Removed, null);

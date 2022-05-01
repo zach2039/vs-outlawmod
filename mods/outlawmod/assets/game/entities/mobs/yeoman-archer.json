@@ -238,7 +238,7 @@
 						minDist: 4,
 						maxDist: 40,
 						maxVertDist: 30,
-						minRangeDistOffTarget: 0.25,
+						minRangeDistOffTarget: 0.35,
 						maxRangeDistOffTarget: 0.75,
 						maxVelocity: 0.9,
 						newTargetDistOffTarget: 0.75,
@@ -282,7 +282,8 @@
 						engageSpeed: 0.006,
 						engageRange: 34,
 						engageAnimation: "walkbowready",
-
+						arriveRange: 20,
+						arriveVerticalRange: 20,
 						withdrawIfNoPath: true,
        					withdrawDist: 20.0,
         				withdrawDistDamaged: 30.0,
@@ -344,16 +345,17 @@
 				group: "hostile",
 				tryOnlySurface: true,
 				chance: 0.0008,
-				maxQuantity: 6,
+				maxQuantity: 8,
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
 				maxLightLevel: 5,
 				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "gaussian", avg: 4, var: 2 },
+				groupSize: { dist: "stronginvexp", avg: 2, var: 4 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
 				minTemp: -15,
 				maxTemp: 28,
 				minRain: 0,
 				minForestOrShrubs: 0.25,
+				MinDistanceToPlayer: 50,
 				companions: []
 			}
 		}

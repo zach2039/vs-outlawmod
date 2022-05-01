@@ -271,12 +271,13 @@
 				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
 				maxLightLevel: 5,
 				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "gaussian", avg: 3, var: 2 },
+				groupSize: { dist: "stronginvexp", avg: 2, var: 3 },
 				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
 				minTemp: -15,
 				maxTemp: 28,
 				minRain: 0,
 				minForestOrShrubs: 0.25,
+				MinDistanceToPlayer: 50,
 				companions: ["bandit-knife", "bandit-spear"]
 			}
 		}

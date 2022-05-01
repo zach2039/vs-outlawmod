@@ -57,6 +57,7 @@ namespace OutlawMod
                 case "hound-feral":
                 case "hound-hunting":
                     return ShouldSpawnHoundOfType(ref properties, spawnPosition);
+                    
             }
 
             return true;
@@ -65,12 +66,13 @@ namespace OutlawMod
         private bool ShouldSpawnOutlawOfType( ref EntityProperties properties, Vec3d spawnPosition )
         {
             //Check spawn rules.
-            return OutlawSpawnEvaluator.CanSpawn(spawnPosition, properties.Code);
+            return OutlawSpawnEvaluator.CanSpawnOutlaw(spawnPosition, properties.Code);
         }
 
         private bool ShouldSpawnHoundOfType( ref EntityProperties properties, Vec3d spawnPosition)
         {
-            return true;
+            //Check spawn rules.
+            return OutlawSpawnEvaluator.CanSpawnHound(spawnPosition, properties.Code);
         }
 
     }

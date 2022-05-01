@@ -21,7 +21,7 @@ namespace OutlawMod
             base.OnEntitySpawn();
         
             //If we get despawned by debug stuff, don't spawn out hounds.
-            if ( !this.Alive )
+            if ( this == null || !this.Alive )
                 return;
 
             int houndToSpawn = this.World.Rand.Next(HOUND_COMPANIONS_MIN, HOUND_COMPANIONS_MAX);
@@ -39,6 +39,8 @@ namespace OutlawMod
                 return;
 
             AssetLocation code = new AssetLocation("hound-hunting");
+            if (code == null)
+                return;
 
             EntityProperties houndProperties = this.World.GetEntityType(code);
 
@@ -55,6 +57,10 @@ namespace OutlawMod
             }
 
             Entity houndEnt = this.World.ClassRegistry.CreateEntity(houndProperties);
+
+            if (houndEnt == null)
+                return;
+            
             houndEnt.ServerPos.SetFrom(this.ServerPos);
             houndEnt.Pos.SetFrom(houndEnt.ServerPos);
 
