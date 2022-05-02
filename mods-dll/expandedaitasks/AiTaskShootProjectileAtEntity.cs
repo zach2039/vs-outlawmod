@@ -45,7 +45,7 @@ namespace ExpandedAiTasks
         bool leadTarget = true;
         bool arcShots = true;
         bool fireOnLastKnownPosition = true;
-        float laskKnownPositionTimeout = 10f;
+        float lastKnownPositionTimeout = 10f;
 
         Entity targetLastFrame = null;
         double dtSinceTargetAquired = 0.0f;
@@ -100,7 +100,7 @@ namespace ExpandedAiTasks
             this.leadTarget = taskConfig["leadTarget"].AsBool(true);
             this.arcShots = taskConfig["arcShots"].AsBool(true);
             this.fireOnLastKnownPosition = taskConfig["fireOnLastKnownPosition"].AsBool(true);
-            this.laskKnownPositionTimeout = taskConfig["laskKnownPositionTimeout"].AsFloat(10f);
+            this.lastKnownPositionTimeout = taskConfig["lastKnownPositionTimeout"].AsFloat(10f);
 
             //Error checking for bad json values.
             Debug.Assert(damageFalloffPercent >= 0.0f && damageFalloffPercent <= 1.0f, "AiTaskValue damageFalloffPercent must be a 0.0 to 1.0 value.");
