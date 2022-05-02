@@ -44,9 +44,13 @@ namespace ExpandedAiTasks
         bool stopIfPredictFriendlyFire = false;
         bool leadTarget = true;
         bool arcShots = true;
+        bool fireOnLastKnownPosition = true;
+        float laskKnownPositionTimeout = 10f;
 
         Entity targetLastFrame = null;
         double dtSinceTargetAquired = 0.0f;
+        Vec3d targetLKP = null;
+        double lastTimeSeenTarget = 0;
 
         EntityPartitioning partitionUtil;
 
@@ -94,7 +98,9 @@ namespace ExpandedAiTasks
             this.projectileBreakOnImpactChance = taskConfig[ "projectileBreakOnImpactChance"].AsFloat(0.0f);
             this.stopIfPredictFriendlyFire = taskConfig["stopIfPredictFriendlyFire"].AsBool(false);
             this.leadTarget = taskConfig["leadTarget"].AsBool(true);
-            this.arcShots = taskConfig["arcShots"].AsBool(true); 
+            this.arcShots = taskConfig["arcShots"].AsBool(true);
+            this.fireOnLastKnownPosition = taskConfig["fireOnLastKnownPosition"].AsBool(true);
+            this.laskKnownPositionTimeout = taskConfig["laskKnownPositionTimeout"].AsFloat(10f);
 
             //Error checking for bad json values.
             Debug.Assert(damageFalloffPercent >= 0.0f && damageFalloffPercent <= 1.0f, "AiTaskValue damageFalloffPercent must be a 0.0 to 1.0 value.");
@@ -153,10 +159,20 @@ namespace ExpandedAiTasks
             }
 
             if ( targetEntity != targetLastFrame)
+            {
                 dtSinceTargetAquired = 0.0f;
+                targetLKP = null;
+            }
 
-             targetLastFrame = targetEntity;
-
+            if (fireOnLastKnownPosition && targetLastFrame != null && targetEntity == null)
+            {
+                targetEntity = targetLastFrame;
+            }
+            else
+            {
+                targetLastFrame = targetEntity;
+            }
+            
             
             if ( targetEntity != null)
             {
@@ -164,12 +180,12 @@ namespace ExpandedAiTasks
                 if( ownPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= minDist * minDist)
                     return false;
 
-                Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
-                Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+               // Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
+               // Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
 
                 //If we care about shooting friendlies and we are going to shoot a friendly, early out.
-                if (stopIfPredictFriendlyFire && WillFriendlyFire(shotStartPosition, shotTargetPos))
-                    return false;
+                //if (stopIfPredictFriendlyFire && WillFriendlyFire(shotStartPosition, shotTargetPos))
+                //    return false;
             }
 
             return targetEntity != null;
@@ -180,6 +196,12 @@ namespace ExpandedAiTasks
             accum = 0;
             didShoot = false;
             stopNow = false;
+
+            if ( fireOnLastKnownPosition )
+            {
+                targetLKP = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+                lastTimeSeenTarget = entity.World.ElapsedMilliseconds;
+            }
 
             if (entity?.Properties.Server?.Attributes != null)
             {
@@ -206,6 +228,12 @@ namespace ExpandedAiTasks
 
             if (targetEntity == null)
                 return false;
+
+            if ( fireOnLastKnownPosition && AiUtility.CanEntSeePos( entity, targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0), 45 ))
+            {
+                targetLKP = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+                lastTimeSeenTarget = entity.World.ElapsedMilliseconds;
+            }
 
             Vec3f targetVec = new Vec3f();
 
@@ -257,7 +285,7 @@ namespace ExpandedAiTasks
                     yawDir = -1.0f;
 
                 Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
-                Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
+                Vec3d shotTargetPos = fireOnLastKnownPosition ? targetLKP : targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
 
                 //Do the work needed to lead our target
                 Vec3d shotToTargetNorm = ( shotTargetPos - shotStartPosition ).Normalize();
@@ -303,10 +331,6 @@ namespace ExpandedAiTasks
                 //If we care about shooting friendlies and we are going to shoot a friendly, early out.
                 if (stopIfPredictFriendlyFire && WillFriendlyFire(firePos.Clone(), shotTargetPosWithDrift.Clone()))
                     return false;
-
-                //If on the frame we are intending to fire, we can't see our target, cancel the shot.
-                //if (!AiUtility.CanEntSeePos(entity, targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0), 45))
-                //   return false;
 
                 float projectileDamage = GetProjectileDamageAfterFalloff( distToTargetSqr );
 
