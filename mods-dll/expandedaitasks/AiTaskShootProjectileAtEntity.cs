@@ -45,7 +45,7 @@ namespace ExpandedAiTasks
         bool leadTarget = true;
         bool arcShots = true;
         bool fireOnLastKnownPosition = true;
-        float lastKnownPositionTimeout = 10f;
+        float lastKnownPositionTimeoutMs = 5000f;
 
         Entity targetLastFrame = null;
         double dtSinceTargetAquired = 0.0f;
@@ -100,7 +100,7 @@ namespace ExpandedAiTasks
             this.leadTarget = taskConfig["leadTarget"].AsBool(true);
             this.arcShots = taskConfig["arcShots"].AsBool(true);
             this.fireOnLastKnownPosition = taskConfig["fireOnLastKnownPosition"].AsBool(true);
-            this.lastKnownPositionTimeout = taskConfig["lastKnownPositionTimeout"].AsFloat(10f);
+            this.lastKnownPositionTimeoutMs = taskConfig["lastKnownPositionTimeoutMs"].AsFloat(5000f);
 
             //Error checking for bad json values.
             Debug.Assert(damageFalloffPercent >= 0.0f && damageFalloffPercent <= 1.0f, "AiTaskValue damageFalloffPercent must be a 0.0 to 1.0 value.");
@@ -158,19 +158,33 @@ namespace ExpandedAiTasks
                 targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, vertRange));
             }
 
+            //Reset our zeroing accuracy. (May need changes to play nice with LKP)
             if ( targetEntity != targetLastFrame)
             {
                 dtSinceTargetAquired = 0.0f;
-                targetLKP = null;
             }
 
-            if (fireOnLastKnownPosition && targetLastFrame != null && targetEntity == null)
+            //If we can fire on last known position and we had a target and last know position last frame, but our current target is null.
+            if (fireOnLastKnownPosition && targetLastFrame != null && targetLastFrame.Alive && targetLKP != null && targetEntity == null)
             {
-                targetEntity = targetLastFrame;
+                double dtSinceTargetSeen = entity.World.ElapsedMilliseconds - lastTimeSeenTarget;
+                double distSqrToLKP = targetLKP.SquareDistanceTo(entity.ServerPos.XYZ);
+
+                //If we haven't timed out on our target's last know position and we are in range.
+                if (dtSinceTargetSeen <= lastKnownPositionTimeoutMs && distSqrToLKP <= range * range )
+                {
+                    targetEntity = targetLastFrame;
+                }
+                else
+                {
+                    targetLastFrame = targetEntity;
+                    targetLKP = null;
+                }     
             }
             else
             {
                 targetLastFrame = targetEntity;
+                targetLKP = null;
             }
             
             
@@ -179,13 +193,6 @@ namespace ExpandedAiTasks
                 //If the target is too close to fire upon.
                 if( ownPos.SquareDistanceTo(targetEntity.ServerPos.XYZ) <= minDist * minDist)
                     return false;
-
-               // Vec3d shotStartPosition = entity.ServerPos.XYZ.Add(0, entity.LocalEyePos.Y, 0);
-               // Vec3d shotTargetPos = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
-
-                //If we care about shooting friendlies and we are going to shoot a friendly, early out.
-                //if (stopIfPredictFriendlyFire && WillFriendlyFire(shotStartPosition, shotTargetPos))
-                //    return false;
             }
 
             return targetEntity != null;
@@ -197,7 +204,7 @@ namespace ExpandedAiTasks
             didShoot = false;
             stopNow = false;
 
-            if ( fireOnLastKnownPosition )
+            if ( fireOnLastKnownPosition && AiUtility.CanEntSeePos(entity, targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0), 90))
             {
                 targetLKP = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
                 lastTimeSeenTarget = entity.World.ElapsedMilliseconds;
@@ -229,19 +236,36 @@ namespace ExpandedAiTasks
             if (targetEntity == null)
                 return false;
 
-            if ( fireOnLastKnownPosition && AiUtility.CanEntSeePos( entity, targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0), 45 ))
+            if ( fireOnLastKnownPosition && AiUtility.CanEntSeePos( entity, targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0), 90 ))
             {
                 targetLKP = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
                 lastTimeSeenTarget = entity.World.ElapsedMilliseconds;
             }
 
+            if (fireOnLastKnownPosition && targetLKP == null)
+                return false;
+
+            //to do: Make this work with lkp. Right now it rotates to face the current target position.
+
             Vec3f targetVec = new Vec3f();
 
-            targetVec.Set(
-                (float)(targetEntity.ServerPos.X - entity.ServerPos.X),
-                (float)(targetEntity.ServerPos.Y - entity.ServerPos.Y),
-                (float)(targetEntity.ServerPos.Z - entity.ServerPos.Z)
-            );
+            if (fireOnLastKnownPosition)
+            {
+                targetVec.Set(
+                    (float)(targetLKP.X - entity.ServerPos.X),
+                    (float)(targetLKP.Y - entity.ServerPos.Y),
+                    (float)(targetLKP.Z - entity.ServerPos.Z)
+                );
+            }
+            else
+            {
+                targetVec.Set(
+                    (float)(targetEntity.ServerPos.X - entity.ServerPos.X),
+                    (float)(targetEntity.ServerPos.Y - entity.ServerPos.Y),
+                    (float)(targetEntity.ServerPos.Z - entity.ServerPos.Z)
+                );
+            }
+            
 
             float desiredYaw = (float)Math.Atan2(targetVec.X, targetVec.Z);
 

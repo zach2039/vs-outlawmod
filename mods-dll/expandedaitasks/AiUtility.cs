@@ -368,7 +368,7 @@ namespace ExpandedAiTasks
         public static bool CanEntSeePos( Entity ent, Vec3d pos, float fov)
         {
             Vec3d entEyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
-            Vec3d entViewForward = GetEntityForwardViewVector(ent);
+            Vec3d entViewForward = GetEntityForwardViewVector(ent, pos);
 
             Vec3d entToPos = pos - entEyePos;
             entToPos = entToPos.Normalize();
@@ -396,22 +396,51 @@ namespace ExpandedAiTasks
             return ent.SidedPos.XYZ.Add(0, heightOffset, 0);
         }
 
-        public static Vec3d GetEntityForwardViewVector(Entity ent)
+        public static Vec3d GetEntityForwardViewVector(Entity ent, Vec3d pitchPoint)
+        {
+            if ( ent is EntityPlayer)
+                return GetPlayerForwardViewVector(ent);
+
+            return GetAiForwardViewVectorWithPitchTowardsPoint(ent, pitchPoint);
+        }
+
+        public static Vec3d GetPlayerForwardViewVector( Entity player)
+        {
+            Debug.Assert ( player is EntityPlayer );
+
+            Vec3d playerEyePos = player.ServerPos.XYZ.Add(0, player.LocalEyePos.Y, 0);
+            Vec3d playerAheadPos = playerEyePos.AheadCopy(1, player.ServerPos.Pitch, player.ServerPos.Yaw);
+            return (playerAheadPos - playerEyePos).Normalize();
+        }
+
+        public static Vec3d GetAiForwardViewVectorWithPitchTowardsPoint(Entity ent, Vec3d pitchPoint)
         {
             //WORK AROUND FOR VS ENGINE BUG:
             //This split in the view vector function is to adress more VS core engine badness.
             //With ents other than the player, their forward vector is offset by 90 degrees in yaw to the right of their forward, i.e. you get their right vector, not their forward.
             //It's really messy and bad, but we're correcting for it here because it's not clear how deep the issue goes and we can't modify the core engine to fix it.
 
-            if ( ent is EntityPlayer)
-            {
-                Vec3d playerEyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
-                Vec3d playerAheadPos = playerEyePos.AheadCopy(1, ent.ServerPos.Pitch, ent.ServerPos.Yaw);
-                return (playerAheadPos - playerEyePos).Normalize();
-            }
-            
+            //View Forward Issue for Non-Players
+            //Non-player entities currentlyhave their pitch locked to the horizon. We need to calculate pitch as if the Ai Is looking above or below the horizon,
+            //and only account for Yaw when calculating view forward.
+
+            Vec3d entEyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
+
+            double opposite = (pitchPoint.Y - entEyePos.Y);
+            int dirScalar = opposite < 0 ? -1 : 1;
+            double oppositeSqr = (opposite * opposite) * dirScalar;
+
+            Vec3d dirFromEntToPoint2D = new Vec3d( pitchPoint.X-entEyePos.X, 0, pitchPoint.Z - entEyePos.Z);
+
+            //Try to save the square
+            double adjacentSqr = dirFromEntToPoint2D.LengthSq();
+
+            double pitch = Math.Atan2(oppositeSqr, adjacentSqr);
+
+            double pitchDeg = pitch / (Math.PI / 180);
+
             Vec3d eyePos = ent.ServerPos.XYZ.Add(0, ent.LocalEyePos.Y, 0);
-            Vec3d aheadPos = eyePos.AheadCopy(1, ent.ServerPos.Pitch, ent.ServerPos.Yaw + (90 * (Math.PI / 180)));
+            Vec3d aheadPos = eyePos.AheadCopy(1, pitch, ent.ServerPos.Yaw + (90 * (Math.PI / 180)));
             return (aheadPos - eyePos).Normalize();
         }
     }

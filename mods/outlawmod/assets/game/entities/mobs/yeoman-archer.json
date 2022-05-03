@@ -255,6 +255,8 @@
 
 						leadTarget: true,
             			arcShots: true,
+						fireOnLastKnownPosition: true,
+						lastKnownPositionTimeoutMs: 5000,
 
 						durationMs: 2000,
 						releaseAtMs: 1000,
