@@ -230,6 +230,7 @@
 
 						leadTarget: true,
             			arcShots: true,
+						fireOnLastKnownPosition: false,
 
 						durationMs: 2000,
 						releaseAtMs: 1000,
@@ -265,7 +266,8 @@
 
 						leadTarget: true,
             			arcShots: true,
-            			arcGravityScalar: 0.3666,
+            			fireOnLastKnownPosition: true,
+						lastKnownPositionTimeoutMs: 5000,
 
 						durationMs: 2000,
 						releaseAtMs: 1000,

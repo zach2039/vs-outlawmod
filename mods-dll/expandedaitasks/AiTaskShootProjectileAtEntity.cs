@@ -139,13 +139,13 @@ namespace ExpandedAiTasks
                 attackedByEntity = null;
             }
 
-            if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && IsTargetableEntity(attackedByEntity, 15, true) && hasDirectContact(attackedByEntity, range, vertRange))
+            if (retaliateAttacks && attackedByEntity != null && attackedByEntity.Alive && IsTargetableEntity(attackedByEntity, 15, true) && hasLOSContactWithTarget(attackedByEntity, range, vertRange))
             {
                 targetEntity = attackedByEntity;
             }
             else if (guardTargetAttackedByEntity != null && guardTargetAttackedByEntity.Alive)
             {
-                if ( hasDirectContact(guardTargetAttackedByEntity, range, range / 2f))
+                if (hasLOSContactWithTarget(guardTargetAttackedByEntity, range, vertRange))
                     targetEntity = guardTargetAttackedByEntity;
             }
             else
@@ -155,7 +155,7 @@ namespace ExpandedAiTasks
 
             if (targetEntity == null || !targetEntity.Alive)
             {
-                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasDirectContact(e, range, vertRange));
+                targetEntity = partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => IsTargetableEntity(e, range) && hasLOSContactWithTarget(e, range, vertRange));
             }
 
             //Reset our zeroing accuracy. (May need changes to play nice with LKP)
@@ -204,7 +204,7 @@ namespace ExpandedAiTasks
             didShoot = false;
             stopNow = false;
 
-            if ( fireOnLastKnownPosition && AiUtility.CanEntSeePos(entity, targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0), 90))
+            if ( fireOnLastKnownPosition && hasLOSContactWithTarget(targetEntity, maxDist, maxVertDist))
             {
                 targetLKP = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
                 lastTimeSeenTarget = entity.World.ElapsedMilliseconds;
@@ -236,7 +236,7 @@ namespace ExpandedAiTasks
             if (targetEntity == null)
                 return false;
 
-            if ( fireOnLastKnownPosition && AiUtility.CanEntSeePos( entity, targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0), 90 ))
+            if ( fireOnLastKnownPosition && hasLOSContactWithTarget(targetEntity, maxDist, maxVertDist))
             {
                 targetLKP = targetEntity.ServerPos.XYZ.Add(0, targetEntity.LocalEyePos.Y, 0);
                 lastTimeSeenTarget = entity.World.ElapsedMilliseconds;

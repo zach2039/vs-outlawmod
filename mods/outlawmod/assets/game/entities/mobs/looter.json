@@ -193,23 +193,9 @@
 						animation: "attack",
 						animationSpeed: 2,
 					},					
-					//Flee when injured.
+
+					//DISABLING THIS UNTIL WE CAN GET IT WORKING WITH EXPANDED AI TASKS PROJECTILES, IT DOESN't WORK WITH OUR NEW STEALTH SYSTEMS BY DEFAULT.
 					/*
-					{
-						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
-						priority: 4,
-						movespeed: 0.040,
-						seekingRange: 14,
-						cancelOnHurt: false,
-						fleeingDistance: 64,
-						fleeDurationMs: 9999999,
-						animation: "sprint",
-						animationSpeed: 1,
-						executionChance: 0.5,
-						whenInEmotionState: "fleeondamage",
-					},
-					*/
 					{
 						code: "throwatentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
@@ -223,6 +209,7 @@
 						animationSpeed: 0.5,
 						animation: "throwlefthanded"
 					},
+					*/
 					//Agro When Damaged
 					{
 						code: "engageentity",

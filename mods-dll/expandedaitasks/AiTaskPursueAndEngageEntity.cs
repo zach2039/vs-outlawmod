@@ -246,7 +246,7 @@ namespace ExpandedAiTasks
             if (!IsTargetableEntity(ent, range, ignoreEntityCode))
                 return false;
 
-            return hasDirectContact(ent, range, range / 2);
+            return hasLOSContactWithTarget(ent, range, range);
         }
 
         public float MinDistanceToTarget()
