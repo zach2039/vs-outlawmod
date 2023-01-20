@@ -1,3 +1,8 @@
-# vsmodtemplate
+# Outlaw Mod
 
-This repository contains a configured VisualStudio project that let's you start Vintage Story and add your own mod projects to it. Supports logging and as well as debugging. All projects in `root/mods/` will be loaded.
+A mod for Vintage Story written by Grifthegnome, updated.
+
+## Original Mod Blurb
+
+Step into a grim medieval world where Foot Pads and Brigands waylay the roads at night; Looters roam the hills for coin; Yeomen stalk the woods with their bows, Poachers hunt the kings game, and Feral Hounds feast on the corpses of the slain. These outlaws rove in bands and will agressively persue the player or flee you in an attempt to escape justice.
+
