@@ -2,18 +2,18 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>D:\Users\User\AppData\Roaming\Vintagestory\Vintagestory.exe</StartProgram>
+    <StartProgram>E:\Games\VintageStory\Vintagestory.exe</StartProgram>
     <StartArguments>--openWorld="modsamplestest" -pcreativebuilding --addModPath="$(SolutionDir)mods" --tracelog</StartArguments>
-    <StartWorkingDirectory>D:\Users\User\AppData\Roaming\Vintagestory\</StartWorkingDirectory>
+    <StartWorkingDirectory>E:\Games\VintageStory\</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>D:\Users\User\AppData\Roaming\Vintagestory\Vintagestory.exe</StartProgram>
+    <StartProgram>E:\Games\VintageStory\Vintagestory.exe</StartProgram>
     <StartArguments>--openWorld="modsamplestest" -p3 --addModPath="$(SolutionDir)mods" --tracelog</StartArguments>
-	<StartWorkingDirectory>D:\Users\User\AppData\Roaming\Vintagestory\</StartWorkingDirectory>
+	<StartWorkingDirectory>E:\Games\VintageStory\</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup>
-    <ReferencePath>D:\Users\User\AppData\Roaming\Vintagestory\;D:\Users\User\AppData\Roaming\Vintagestory\Lib\</ReferencePath>
+    <ReferencePath>E:\Games\VintageStory\;E:\Games\VintageStory\Lib\</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' " />
 </Project>
