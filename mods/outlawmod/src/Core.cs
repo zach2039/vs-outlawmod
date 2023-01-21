@@ -97,7 +97,6 @@ namespace OutlawMod
             RegisterBlocksShared();
             RegisterBlockEntitiesShared();
             RegisterItemsShared();
-
         }
 
         public override void StartClientSide(ICoreClientAPI api)
