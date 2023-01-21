@@ -18,7 +18,7 @@
 	attributes: {},
 	renderAlphaTestByType: {},
 	shapeByType: {
-		"*": { "base": "outlawmod:entity/land/{type}" }
+		"*": { "base": "outlawmodredux:entity/land/{type}" }
 	},
 	creativeinventory: { "general": ["*"], "items": ["*"], "creatures": ["*"] },
 	materialDensity: 600,

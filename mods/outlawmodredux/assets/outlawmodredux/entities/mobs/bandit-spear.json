@@ -79,13 +79,13 @@
 			{ code: "repulseagents" }, 
 			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmod:carcass-human" },
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmodredux:carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 16, maxhealth: 16 },
 			{ code: "harvestable", drops: [
 				{
 					type: "item",
-					code: "outlawmod:outlawhead-brigand",
+					code: "outlawmodredux:outlawhead-brigand",
 					quantity: { avg: 0.2, var: 0 }
 				},
 				{
