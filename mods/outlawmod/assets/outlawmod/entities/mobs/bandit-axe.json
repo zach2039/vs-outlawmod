@@ -59,57 +59,57 @@
 			{ code: "repulseagents" }, 
 			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmod:carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 16, maxhealth: 16 },
 			{ code: "harvestable", drops: [
 				{
+					type: "item",
+					code: "outlawmod:outlawhead-brigand",
+					quantity: { avg: 0.2, var: 0.0 }
+				},
+				{
 					type: "block", 
 					code: "game:linen-normal-down", 
-					quantity: { avg: 0.25, var: 0.75 } 
+					quantity: { avg: 0.03, var: 0.0 } 
 				},
 				{
 					type: "item",
-					code: "outlawhead-brigand",
-					quantity: { avg: 1, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:poultice-linen-horsetail",
-					quantity: { avg: 0.8, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:gear-rusty",
-					quantity: { avg: 0.33, var: 0 }
+					code: "game:poultice-reed-horsetail",
+					quantity: { avg: 0.03, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:nugget-nativecopper",
-					quantity: { avg: 0.5, var: 0.5 }
+					quantity: { avg: 0.03, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:nugget-nativesilver",
-					quantity: { avg: 0.125, var: 1 }
+					quantity: { avg: 0.03, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:nugget-nativegold",
-					quantity: { avg: 0.025, var: 0 }
+					quantity: { avg: 0.03, var: 0.0 }
+				},
+				{
+					type: "item",
+					code: "gear-rusty",
+					dropModbyStat: "rustyGearDropRate",
+					quantity: { avg: 0.03, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:axe-copper",
-					quantity: { avg: 0.05, var: 0.0 }
+					quantity: { avg: 0.015, var: 0.0 }
 				}
 				]
 			},
 			{ 
 				code: "emotionstates",
 				states: [
-					{ code: "aggressiveondamage", duration: 7, chance: 1.00, slot: 0, priority: 2, accumType: "noaccum" },
-					//{ code: "fleeondamage", duration: 3, chance: 0.50, slot: 2, priority: 5, accumType: "max", whenHealthRelBelow: 0.15 }
+					{ code: "aggressiveondamage", duration: 7, chance: 1.00, slot: 0, priority: 2, accumType: "noaccum" }
 				],
 			},
 			{ 
@@ -117,7 +117,6 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
@@ -164,7 +163,6 @@
 						animationSpeed: 1,
 						soundStartMs: 150
 					},
-					//Agro When Damaged
 					{
 						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral" ],
@@ -194,7 +192,6 @@
 						animation: "swim",
 						animationSpeed: 0.3
 					},
-					//Close the distance to enemy target.
 					{
 						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
@@ -231,21 +228,6 @@
 						consolidationEntityCodes: ["yeoman-archer", "bandit-*"],
 						animation: "sprint"
 					},
-					/*
-					{
-						code: "idle",
-						priority: 0.7,
-						minduration: 5000,
-						maxduration: 30000,
-						mincooldown: 2000,
-						maxcooldown: 120000,
-						priorityForCancel: 1.33,
-						animation: "Sit",
-						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
-						stopRange: 5
-					},
-					*/
 					{
 						code: "wander", 
 						priority: 0.8, 

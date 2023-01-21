@@ -98,54 +98,64 @@
 			{ code: "repulseagents" }, 
 			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmod:carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 12, maxhealth: 12 },
 			{ code: "harvestable", drops: [
 				{
-					type: "block", 
-					code: "game:linen-normal-down", 
-					quantity: { avg: 0.25, var: 0.75 } 
+					type: "item",
+					code: "outlawmod:outlawhead-yeoman",
+					quantity: { avg: 0.2, var: 0.0 }
 				},
 				{
-					type: "item",
-					code: "outlawhead-yeoman",
-					quantity: { avg: 1, var: 0 }
+					type: "block", 
+					code: "game:linen-normal-down", 
+					quantity: { avg: 0.03, var: 0.0 } 
 				},
 				{
 					type: "item",
 					code: "game:poultice-reed-horsetail",
-					quantity: { avg: 0.8, var: 0 }
+					quantity: { avg: 0.03, var: 0.0 }
 				},
 				{
 					type: "item",
-					code: "game:gear-rusty",
-					quantity: { avg: 0.33, var: 0 }
+					code: "game:hide-raw-small",
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
-					code: "game:nugget-nativecopper",
-					quantity: { avg: 0.5, var: 0.5 }
+					code: "game:hide-raw-medium",
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
-					code: "game:nugget-nativesilver",
-					quantity: { avg: 0.125, var: 1 }
+					code: "game:hide-raw-large",
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
-					code: "game:nugget-nativegold",
-					quantity: { avg: 0.025, var: 0 }
+					code: "game:bushmeat-raw",
+					quantity: { avg: 0.02, var: 0 }
+				},
+				{
+					type: "item",
+					code: "game:redmeat-raw",
+					quantity: { avg: 0.02, var: 0 }
+				},
+				{
+					type: "item",
+					code: "game:fat",
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:arrow-copper",
-					quantity: { avg: 1, var: 2 }
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:bow-long",
-					quantity: { avg: 0.05, var: 0.0 }
+					quantity: { avg: 0.015, var: 0 }
 				}
 				]
 			},
@@ -161,7 +171,6 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
@@ -208,7 +217,6 @@
 						animation: "attack",
 						animationSpeed: 1,
 					},
-					//Flee to arrow range.
 					{
 						code: "fleeentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
@@ -262,7 +270,6 @@
 						animation: "swim",
 						animationSpeed: 0.3
 					},
-					//Close the distance to enemy target.
 					{
 						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
@@ -282,11 +289,8 @@
        					withdrawDist: 20.0,
         				withdrawDistDamaged: 30.0,
 						withdrawAnimation: "idle",
-
 						animationSpeed: 1.0,
-						//maxFollowTime: 60,
-						alarmHerd: true,
-						//whenInEmotionState: "aggressiveondamage"
+						alarmHerd: true
 					},
 					{
 						code: "stayclosetoherd",
@@ -302,21 +306,6 @@
 						consolidationEntityCodes: ["yeoman-archer", "bandit-*"],
 						animation: "sprint"
 					},
-					/*
-					{
-						code: "idle",
-						priority: 0.7,
-						minduration: 5000,
-						maxduration: 30000,
-						mincooldown: 2000,
-						maxcooldown: 120000,
-						priorityForCancel: 1.33,
-						animation: "idle",
-						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter"],
-						stopRange: 5
-					},
-					*/
 					{
 						code: "wander", 
 						priority: 0.5, 

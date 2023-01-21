@@ -74,54 +74,74 @@
 			{ code: "repulseagents" }, 
 			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmod:carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 6, maxhealth: 6 },
 			{ code: "harvestable", drops: [
 				{
-					type: "block", 
-					code: "game:linen-normal-down", 
-					quantity: { avg: 0.25, var: 0.75 } 
-				},
-				{
 					type: "item",
-					code: "outlawhead-looter",
-					quantity: { avg: 1, var: 0 }
+					code: "outlawmod:outlawhead-looter",
+					quantity: { avg: 0.2, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:bread-rye-perfect",
-					quantity: { avg: 0.6, var: 0.4 }
+					quantity: { avg: 0.04, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:vegetable-carrot",
-					quantity: { avg: 0.8, var: 1.2 }
+					quantity: { avg: 0.04, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:vegetable-turnip",
-					quantity: { avg: 0.8, var: 1.2 }
+					quantity: { avg: 0.04, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:vegetable-onion",
-					quantity: { avg: 0.8, var: 1.2 }
+					quantity: { avg: 0.04, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:vegetable-parsnip",
-					quantity: { avg: 0.8, var: 1.2 }
+					quantity: { avg: 0.04, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:egg-chicken-raw",
-					quantity: { avg: 0.8, var: 1.2 }
+					quantity: { avg: 0.04, var: 0.0 }
+				},
+				{
+					type: "block", 
+					code: "game:linen-normal-down", 
+					quantity: { avg: 0.03, var: 0.0 } 
+				},
+				{
+					type: "item",
+					code: "game:poultice-reed-horsetail",
+					quantity: { avg: 0.03, var: 0.0 }
+				},
+				{
+					type: "item",
+					code: "game:nugget-nativecopper",
+					quantity: { avg: 0.03, var: 0.0 }
+				},
+				{
+					type: "item",
+					code: "game:nugget-nativesilver",
+					quantity: { avg: 0.03, var: 0.0 }
+				},
+				{
+					type: "item",
+					code: "game:nugget-nativegold",
+					quantity: { avg: 0.03, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:woodenclub-scrap",
-					quantity: { avg: 0.10, var: 0.0 }
+					quantity: { avg: 0.015, var: 0.0 }
 				}
 				]
 			},
@@ -137,7 +157,6 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
@@ -185,23 +204,6 @@
 						animation: "attack",
 						animationSpeed: 2,
 					},					
-					//Flee when injured.
-					/*
-					{
-						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
-						priority: 4,
-						movespeed: 0.040,
-						seekingRange: 14,
-						cancelOnHurt: false,
-						fleeingDistance: 64,
-						fleeDurationMs: 9999999,
-						animation: "sprint",
-						animationSpeed: 1,
-						executionChance: 0.5,
-						whenInEmotionState: "fleeondamage",
-					},
-					*/
 					{
 						code: "throwatentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
@@ -215,7 +217,6 @@
 						animationSpeed: 0.5,
 						animation: "throwlefthanded"
 					},
-					//Agro When Damaged
 					{
 						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*" ],
@@ -245,7 +246,6 @@
 						animation: "swim",
 						animationSpeed: 0.3
 					},
-					//Close the distance to enemy target.
 					{
 						code: "engageentity",
 						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*" ],
@@ -283,21 +283,6 @@
 						consolidationEntityCodes: ["looter"],
 						animation: "sprint"
 					},
-					/*
-					{
-						code: "idle",
-						priority: 0.7,
-						minduration: 5000,
-						maxduration: 30000,
-						mincooldown: 2000,
-						maxcooldown: 120000,
-						priorityForCancel: 1.33,
-						animation: "Sit",
-						whenNotInEmotionState: "aggressiveondamage",
-						stopOnNearbyEntityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "hound-*"],
-						stopRange: 5
-					},
-					*/
 					{
 						code: "wander", 
 						priority: 0.5, 

@@ -1,5 +1,5 @@
 {
-	code: "outlaw-creature",
+	code: "creature",
 	class: "ItemCreature",
 	maxstacksize: 64,
 	variantgroups: [

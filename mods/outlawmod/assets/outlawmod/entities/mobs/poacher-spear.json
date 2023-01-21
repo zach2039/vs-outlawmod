@@ -87,59 +87,69 @@
 			{ code: "repulseagents" }, 
 			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "carcass-human" },
+			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmod:carcass-human" },
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "health", currenthealth: 12, maxhealth: 12 },
 			{ code: "harvestable", drops: [
 				{
+					type: "item",
+					code: "outlawmod:outlawhead-poacher",
+					quantity: { avg: 0.2, var: 0.0 }
+				},
+				{
 					type: "block", 
 					code: "game:linen-normal-down", 
-					quantity: { avg: 0.25, var: 0.75 } 
+					quantity: { avg: 0.03, var: 0.0 } 
 				},
 				{
 					type: "item",
-					code: "outlawhead-poacher",
-					quantity: { avg: 1, var: 0 }
+					code: "game:poultice-reed-horsetail",
+					quantity: { avg: 0.03, var: 0.0 }
 				},
 				{
 					type: "item",
 					code: "game:hide-raw-small",
-					quantity: { avg: 3, var: 1 }
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:hide-raw-medium",
-					quantity: { avg: 1, var: 0.5 }
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:hide-raw-large",
-					quantity: { avg: 0.125, var: 0 }
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:bushmeat-raw",
-					quantity: { avg: 4, var: 2 }
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:redmeat-raw",
-					quantity: { avg: 6, var: 2 }
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:fat",
-					quantity: { avg: 2, var: 0.5 }
+					quantity: { avg: 0.02, var: 0 }
+				},
+				{
+					type: "item",
+					code: "game:arrow-copper",
+					quantity: { avg: 0.02, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:spear-copper",
-					quantity: { avg: 0.05, var: 0.0 }
+					quantity: { avg: 0.015, var: 0 }
 				},
 				{
 					type: "item",
 					code: "game:hunterbackpack",
-					quantity: { avg: 0.025, var: 0.0 }
+					quantity: { avg: 0.015, var: 0 }
 				}
 				]
 			},
@@ -156,7 +166,6 @@
 				aitasks: [
 					{
 						code: "morale",
-						//entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "bandit-*", "poacher-*", "yeoman-*", "looter", "hound-feral" ],
 						priority: 5.0,
 						movespeed: 0.040,
 						cancelOnHurt: false,
@@ -205,8 +214,6 @@
 						animationSpeed: 1.0,
 						whenNotInEmotionState: "saturated"
 					},
-
-					//Poacher only attacks non-animals to aggro first.
 					{
 						code: "melee",
 						entityCodes: ["player", "drifter-*", "looter", "hound-feral"],
@@ -224,7 +231,6 @@
 						animationSpeed: 1.0,
 						whenInEmotionState: "aggressiveondamage",
 					},
-					//Agro When Damaged
 					{
 						code: "engageentity",
 						entityCodes:  ["player", "drifter-*", "looter", "hound-feral" ],
@@ -249,7 +255,6 @@
 						whenInEmotionState: "aggressiveondamage"
 
 					},
-					//Run from the player if we take damage.
 					{
 						code: "fleeentity",
 						entityCodes: ["player", "drifter-*", "looter", "hound-feral"],
@@ -267,7 +272,6 @@
 						whenInEmotionState: "fleeondamage",
 						whenNotInEmotionState: "aggressiveondamage"
 					},
-					//Keep distance from the player when player approaches.
 					{
 						code: "fleeentity",
 						entityCodes: ["player", "drifter-*", "looter", "hound-feral"],
@@ -282,7 +286,6 @@
 						executionChance: 1.0,
 						whenNotInEmotionState: "aggressiveondamage"
 					},
-					//Seek game to hunt.
 					{
 						code: "engageentity",
 						entityCodes: [ "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "chicken-rooster", "chicken-hen", "chicken-baby", "hare-male", "hare-female", 
