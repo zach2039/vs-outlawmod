@@ -9,11 +9,11 @@
 		"seraph": [64,64]
 	},
 	"textures": {
-		"string": "item/tool/material/string",
-		"aged": "block/wood/debarked/aged",
+		"string": "game:item/tool/material/string",
+		"aged": "game:block/wood/debarked/aged",
 		"yeoman": "entity/bandit/yeoman1",
-		"bone": "block/wood/debarked/oak",
-		"leather": "block/leather"
+		"bone": "game:block/wood/debarked/oak",
+		"leather": "game:block/leather/plain"
 	},
 	"elements": [
 		{

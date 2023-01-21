@@ -11,7 +11,7 @@
 	"textures": {
 		"headband": "entity/bandit/headband",
 		"bandit1": "entity/bandit/bandit1",
-		"copper": "item/tool/material/copper",
+		"copper": "game:item/tool/material/copper",
 		"blade": "entity/bandit/blade"
 	},
 	"elements": [

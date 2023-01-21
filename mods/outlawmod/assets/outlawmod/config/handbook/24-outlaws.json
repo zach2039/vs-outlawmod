@@ -1,5 +1,5 @@
 {
 	pageCode: "gamemechanicinfo-outlaws",
-	title: "gamemechanicinfo-outlaws-title",
-	text: "gamemechanicinfo-outlaws-text"
+	title: "outlawmod:gamemechanicinfo-outlaws-title",
+	text: "outlawmod:gamemechanicinfo-outlaws-text"
 }

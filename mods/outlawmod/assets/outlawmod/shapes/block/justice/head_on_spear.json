@@ -10,9 +10,9 @@
 	},
 	"textures": {
 		"head": "entity/bandit/poacher1",
-		"string": "item/tool/material/string",
-		"material": "item/tool/material/copper",
-		"spearwood": "entity/spearwood"
+		"string": "game:item/tool/material/string",
+		"material": "game:item/tool/material/copper",
+		"spearwood": "game:entity/spearwood"
 	},
 	"elements": [
 		{

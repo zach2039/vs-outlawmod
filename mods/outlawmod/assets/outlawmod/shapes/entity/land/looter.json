@@ -9,9 +9,9 @@
 		"seraph": [64,64]
 	},
 	"textures": {
-		"string": "item/tool/material/string",
-		"oak": "block/wood/debarked/oak",
-		"rusty-iron": "block/currency/rusty-iron",
+		"string": "game:item/tool/material/string",
+		"oak": "game:block/wood/debarked/oak",
+		"rusty-iron": "game:block/currency/rusty-iron",
 		"looter": "entity/bandit/looter"
 	},
 	"elements": [

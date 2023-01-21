@@ -9,12 +9,12 @@
 		"seraph": [64,64]
 	},
 	"textures": {
-		"string": "item/tool/material/string",
-		"aged": "block/wood/debarked/aged",
-		"bone": "block/wood/debarked/oak",
+		"string": "game:item/tool/material/string",
+		"aged": "game:block/wood/debarked/aged",
+		"bone": "game:block/wood/debarked/oak",
 		"poacher1": "entity/bandit/poacher1",
-		"hunterbackpack": "item/bag/hunterbackpack",
-		"leather": "block/leather"
+		"hunterbackpack": "game:item/bag/hunterbackpack",
+		"leather": "game:block/leather/plain"
 	},
 	"elements": [
 		{

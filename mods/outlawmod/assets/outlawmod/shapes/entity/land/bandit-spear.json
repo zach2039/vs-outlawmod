@@ -10,9 +10,9 @@
 	},
 	"textures": {
 		"bandit1": "entity/bandit/bandit3",
-		"string": "item/tool/material/string",
-		"copper": "item/tool/material/copper",
-		"spearwood": "entity/spearwood"
+		"string": "game:item/tool/material/string",
+		"copper": "game:item/tool/material/copper",
+		"spearwood": "game:entity/spearwood"
 	},
 	"elements": [
 		{

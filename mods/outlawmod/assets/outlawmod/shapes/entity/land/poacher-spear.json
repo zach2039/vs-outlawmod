@@ -9,11 +9,11 @@
 		"seraph": [64,64]
 	},
 	"textures": {
-		"string": "item/tool/material/string",
-		"copper": "item/tool/material/copper",
+		"string": "game:item/tool/material/string",
+		"copper": "game:item/tool/material/copper",
 		"poacher1": "entity/bandit/poacher1",
-		"hunterbackpack": "item/bag/hunterbackpack",
-		"spearwood": "entity/spearwood"
+		"hunterbackpack": "game:item/bag/hunterbackpack",
+		"spearwood": "game:entity/spearwood"
 	},
 	"elements": [
 		{

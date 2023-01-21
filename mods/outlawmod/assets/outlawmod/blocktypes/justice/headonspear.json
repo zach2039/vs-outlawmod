@@ -44,11 +44,8 @@
 	},
 	variantgroups: [
 		{ code: "type", states: ["looter", "poacher", "brigand", "yeoman"]},
-		{ code: "material", states: [
-			"chert", "granite", "andesite", "basalt", "obsidian", 
-			"peridotite", "flint", "copper", "tinbronze", 
-			"bismuthbronze", "blackbronze", "gold", "silver"
-		] },
+		{ code: "material", states: ["chert", "granite", "andesite", "basalt", "obsidian", "peridotite", "flint", "scrap", 
+			"copper", "tinbronze", "bismuthbronze", "blackbronze", "ornate-gold", "ornate-silver", "hacking" ] },
 		{ loadFromProperties: "abstract/horizontalorientation" }
 	],
 	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },
@@ -63,6 +60,70 @@
 		"*-west": { base: "block/justice/head_on_spear", rotateY:180, alternates: [ { base: "block/justice/head_on_spear1", rotateY:180 }, { base: "block/justice/head_on_spear2", rotateY:180 } ] }
 	},
 	texturesByType: {
+		"*-looter-hacking-*": {
+			"head": { base: "item/justice/dead_outlaw/looter", alternates: [ { base: "item/justice/dead_outlaw/looter2" }, { base: "item/justice/dead_outlaw/looter3" }, { base: "item/justice/dead_outlaw/looter4" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-poacher-hacking-*": {
+			"head": { base: "item/justice/dead_outlaw/poacher1", alternates: [ { base: "item/justice/dead_outlaw/poacher2" }, { base: "item/justice/dead_outlaw/poacher3" }, { base: "item/justice/dead_outlaw/poacher4" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-brigand-hacking-*": {
+			"head": { base: "item/justice/dead_outlaw/bandit1", alternates: [ { base: "item/justice/dead_outlaw/bandit2" }, { base: "item/justice/dead_outlaw/bandit3" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-yeoman-hacking-*": {
+			"head": { base: "item/justice/dead_outlaw/yeoman1", alternates: [ { base: "item/justice/dead_outlaw/yeoman2" }, { base: "item/justice/dead_outlaw/yeoman3" }, { base: "item/justice/dead_outlaw/yeoman4" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-looter-scrap-*": {
+			"head": { base: "item/justice/dead_outlaw/looter", alternates: [ { base: "item/justice/dead_outlaw/looter2" }, { base: "item/justice/dead_outlaw/looter3" }, { base: "item/justice/dead_outlaw/looter4" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-poacher-scrap-*": {
+			"head": { base: "item/justice/dead_outlaw/poacher1", alternates: [ { base: "item/justice/dead_outlaw/poacher2" }, { base: "item/justice/dead_outlaw/poacher3" }, { base: "item/justice/dead_outlaw/poacher4" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-brigand-scrap-*": {
+			"head": { base: "item/justice/dead_outlaw/bandit1", alternates: [ { base: "item/justice/dead_outlaw/bandit2" }, { base: "item/justice/dead_outlaw/bandit3" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-yeoman-scrap-*": {
+			"head": { base: "item/justice/dead_outlaw/yeoman1", alternates: [ { base: "item/justice/dead_outlaw/yeoman2" }, { base: "item/justice/dead_outlaw/yeoman3" }, { base: "item/justice/dead_outlaw/yeoman4" } ] },
+			"material": { base: "game:block/currency/rusty-iron" }
+		},
+		"*-looter-ornate-silver-*": {
+			"head": { base: "item/justice/dead_outlaw/looter", alternates: [ { base: "item/justice/dead_outlaw/looter2" }, { base: "item/justice/dead_outlaw/looter3" }, { base: "item/justice/dead_outlaw/looter4" } ] },
+			"material": { base: "game:item/tool/material/silver" }
+		},
+		"*-poacher-ornate-silver-*": {
+			"head": { base: "item/justice/dead_outlaw/poacher1", alternates: [ { base: "item/justice/dead_outlaw/poacher2" }, { base: "item/justice/dead_outlaw/poacher3" }, { base: "item/justice/dead_outlaw/poacher4" } ] },
+			"material": { base: "game:item/tool/material/silver" }
+		},
+		"*-brigand-ornate-silver-*": {
+			"head": { base: "item/justice/dead_outlaw/bandit1", alternates: [ { base: "item/justice/dead_outlaw/bandit2" }, { base: "item/justice/dead_outlaw/bandit3" } ] },
+			"material": { base: "game:item/tool/material/silver" }
+		},
+		"*-yeoman-ornate-silver-*": {
+			"head": { base: "item/justice/dead_outlaw/yeoman1", alternates: [ { base: "item/justice/dead_outlaw/yeoman2" }, { base: "item/justice/dead_outlaw/yeoman3" }, { base: "item/justice/dead_outlaw/yeoman4" } ] },
+			"material": { base: "game:item/tool/material/silver" }
+		},
+		"*-looter-ornate-gold-*": {
+			"head": { base: "item/justice/dead_outlaw/looter", alternates: [ { base: "item/justice/dead_outlaw/looter2" }, { base: "item/justice/dead_outlaw/looter3" }, { base: "item/justice/dead_outlaw/looter4" } ] },
+			"material": { base: "game:item/tool/material/gold" }
+		},
+		"*-poacher-ornate-gold-*": {
+			"head": { base: "item/justice/dead_outlaw/poacher1", alternates: [ { base: "item/justice/dead_outlaw/poacher2" }, { base: "item/justice/dead_outlaw/poacher3" }, { base: "item/justice/dead_outlaw/poacher4" } ] },
+			"material": { base: "game:item/tool/material/gold" }
+		},
+		"*-brigand-ornate-gold-*": {
+			"head": { base: "item/justice/dead_outlaw/bandit1", alternates: [ { base: "item/justice/dead_outlaw/bandit2" }, { base: "item/justice/dead_outlaw/bandit3" } ] },
+			"material": { base: "game:item/tool/material/gold" }
+		},
+		"*-yeoman-ornate-gold-*": {
+			"head": { base: "item/justice/dead_outlaw/yeoman1", alternates: [ { base: "item/justice/dead_outlaw/yeoman2" }, { base: "item/justice/dead_outlaw/yeoman3" }, { base: "item/justice/dead_outlaw/yeoman4" } ] },
+			"material": { base: "game:item/tool/material/gold" }
+		},
 		"*-looter-*": {
 			"head": { base: "item/justice/dead_outlaw/looter", alternates: [ { base: "item/justice/dead_outlaw/looter2" }, { base: "item/justice/dead_outlaw/looter3" }, { base: "item/justice/dead_outlaw/looter4" } ] },
 			"material": { base: "game:item/tool/material/{material}" }
