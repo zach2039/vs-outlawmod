@@ -298,7 +298,7 @@
 			runtime: {
 				group: "hostile",
 				tryOnlySurface: true,
-				chance: 0.0022,
+				chance: 0.00015,
 				maxQuantity: 16,
 				"__comment": "Make them spawn away from artifical light, both day and night",
 				maxLightLevel: 6,

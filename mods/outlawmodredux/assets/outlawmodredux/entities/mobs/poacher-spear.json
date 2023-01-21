@@ -378,7 +378,7 @@
 			runtime: {
 				group: "neutral",
 				tryOnlySurface: true,
-				chance: 0.0012,
+				chance: 0.00015,
 				maxQuantity: 1,
 				"__comment": "Make them spawn away from artifical light",
 				maxLightLevel: 7,
