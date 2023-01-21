@@ -1,0 +1,12 @@
+### v1.17.10-1.2.0
+ - Rebuild for VS 1.17.10
+ - Rebuild expandedaitask dependencies
+ - Remove nametags from creatures
+ - Change voice settings default to vanilla style
+ - Adjust english translation and fix spellings
+ - Change death messages to be more inline with vanilla style
+ - Move loot from drops to harvestable to prevent inv spam
+ - Fix build and reduce feral hound spawn
+ - Update README
+ - Remove modtemplate files
+ - Change build settings and remove non-outlaw mods

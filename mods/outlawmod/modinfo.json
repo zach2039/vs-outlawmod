@@ -6,6 +6,6 @@
   "description": "Adds Outlaws to the game.",
   "version": "1.2.0",
   "dependencies": {
-    "game": "1.17.*"
+    "game": "1.17.10"
   }
 }
