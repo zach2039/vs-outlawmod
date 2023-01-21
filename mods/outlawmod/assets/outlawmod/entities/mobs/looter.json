@@ -13,8 +13,6 @@
 			"looter": { base: "entity/bandit/looter", alternates: [ { base: "entity/bandit/looter2" }, { base: "entity/bandit/looter3" }, { base: "entity/bandit/looter4" } ] },
 		},
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Looter"], "showtagonlywhentargeted": true }, 
-			{ code: "nametag", "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 

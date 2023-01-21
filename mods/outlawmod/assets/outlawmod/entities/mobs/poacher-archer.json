@@ -13,8 +13,6 @@
 			"poacher1": { base: "entity/bandit/poacher1", alternates: [ { base: "entity/bandit/poacher2" }, { base: "entity/bandit/poacher3" }, { base: "entity/bandit/poacher4" } ] },
 		},
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Poacher"], "showtagonlywhentargeted": true }, 
-			{ code: "nametag", "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 
