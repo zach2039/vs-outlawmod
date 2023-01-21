@@ -1,3 +1,7 @@
+### v1.17.10-1.2.1
+
+ - Greatly nerf spawn rates to be slightly less than vanilla wolf chance
+
 ### v1.17.10-1.2.0
 
  - Rebuild for VS 1.17.10
