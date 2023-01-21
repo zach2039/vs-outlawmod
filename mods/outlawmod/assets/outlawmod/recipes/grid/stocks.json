@@ -1,7 +1,7 @@
 {
 	ingredientPattern: "P_P,_P_,PPP",
 	ingredients: {
-		"P": { type: "item", code: "plank-*", name: "wood", quantity: 2 }
+		"P": { type: "item", code: "game:plank-*", name: "wood", quantity: 2 }
 	},
 	width: 3,
 	height: 3,

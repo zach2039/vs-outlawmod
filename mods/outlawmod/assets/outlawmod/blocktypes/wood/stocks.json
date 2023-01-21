@@ -12,14 +12,14 @@
 		outlawSpawnBlockRadius: 35
 	},	
 	variantgroups: [
-		{ code: "wood", states: ["aged"], loadFromProperties: "block/wood" },
+		{ code: "wood", states: ["aged"], loadFromProperties: "game:block/wood" },
 		{ loadFromProperties: "abstract/horizontalorientation" }
 	],
 	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },
 	blockmaterial: "Wood",
 	shape: { base: "block/wood/stocks" },
 	textures: {
-		all: { base: "block/wood/planks/{wood}*" }
+		all: { base: "game:block/wood/planks/{wood}*" }
 	},
 	resistance: 3.5,
     shapeByType: {
@@ -41,10 +41,10 @@
 		"*-east": { all:false, down:true }
 	},
 	sounds: {
-		"hit": "block/planks",
-		"break": "block/planks",
-		"place": "block/planks",
-		"walk": "walk/wood"
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"place": "game:block/planks",
+		"walk": "game:walk/wood"
 	},
     collisionboxes: [
 

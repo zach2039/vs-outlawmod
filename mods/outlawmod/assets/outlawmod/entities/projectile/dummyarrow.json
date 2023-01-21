@@ -9,21 +9,21 @@
 		size: 0.75,
 		renderer: "Shape",
 		shapeByType: { 
-			"dummyarrow-crude": { base: "entity/arrow/crude" },
-			"dummyarrow-flint": { base: "entity/arrow/stone" },
-			"dummyarrow-gold": { base: "entity/arrow/gold" },
-			"dummyarrow-silver": { base: "entity/arrow/silver" },
-			"*": { base: "entity/arrow/copper" }
+			"dummyarrow-crude": { base: "game:entity/arrow/crude" },
+			"dummyarrow-flint": { base: "game:entity/arrow/stone" },
+			"dummyarrow-gold": { base: "game:entity/arrow/gold" },
+			"dummyarrow-silver": { base: "game:entity/arrow/silver" },
+			"*": { base: "game:entity/arrow/copper" }
 		},
 		texturesByType: {
 			"dummyarrow-crude": {
 
 			},
 			"dummyarrow-flint": {
-				"material": { base: "block/stone/flint" }
+				"material": { base: "game:block/stone/flint" }
 			},
 			"*": {
-				"material": { base: "block/metal/ingot/{material}" }
+				"material": { base: "game:block/metal/ingot/{material}" }
 			}
 		},
 		behaviors: [

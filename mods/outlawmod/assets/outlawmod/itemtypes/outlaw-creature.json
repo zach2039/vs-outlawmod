@@ -4,8 +4,16 @@
 	maxstacksize: 64,
 	variantgroups: [
 		{ code: "type", states: [
-			"*": { base: "outlawmod:entity/land/{type}" },
-		] },
+			"bandit-axe", 
+			"bandit-knife", 
+			"bandit-spear", 
+			"hound-feral", 
+			"hound-hunting", 
+			"looter", 
+			"poacher-archer", 
+			"poacher-spear", 
+			"yeoman-archer"
+		] }
 	],
 	attributes: {},
 	renderAlphaTestByType: {},

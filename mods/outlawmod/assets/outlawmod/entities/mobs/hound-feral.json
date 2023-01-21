@@ -6,7 +6,7 @@
 	eyeHeight: 0.9,
 	client: {
 		renderer: "Shape",
-		shape: { base: "entity/land/hound" },
+		shape: { base: "entity/land/hound-feral" },
 		texture: { base: "entity/hound/hound_feral_black", alternates: [ { base: "entity/hound/hound_feral_brown" }, { base: "entity/hound/hound_feral_grey" }, { base: "entity/hound/hound_feral_grey_shaggy" }, { base: "entity/hound/hound_feral_tan" }, { base: "entity/hound/hound_feral_white" }, { base: "entity/hound/hound_feral_white_black" }, { base: "entity/hound/hound_feral_wolf_sable" }, { base: "entity/hound/hound_feral_bald" }] },
 		behaviors: [
 			{ code: "repulseagents" }, 
@@ -167,7 +167,7 @@
 						damagePlayerAtMs: 500,
 						animation: "Attack",
 						animationSpeed: 2.5,
-						sound: "creature/wolf/attack"
+						sound: "game:creature/wolf/attack"
 					},
 					{
 						code: "engageentity",
@@ -190,7 +190,7 @@
 
 						animationSpeed: 2.2,
 						alarmHerd: true,
-						sound: "creature/wolf/growl",
+						sound: "game:creature/wolf/growl",
 						whenInEmotionState: "aggressiveondamage"
 					},
 					//Don't hunt things when we can eat dead stuff nearby.
@@ -236,7 +236,7 @@
 
 						animationSpeed: 2.2,
 						alarmHerd: true,
-						sound: "creature/wolf/growl",
+						sound: "game:creature/wolf/growl",
 						whenNotInEmotionState: "saturated"
 					},
 					{
@@ -286,7 +286,7 @@
 						maxcooldown: 500000,
 						animation: "Howl",
 						animationSpeed: 0.5,
-						sound: "creature/wolf/howl",
+						sound: "game:creature/wolf/howl",
 						soundRange: 110
 					},
 					{
@@ -361,9 +361,9 @@
 		}
 	},
 	sounds: {
-		hurt: "creature/wolf/hurt",
-		death: "creature/wolf/hurt",
-		idle: "creature/wolf/howl"
+		hurt: "game:creature/wolf/hurt",
+		death: "game:creature/wolf/hurt",
+		idle: "game:creature/wolf/howl"
 	},
 	idleSoundChance: 0
 }

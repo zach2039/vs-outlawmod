@@ -166,7 +166,7 @@
 						damagePlayerAtMs: 500,
 						animation: "Attack",
 						animationSpeed: 2.5,
-						sound: "creature/wolf/attack"
+						sound: "game:creature/wolf/attack"
 					},
 					{
 						code: "engageentity",
@@ -189,7 +189,7 @@
 
 						animationSpeed: 2.2,
 						alarmHerd: true,
-						sound: "creature/wolf/growl",
+						sound: "game:creature/wolf/growl",
 					},
 					{
 						code: "stayclosetoherd",
@@ -239,7 +239,7 @@
 						maxcooldown: 500000,
 						animation: "Howl",
 						animationSpeed: 0.5,
-						sound: "creature/wolf/howl",
+						sound: "game:creature/wolf/howl",
 						soundRange: 110
 					},
 					{
@@ -284,9 +284,9 @@
 		],
 	},
 	sounds: {
-		hurt: "creature/wolf/hurt",
-		death: "creature/wolf/hurt",
-		idle: "creature/wolf/howl"
+		hurt: "game:creature/wolf/hurt",
+		death: "game:creature/wolf/hurt",
+		idle: "game:creature/wolf/howl"
 	},
 	idleSoundChance: 0
 }

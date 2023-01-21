@@ -44,8 +44,11 @@
 	},
 	variantgroups: [
 		{ code: "type", states: ["looter", "poacher", "brigand", "yeoman"]},
-		{ code: "material", states: ["chert", "granite", "andesite", "basalt", "obsidian", "peridotite", "flint", "scrap", 
-			"copper", "tinbronze", "bismuthbronze", "blackbronze", "ornate-gold", "ornate-silver", "hacking" ] },
+		{ code: "material", states: [
+			"chert", "granite", "andesite", "basalt", "obsidian", 
+			"peridotite", "flint", "copper", "tinbronze", 
+			"bismuthbronze", "blackbronze", "gold", "silver"
+		] },
 		{ loadFromProperties: "abstract/horizontalorientation" }
 	],
 	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },
@@ -62,19 +65,19 @@
 	texturesByType: {
 		"*-looter-*": {
 			"head": { base: "item/justice/dead_outlaw/looter", alternates: [ { base: "item/justice/dead_outlaw/looter2" }, { base: "item/justice/dead_outlaw/looter3" }, { base: "item/justice/dead_outlaw/looter4" } ] },
-			"material": { base: "item/tool/material/{material}" }
+			"material": { base: "game:item/tool/material/{material}" }
 		},
 		"*-poacher-*": {
 			"head": { base: "item/justice/dead_outlaw/poacher1", alternates: [ { base: "item/justice/dead_outlaw/poacher2" }, { base: "item/justice/dead_outlaw/poacher3" }, { base: "item/justice/dead_outlaw/poacher4" } ] },
-			"material": { base: "item/tool/material/{material}" }
+			"material": { base: "game:item/tool/material/{material}" }
 		},
 		"*-brigand-*": {
 			"head": { base: "item/justice/dead_outlaw/bandit1", alternates: [ { base: "item/justice/dead_outlaw/bandit2" }, { base: "item/justice/dead_outlaw/bandit3" } ] },
-			"material": { base: "item/tool/material/{material}" }
+			"material": { base: "game:item/tool/material/{material}" }
 		},
 		"*-yeoman-*": {
 			"head": { base: "item/justice/dead_outlaw/yeoman1", alternates: [ { base: "item/justice/dead_outlaw/yeoman2" }, { base: "item/justice/dead_outlaw/yeoman3" }, { base: "item/justice/dead_outlaw/yeoman4" } ] },
-			"material": { base: "item/tool/material/{material}" }
+			"material": { base: "game:item/tool/material/{material}" }
 		}
 	},
 	sidesolidByType: {	
@@ -85,10 +88,10 @@
 	},
 	sideopaque :  { all:false },
 	sounds: {
-		"hit": "block/planks",
-		"break": "block/planks",
-		"place": "block/planks",
-		"walk": "walk/wood"
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"place": "game:block/planks",
+		"walk": "game:walk/wood"
 	},
     collisionboxes: [
 		{ x1: 0.4375, y1: 0, z1: 0.4375, x2: 0.562, y2: 2.8125, z2: 0.5625, rotateYByType: {  "*-north": 90, "*-east": 0, "*-south": 270 , "*-west": 180 } },
