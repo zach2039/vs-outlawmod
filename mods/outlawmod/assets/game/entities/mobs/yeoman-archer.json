@@ -6,44 +6,6 @@
 	deadHitboxSize: { x: 0.75, y: 0.5 },
 	eyeHeight: 1.7,
 	attributes: { reckless: false, classicVoice: "sounds/voice/accordion" },
-
-	drops: [
-			{
-				type: "item",
-				code: "game:poultice-reed-horsetail",
-				quantity: { avg: 0.8, var: 0 }
-			},
-			{
-				type: "item",
-				code: "game:gear-rusty",
-				quantity: { avg: 0.33, var: 0 }
-			},
-			{
-				type: "item",
-				code: "game:nugget-nativecopper",
-				quantity: { avg: 0.5, var: 0.5 }
-			},
-			{
-				type: "item",
-				code: "game:nugget-nativesilver",
-				quantity: { avg: 0.125, var: 1 }
-			},
-			{
-				type: "item",
-				code: "game:nugget-nativegold",
-				quantity: { avg: 0.025, var: 0 }
-			},
-			{
-				type: "item",
-				code: "game:arrow-copper",
-				quantity: { avg: 1, var: 2 }
-			},
-			{
-				type: "item",
-				code: "game:bow-long",
-				quantity: { avg: 0.05, var: 0.0 }
-			}
-	],
 	client: {
 		renderer: "Shape",
 		shape: { base: "entity/land/yeoman-archer" },
@@ -152,7 +114,41 @@
 					code: "outlawhead-yeoman",
 					quantity: { avg: 1, var: 0 }
 				},
-
+				{
+					type: "item",
+					code: "game:poultice-reed-horsetail",
+					quantity: { avg: 0.8, var: 0 }
+				},
+				{
+					type: "item",
+					code: "game:gear-rusty",
+					quantity: { avg: 0.33, var: 0 }
+				},
+				{
+					type: "item",
+					code: "game:nugget-nativecopper",
+					quantity: { avg: 0.5, var: 0.5 }
+				},
+				{
+					type: "item",
+					code: "game:nugget-nativesilver",
+					quantity: { avg: 0.125, var: 1 }
+				},
+				{
+					type: "item",
+					code: "game:nugget-nativegold",
+					quantity: { avg: 0.025, var: 0 }
+				},
+				{
+					type: "item",
+					code: "game:arrow-copper",
+					quantity: { avg: 1, var: 2 }
+				},
+				{
+					type: "item",
+					code: "game:bow-long",
+					quantity: { avg: 0.05, var: 0.0 }
+				}
 				]
 			},
 			{ 
