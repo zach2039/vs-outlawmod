@@ -1,6 +1,12 @@
 ### v1.17.10-1.2.0
+
  - Rebuild for VS 1.17.10
  - Rebuild expandedaitask dependencies
+ - Update drops
+ - Readd some spear recipes and refactor lots of json
+ - Remove copied vanilla textures
+ - Change recipes for head on spear and fix issues from namespace change
+ - Move files to proper namespace in assets
  - Remove nametags from creatures
  - Change voice settings default to vanilla style
  - Adjust english translation and fix spellings
