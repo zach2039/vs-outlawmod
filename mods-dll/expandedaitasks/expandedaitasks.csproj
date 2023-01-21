@@ -81,7 +81,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\mods\outlawmod"
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\mods\outlawmodredux"
 copy "$(TargetPath)" "$(SolutionDir)\mods\expandedaitasksloader"
 </PostBuildEvent>
   </PropertyGroup>

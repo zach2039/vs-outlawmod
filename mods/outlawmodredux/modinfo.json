@@ -1,7 +1,7 @@
 {
   "type": "code",
-  "modid": "outlawmod",
-  "name": "Outlaw Mod",
+  "modid": "outlawmodredux",
+  "name": "Outlaw Mod Redux",
   "authors": ["Grifthegnome", "Inspired by COB_Bandit Mod", "Zach2039"],
   "description": "Adds Outlaws to the game.",
   "version": "1.2.0",
