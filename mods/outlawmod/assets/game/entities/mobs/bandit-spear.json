@@ -10,7 +10,6 @@
 		renderer: "Shape",
 		shape: { base: "entity/land/bandit-spear" },
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Brigand"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 

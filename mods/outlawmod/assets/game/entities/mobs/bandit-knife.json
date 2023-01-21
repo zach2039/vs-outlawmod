@@ -10,8 +10,6 @@
 		renderer: "Shape",
 		shape: { base: "entity/land/bandit-knife" },
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Footpad"], "showtagonlywhentargeted": true }, 
-			{ code: "nametag", "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 

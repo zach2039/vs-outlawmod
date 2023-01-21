@@ -11,9 +11,7 @@
 			"skin": { base: "entity/hound/hound_hunting_brown", alternates: [ { base: "entity/hound/hound_hunting_brown_docked" }, { base: "entity/hound/hound_hunting_black" }, { base: "entity/hound/hound_hunting_black_docked" } ] },
 			"collar": { base: "entity/hound/collar_red", alternates: [ { base: "entity/hound/collar_green"}, { base: "entity/hound/collar_blue"}, { base: "entity/hound/collar_yellow"}] },
 		},
-		
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Hunting Hound"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "controlledphysics", stepHeight: 1.5 }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },

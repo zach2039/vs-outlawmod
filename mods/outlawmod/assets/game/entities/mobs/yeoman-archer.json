@@ -13,8 +13,6 @@
 			"yeoman": { base: "entity/bandit/yeoman1", alternates: [ { base: "entity/bandit/yeoman2" }, { base: "entity/bandit/yeoman3" }, { base: "entity/bandit/yeoman4" } ] },
 		},
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Yeoman Archer"], "showtagonlywhentargeted": true }, 
-			{ code: "nametag", "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "floatupwhenstuck", onlyWhenDead: true },
 			{ code: "controlledphysics", stepHeight: 1.1251 }, 
