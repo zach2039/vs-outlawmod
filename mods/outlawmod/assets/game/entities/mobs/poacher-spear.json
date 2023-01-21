@@ -6,10 +6,6 @@
 	deadHitboxSize: { x: 0.75, y: 0.5 },
 	eyeHeight: 1.7,
 	attributes: { reckless: false, classicVoice: "sounds/voice/oboe" },
-
-	drops: [
-			
-	],
 	client: {
 		renderer: "Shape",
 		shape: { base: "entity/land/poacher-spear" },

@@ -14,48 +14,48 @@
 	"item-creature-bandit-knife": "Footpad",
 	"itemdesc-creature-bandit-knife": "<font color=\"#99c9f9\"><i>Footpads roam the hills and valleys at night, preying on unsuspecting travelers.</i></font><br>",
 	"item-dead-creature-bandit-knife": "Dead Footpad",
-	"deadcreature-eaten-banditknife": "Slain by human hands.\nThey were stabbed with a knife.\n",
+	"deadcreature-eaten-banditknife": "Slain by human hands. Small stab wounds.",
 
 	"item-creature-bandit-axe": "Bandit with Axe",
 	"itemdesc-creature-bandit-axe": "<font color=\"#99c9f9\"><i>Brigands are outlawed men, desperate for coin. Beware as they waylay along the roads at night.</i></font><br>",
 	"item-dead-creature-bandit-axe": "Dead Brigand",
-	"deadcreature-eaten-banditaxe": "Slain by human hands.\nThey were hacked appart with an axe.\n",
+	"deadcreature-eaten-banditaxe": "Slain by human hands.Cleaved in places with a large blade.",
 
 	"item-creature-bandit-spear": "Brigand with Spear",
 	"itemdesc-creature-bandit-spear": "<font color=\"#99c9f9\"><i>Brigands are outlawed men, desperate for coin. Beware as they waylay along the roads at night.</i></font><br>",
 	"item-dead-creature-bandit-spear": "Dead Brigand",
-	"deadcreature-eaten-banditspear": "Slain by human hands.\nThey were been run-through with a spear.\n",
+	"deadcreature-eaten-banditspear": "Slain by human hands. Large stab wounds.",
 
 	"item-creature-looter": "Looter",
 	"itemdesc-creature-looter": "<font color=\"#99c9f9\"><i>Looters are desperate and dangerous. Beware as they waylay along the roads at night.</i></font><br>",
 	"item-dead-creature-looter": "Dead Looter",
-	"deadcreature-eaten-looter": "Slain by human hands.\nThey were clubbed to death.\n",
+	"deadcreature-eaten-looter": "Slain by human hands. Heavily bruised and battered.",
 
 	"item-creature-poacher-spear": "Poacher with Spear",
 	"itemdesc-creature-poacher-spear": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
 	"item-dead-creature-poacher-spear": "Dead Poacher",
-	"deadcreature-eaten-poacherspear": "Slain by human hands.\nThey were run through by a poacher's spear.\n",
+	"deadcreature-eaten-poacherspear": "Slain by human hands. Large stab wounds.",
 
 	"item-creature-poacher-archer": "Poacher with Bow",
 	"itemdesc-creature-poacher-archer": "<font color=\"#99c9f9\"><i>Poachers hunt the woodlands illegally. The punishment for their crimes are severe, so they don't tend to stick around unless they have no other choice.</i></font><br>",
 	"item-dead-creature-poacher-archer": "Dead Poacher",
-	"deadcreature-eaten-poacherarcher": "Slain by human hands.\nThey were shot with a poacher's arrow.\n",
+	"deadcreature-eaten-poacherarcher": "Slain by human hands. Riddled with tiny, deep puncture wounds.",
 
 	"item-creature-yeoman-archer": "Yeoman Archer",
 	"itemdesc-creature-yeoman-archer": "<font color=\"#99c9f9\"><i>Yeoman are free farmers. Sometimes, when the crops fail, they have to turn to other means to make ends-meet.</i></font><br>",
 	"item-dead-creature-yeoman-archer": "Dead Yeoman Archer",
-	"deadcreature-eaten-yeomanarcher": "Slain by human hands.\nThey were shot with an arrow.\n",
+	"deadcreature-eaten-yeomanarcher": "Slain by human hands. Riddled with tiny, deep puncture wounds.",
 
 	//HOUNDS
 	"item-creature-hound-feral": "Feral Hound",
 	"itemdesc-creature-hound-feral": "<font color=\"#99c9f9\"><i>Feral hounds have no owner to bring them to heel. They roam the lands in packs, attacking weak prey for easy meals.</i></font><br>",
 	"item-dead-creature-hound-feral": "Dead Feral Hound",
-	"deadcreature-eaten-houndferal": "They've been mauled by a hound.\n",	
+	"deadcreature-eaten-houndferal": "Partially eaten by another creature. Medium bite marks.",
 
 	"item-creature-hound-hunting": "Hunting Hound",
 	"itemdesc-creature-hound-hunting": "<font color=\"#99c9f9\"><i>Hunting hounds are the loyal companions of huntsmen the world over. They will risk their lives to protect their owners.</i></font><br>",
 	"item-dead-creature-hound-hunting": "Dead Hunting Hound",
-	"deadcreature-eaten-houndhunting": "They've been mauled by a hound.\n",	
+	"deadcreature-eaten-houndhunting": "Mauled to death. Medium bite marks."
 
 	"block-carcass-human": "Carcass (Human)",
 
