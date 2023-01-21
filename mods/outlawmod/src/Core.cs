@@ -50,7 +50,7 @@ namespace OutlawMod
         public bool ClaimedLandBlocksOutlawSpawns = true;
 
         [ProtoMember(12)]
-        public bool OutlawsUseClassicVintageStoryVoices = false;
+        public bool OutlawsUseClassicVintageStoryVoices = true;
 
         [ProtoMember(13)]
         public bool DevMode = false;
