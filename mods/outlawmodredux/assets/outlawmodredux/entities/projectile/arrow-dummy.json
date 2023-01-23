@@ -1,5 +1,5 @@
 {
-	code: "dummyarrow",
+	code: "arrow-dummy",
 	class: "EntityProjectile",
 	variantgroups: [
 		{ code: "material", states: ["crude", "flint", "copper", "tinbronze", "bismuthbronze", "blackbronze", "gold", "silver", "iron", "steel", "meteoriciron" ] },
@@ -9,17 +9,17 @@
 		size: 0.75,
 		renderer: "Shape",
 		shapeByType: { 
-			"dummyarrow-crude": { base: "game:entity/arrow/crude" },
-			"dummyarrow-flint": { base: "game:entity/arrow/stone" },
-			"dummyarrow-gold": { base: "game:entity/arrow/gold" },
-			"dummyarrow-silver": { base: "game:entity/arrow/silver" },
+			"arrow-dummy-crude": { base: "game:entity/arrow/crude" },
+			"arrow-dummy-flint": { base: "game:entity/arrow/stone" },
+			"arrow-dummy-gold": { base: "game:entity/arrow/gold" },
+			"arrow-dummy-silver": { base: "game:entity/arrow/silver" },
 			"*": { base: "game:entity/arrow/copper" }
 		},
 		texturesByType: {
-			"dummyarrow-crude": {
+			"arrow-dummy-crude": {
 
 			},
-			"dummyarrow-flint": {
+			"arrow-dummy-flint": {
 				"material": { base: "game:block/stone/flint" }
 			},
 			"*": {

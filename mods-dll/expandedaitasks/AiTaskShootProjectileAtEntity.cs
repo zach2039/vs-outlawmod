@@ -39,7 +39,7 @@ namespace ExpandedAiTasks
         string projectileItem = "arrow-copper";
         string dummyProjectile = "dummyarrow-copper";
         bool projectileRemainsInWorld = false;
-        float projectileBreakOnImpactChance = 0.0f;
+        float projectileBreakOnImpactChance = 1.0f;
 
         bool stopIfPredictFriendlyFire = false;
         bool leadTarget = true;
@@ -91,7 +91,7 @@ namespace ExpandedAiTasks
             this.projectileItem = taskConfig["projectileItem"].AsString("arrow-copper");
             this.dummyProjectile = taskConfig["dummyProjectile"].AsString("dummyarrow-copper");
             this.projectileRemainsInWorld = taskConfig["projectileRemainsInWorld"].AsBool(false);
-            this.projectileBreakOnImpactChance = taskConfig[ "projectileBreakOnImpactChance"].AsFloat(0.0f);
+            this.projectileBreakOnImpactChance = taskConfig[ "projectileBreakOnImpactChance"].AsFloat(1.0f);
             this.stopIfPredictFriendlyFire = taskConfig["stopIfPredictFriendlyFire"].AsBool(false);
             this.leadTarget = taskConfig["leadTarget"].AsBool(true);
             this.arcShots = taskConfig["arcShots"].AsBool(true); 
@@ -323,8 +323,7 @@ namespace ExpandedAiTasks
                     durability = 1;
 
                 //Implementation Note: Since Vintage Story can have per-entity gravity diffrences and they also have air drag, I decided to make a dummy projectile entity that has physics settings ideal for the simplest version of the trajectory calculation.
-                //This dummy projectile sets its shape and materials to match the assets of a real projectile item that the ai is "fireing." The dummy projectile uses the real projectile item type for its item stack, so that the player picks up the real projectile,
-                //and not the dummy when it lands in the world.
+                //This dummy projectile sets its shape and materials to match the assets of a real projectile item that the ai is "fireing."
 
                 EntityProperties itemType = entity.World.GetEntityType(new AssetLocation(projectileItem));
                 EntityProperties dummyType = entity.World.GetEntityType(new AssetLocation(dummyProjectile));
@@ -336,7 +335,8 @@ namespace ExpandedAiTasks
                 if ( durability == 0 )
                     ((EntityProjectile)projectile).ProjectileStack.Attributes.SetInt("durability", durability);
                 
-                ((EntityProjectile)projectile).DropOnImpactChance = projectileBreakOnImpactChance;
+                // Prevent players from farming arrows; always break on hit
+                ((EntityProjectile)projectile).DropOnImpactChance = 1.0f;
                 ((EntityProjectile)projectile).Weight = 0.0f;
 
                 projectile.ServerPos.SetPos(firePos);

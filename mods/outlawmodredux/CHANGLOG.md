@@ -3,6 +3,7 @@
  - Json cleanup
  - Fix error vomit during feral hound spawn
  - Remove assertions and fix project build settings
+ - Fix missing entity on yeoman archer shoot
 
 ### v1.17.10-1.2.1
 
