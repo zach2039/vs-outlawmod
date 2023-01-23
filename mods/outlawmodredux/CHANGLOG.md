@@ -1,3 +1,7 @@
+### v1.17.10-1.2.3
+
+ - Fix crash on harvest
+
 ### v1.17.10-1.2.2
 
  - Json cleanup

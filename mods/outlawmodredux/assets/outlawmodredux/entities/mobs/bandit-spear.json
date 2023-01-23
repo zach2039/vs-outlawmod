@@ -110,13 +110,6 @@
 	"server":{
 		"behaviors":[
 			{
-				"code":"nametag",
-				"selectFromRandomName":[
-					"Brigand"
-				],
-				"showtagonlywhentargeted":true
-			},
-			{
 				"code":"repulseagents"
 			},
 			{
@@ -132,7 +125,7 @@
 			{
 				"code":"deaddecay",
 				"hoursToDecay":96,
-				"decayedBlock":"carcass-human"
+				"decayedBlock":"outlawmodredux:carcass-human"
 			},
 			{
 				"code":"floatupwhenstuck",
