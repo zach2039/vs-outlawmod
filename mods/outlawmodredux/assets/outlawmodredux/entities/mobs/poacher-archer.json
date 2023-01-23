@@ -1,6 +1,6 @@
 {
 	code: "poacher-archer",
-	class: "EntityOutlawPoacher",
+	class: "EntityOutlaw",
 	canClimb: true,
 	hitboxSize: { x: 0.6, y: 1.75 },
 	deadHitboxSize: { x: 0.75, y: 0.5 },
@@ -393,7 +393,7 @@
 				group: "neutral",
 				tryOnlySurface: true,
 				chance: 0.00015,
-				maxQuantity: 1,
+				maxQuantity: 3,
 				"__comment": "Make them spawn away from artifical light",
 				maxLightLevel: 7,
 				lightLevelType: "onlyBlockLight",					
@@ -404,7 +404,7 @@
 				minRain: 0,
 				minForestOrShrubs: 0.25,
 				MinDistanceToPlayer: 50,
-				companions: []
+				companions: ["hound-hunting", "hound-hunting"]
 			}
 		}
 	},

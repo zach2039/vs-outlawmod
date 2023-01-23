@@ -218,7 +218,6 @@
 						stopRange: 10,
 						stopOnHurt: true
 					},
-					
 					{
 						code: "getoutofwater",
 						priority: 1.4,

@@ -135,7 +135,6 @@ namespace OutlawModRedux
         private void RegisterEntitiesShared()
         {
             api.RegisterEntity("EntityOutlaw", typeof(EntityOutlaw));
-            api.RegisterEntity("EntityOutlawPoacher", typeof(EntityOutlawPoacher));
         }
 
         private void RegisterBlocksShared()

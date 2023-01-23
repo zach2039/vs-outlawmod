@@ -61,5 +61,19 @@
     "path": "/enabled",
     "value": false,
     "condition": {"when": "enableHuntingHounds", "isValue": "false"}
+},
+{
+    "file": "entities/mobs/poacher-archer.json",
+    "op": "replace",
+    "path": "/server/spawnconditions/runtime/companions",
+    "value": [],
+    "condition": {"when": "enableHuntingHounds", "isValue": "false"}
+},
+{
+    "file": "entities/mobs/poacher-spear.json",
+    "op": "replace",
+    "path": "/server/spawnconditions/runtime/companions",
+    "value": [],
+    "condition": {"when": "enableHuntingHounds", "isValue": "false"}
 }
 ]
