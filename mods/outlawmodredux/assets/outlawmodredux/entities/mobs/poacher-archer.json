@@ -596,7 +596,7 @@
 						"maxcooldown":120000,
 						"priorityForCancel":1.33,
 						"animation":"idle",
-						"whenNotInEmotionState":"aggressiveondamage"
+						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
 							"player",
 							"drifter-*",
@@ -631,15 +631,17 @@
 				"group":"neutral",
 				"tryOnlySurface":true,
 				"chance":0.00015,
-				"maxQuantity":3,
+				"maxQuantity":1,
+				"groupSize":{
+					"dist":"verynarrowgaussian",
+					"avg":2, "var":1
+				},
+				"companions":[
+					"hound-hunting"
+				],
 				"__comment":"Make them spawn away from artifical light",
 				"maxLightLevel":7,
 				"lightLevelType":"onlyBlockLight",
-				"groupSize":{
-					"dist":"verynarrowgaussian",
-					"avg":1,
-					"var":1
-				},
 				"insideBlockCodes":[
 					"game:air",
 					"game:tallgrass-*",
@@ -650,10 +652,6 @@
 				"minRain":0,
 				"minForestOrShrubs":0.25,
 				"MinDistanceToPlayer":50,
-				"companions":[
-					"hound-hunting",
-					"hound-hunting"
-				]
 			}
 		}
 	},
