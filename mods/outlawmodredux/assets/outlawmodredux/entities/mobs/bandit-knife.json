@@ -1,275 +1,442 @@
 {
-	code: "bandit-knife",
-	class: "EntityOutlaw",
-	canClimb: true,
-	hitboxSize: { x: 0.6, y: 1.75 },
-	deadHitboxSize: { x: 0.75, y: 0.5 },
-	eyeHeight: 1.7,
-	attributes: { reckless: false, classicVoice: "game:sounds/voice/trumpet" },
-	client: {
-		renderer: "Shape",
-		shape: { base: "entity/land/bandit-knife" },
-		behaviors: [
-			{ code: "repulseagents" }, 
-			{ code: "floatupwhenstuck", onlyWhenDead: true },
-			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
-			{ code: "harvestable" },
-			{ code: "interpolateposition" }
+	"code":"bandit-knife",
+	"class":"EntityOutlaw",
+	"canClimb":true,
+	"hitboxSize":{
+		"x":0.6,
+		"y":1.75
+	},
+	"deadHitboxSize":{
+		"x":0.75,
+		"y":0.5
+	},
+	"eyeHeight":1.7,
+	"attributes":{
+		"reckless":false,
+		"classicVoice":"game:sounds/voice/trumpet"
+	},
+	"client":{
+		"renderer":"Shape",
+		"shape":{
+			"base":"entity/land/bandit-knife"
+		},
+		"behaviors":[
+			{
+				"code":"repulseagents"
+			},
+			{
+				"code":"floatupwhenstuck",
+				"onlyWhenDead":true
+			},
+			{
+				"code":"controlledphysics",
+				"stepHeight":1.1251
+			},
+			{
+				"code":"despawn",
+				"minPlayerDistance":64,
+				"belowLightLevel":8,
+				"minSeconds":300
+			},
+			{
+				"code":"harvestable"
+			},
+			{
+				"code":"interpolateposition"
+			}
 		],
-		animations: [
+		"animations":[
 			{
-				code: "die",
-				animation: "die", 
-				animationSpeed: 1.75,
-				weight: 10,
-				blendMode: "Average",
-				triggeredBy: { onControls: ["dead"] }
+				"code":"die",
+				"animation":"die",
+				"animationSpeed":1.75,
+				"weight":10,
+				"blendMode":"Average",
+				"triggeredBy":{
+					"onControls":[
+						"dead"
+					]
+				}
 			},
 			{
-				code: "hurt",
-				animation: "hurt", 
-				animationSpeed: 2,
-				weight: 8,
-				blendMode: "AddAverage" 
+				"code":"hurt",
+				"animation":"hurt",
+				"animationSpeed":2,
+				"weight":8,
+				"blendMode":"AddAverage"
 			},
-			{ 
-				code: "wander", 
-				animation: "walk",
-				blendMode: "Average",
-				easeOutSpeed: 1
+			{
+				"code":"wander",
+				"animation":"walk",
+				"blendMode":"Average",
+				"easeOutSpeed":1
 			},
-			{ 
-				code: "sprint",
-				animation: "sprint",
-				animationSpeed: 0.6,
-				mulWithWalkSpeed: true,
-				blendMode: "Average"  
+			{
+				"code":"sprint",
+				"animation":"sprint",
+				"animationSpeed":0.6,
+				"mulWithWalkSpeed":true,
+				"blendMode":"Average"
 			},
-			{ 
-				code: "melee", 
-				animation: "attack",
-				weight: 5,
-				blendMode: "AddAverage"
+			{
+				"code":"melee",
+				"animation":"attack",
+				"weight":5,
+				"blendMode":"AddAverage"
 			},
-			{ 
-				code: "idle", 
-				animation: "idle",
-				blendMode: "AddAverage",
-				triggeredBy: { defaultAnim: true }
-			},
+			{
+				"code":"idle",
+				"animation":"idle",
+				"blendMode":"AddAverage",
+				"triggeredBy":{
+					"defaultAnim":true
+				}
+			}
 		]
 	},
-	server: {
-		attributes: {
-			pathfinder: {
-				minTurnAnglePerSec: 960,
-				maxTurnAnglePerSec: 1920
+	"server":{
+		"attributes":{
+			"pathfinder":{
+				"minTurnAnglePerSec":960,
+				"maxTurnAnglePerSec":1920
 			}
 		},
-		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Footpad"], "showtagonlywhentargeted": true }, 
-			{ code: "repulseagents" }, 
-			{ code: "despawn", minPlayerDistance: 32, belowLightLevel: 1, minSeconds: 900 },
-			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmodredux:carcass-human" },
-			{ code: "floatupwhenstuck", onlyWhenDead: true },
-			{ code: "health", currenthealth: 12, maxhealth: 12 },
-			{ code: "harvestable", drops: [
-				{
-					type: "item",
-					code: "outlawmodredux:outlawhead-brigand",
-					quantity: { avg: 0.2, var: 0 }
-				},
-				{
-					type: "block", 
-					code: "game:linen-normal-down", 
-					quantity: { avg: 0.03, var: 0.0 } 
-				},
-				{
-					type: "item",
-					code: "game:poultice-reed-horsetail",
-					quantity: { avg: 0.03, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:nugget-nativecopper",
-					quantity: { avg: 0.03, var: 0.5 }
-				},
-				{
-					type: "item",
-					code: "game:nugget-nativesilver",
-					quantity: { avg: 0.03, var: 1 }
-				},
-				{
-					type: "item",
-					code: "game:nugget-nativegold",
-					quantity: { avg: 0.03, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:knife-copper",
-					quantity: { avg: 0.015, var: 0.0 }
-				}
+		"behaviors":[
+			{
+				"code":"nametag",
+				"selectFromRandomName":[
+					"Footpad"
+				],
+				"showtagonlywhentargeted":true
+			},
+			{
+				"code":"repulseagents"
+			},
+			{
+				"code":"despawn",
+				"minPlayerDistance":32,
+				"belowLightLevel":1,
+				"minSeconds":900
+			},
+			{
+				"code":"controlledphysics",
+				"stepHeight":1.1251
+			},
+			{
+				"code":"deaddecay",
+				"hoursToDecay":96,
+				"decayedBlock":"outlawmodredux:carcass-human"
+			},
+			{
+				"code":"floatupwhenstuck",
+				"onlyWhenDead":true
+			},
+			{
+				"code":"health",
+				"currenthealth":12,
+				"maxhealth":12
+			},
+			{
+				"code":"harvestable",
+				"drops":[
+					{
+						"type":"item",
+						"code":"outlawmodredux:outlawhead-brigand",
+						"quantity":{
+							"avg":0.2,
+							"var":0
+						}
+					},
+					{
+						"type":"block",
+						"code":"game:linen-normal-down",
+						"quantity":{
+							"avg":0.03,
+							"var":0.0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:poultice-reed-horsetail",
+						"quantity":{
+							"avg":0.03,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:nugget-nativecopper",
+						"quantity":{
+							"avg":0.03,
+							"var":0.5
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:nugget-nativesilver",
+						"quantity":{
+							"avg":0.03,
+							"var":1
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:nugget-nativegold",
+						"quantity":{
+							"avg":0.03,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:knife-copper",
+						"quantity":{
+							"avg":0.015,
+							"var":0.0
+						}
+					}
 				]
 			},
-			{ 
-				code: "emotionstates",
-				states: [
-					{ code: "aggressiveondamage", duration: 4, chance: 0.2, slot: 0, priority: 2, accumType: "noaccum" },
-					{ code: "fleeondamage", duration: 2.0, chance: 1.00, slot: 2, priority: 4, accumType: "noaccum", whenHealthRelBelow: 1.00 },
-					{ code: "nopathfrustrated", duration: 5.0, chance: 1.00, slot: 3, priority: 2.5, accumType: "noaccum" }
-				],
+			{
+				"code":"emotionstates",
+				"states":[
+					{
+						"code":"aggressiveondamage",
+						"duration":4,
+						"chance":0.2,
+						"slot":0,
+						"priority":2,
+						"accumType":"noaccum"
+					},
+					{
+						"code":"fleeondamage",
+						"duration":2.0,
+						"chance":1.00,
+						"slot":2,
+						"priority":4,
+						"accumType":"noaccum",
+						"whenHealthRelBelow":1.00
+					},
+					{
+						"code":"nopathfrustrated",
+						"duration":5.0,
+						"chance":1.00,
+						"slot":3,
+						"priority":2.5,
+						"accumType":"noaccum"
+					}
+				]
 			},
-			{ 
-				code: "taskai",
-				aitasks: [
+			{
+				"code":"taskai",
+				"aitasks":[
 					{
-						code: "morale",
-						priority: 5.0,
-						movespeed: 0.040,
-						cancelOnHurt: false,
-						routDistance: 60,
-						rallyTimeAfterRoutMs: 10000,
-						minMorale: 0.6,
-						maxMorale: 0.9,
-						moraleRange: 15,
-						useGroupMorale: true,
-						deathsImpactMorale: true,
-						canRoutFromAnyEnemy: true,
-
-						entitySourcesOfFear: [
-							{ code: "player", fearWeight: 0.1},
-							{ code: "looter", fearWeight: 0.05},
-							{ code: "bandit-*", fearWeight: -0.1},
-							{ code: "hound-feral", fearWeight: 0.05},
+						"code":"morale",
+						"priority":5.0,
+						"movespeed":0.040,
+						"cancelOnHurt":false,
+						"routDistance":60,
+						"rallyTimeAfterRoutMs":10000,
+						"minMorale":0.6,
+						"maxMorale":0.9,
+						"moraleRange":15,
+						"useGroupMorale":true,
+						"deathsImpactMorale":true,
+						"canRoutFromAnyEnemy":true,
+						"entitySourcesOfFear":[
+							{
+								"code":"player",
+								"fearWeight":0.1
+							},
+							{
+								"code":"looter",
+								"fearWeight":0.05
+							},
+							{
+								"code":"bandit-*",
+								"fearWeight":-0.1
+							},
+							{
+								"code":"hound-feral",
+								"fearWeight":0.05
+							}
 						],
-						itemStackSourcesOfFear: [
-							{ code: "outlawhead-*", fearWeight: 0.2},
-							{ code: "headonspear-*", fearWeight: 0.2},
+						"itemStackSourcesOfFear":[
+							{
+								"code":"outlawhead-*",
+								"fearWeight":0.2
+							},
+							{
+								"code":"headonspear-*",
+								"fearWeight":0.2
+							}
 						],
-						poiSourcesOfFear: [
-							{ poiType: "outlawSpawnBlocker", fearWeight: 0.2}
+						"poiSourcesOfFear":[
+							{
+								"poiType":"outlawSpawnBlocker",
+								"fearWeight":0.2
+							}
 						],
-
-						animation: "sprint",
-						animationSpeed: 1,
+						"animation":"sprint",
+						"animationSpeed":1
 					},
 					{
-						code: "melee",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
-						priority: 4.0,
-						damage: 3.5,
-						damageTier: 1,
-						damageType: "SlashingAttack",
-						slot: 1,
-						mincooldown: 500, 
-						maxcooldown: 1500, 
-						attackDurationMs: 450,
-						damagePlayerAtMs: 300,
-						animation: "attack",
-						animationSpeed: 1
+						"code":"melee",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter",
+							"hound-feral"
+						],
+						"priority":4.0,
+						"damage":3.5,
+						"damageTier":1,
+						"damageType":"SlashingAttack",
+						"slot":1,
+						"mincooldown":500,
+						"maxcooldown":1500,
+						"attackDurationMs":450,
+						"damagePlayerAtMs":300,
+						"animation":"attack",
+						"animationSpeed":1
 					},
 					{
-						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
-						priority: 4.5,
-						movespeed: 0.045,
-						seekingRange: 22,
-						cancelOnHurt: false,
-						fleeingDistance: 12,
-						fleeDurationMs: 2000,
-						animation: "sprint",
-						animationSpeed: 2.0,
-						executionChance: 1.0,
-						whenInEmotionState: "fleeondamage"
+						"code":"fleeentity",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter",
+							"hound-feral"
+						],
+						"priority":4.5,
+						"movespeed":0.045,
+						"seekingRange":22,
+						"cancelOnHurt":false,
+						"fleeingDistance":12,
+						"fleeDurationMs":2000,
+						"animation":"sprint",
+						"animationSpeed":2.0,
+						"executionChance":1.0,
+						"whenInEmotionState":"fleeondamage"
 					},
 					{
-						code: "engageentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral" ],
-						priority: 4.0,
-						mincooldown: 0, 
-						maxcooldown: 0, 
-						pursueSpeed: 0.048,
-						pursueRange: 40,
-						pursueAnimation: "sprint",
-						engageSpeed: 0.035,
-						engageRange: 4,
-						engageAnimation: "sprint",
-
-						withdrawIfNoPath: true,
-						withdrawDist: 15.0,
-        				withdrawDistDamaged: 40.0,
-						withdrawAnimation: "idle",
-
-						animationSpeed: 1.0,
-						alarmHerd: true,
-						whenInEmotionState: "aggressiveondamage"
+						"code":"engageentity",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter",
+							"hound-feral"
+						],
+						"priority":4.0,
+						"mincooldown":0,
+						"maxcooldown":0,
+						"pursueSpeed":0.048,
+						"pursueRange":40,
+						"pursueAnimation":"sprint",
+						"engageSpeed":0.035,
+						"engageRange":4,
+						"engageAnimation":"sprint",
+						"withdrawIfNoPath":true,
+						"withdrawDist":15.0,
+						"withdrawDistDamaged":40.0,
+						"withdrawAnimation":"idle",
+						"animationSpeed":1.0,
+						"alarmHerd":true,
+						"whenInEmotionState":"aggressiveondamage"
 					},
 					{
-						code: "getoutofwater",
-						priority: 2,
-						movespeed: 0.040,
-						animation: "swim",
-						animationSpeed: 0.3
+						"code":"getoutofwater",
+						"priority":2,
+						"movespeed":0.040,
+						"animation":"swim",
+						"animationSpeed":0.3
 					},
 					{
-						code: "engageentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
-						priority: 2.5,
-						priorityForCancel: 2.5,
-						mincooldown: 0, 
-						maxcooldown: 0, 
-						pursueSpeed: 0.048,
-						pursueRange: 22,
-						pursueAnimation: "sprint",
-						engageSpeed: 0.035,
-						engageRange: 4,
-						engageAnimation: "sprint",
-
-						withdrawIfNoPath: true,
-						withdrawDist: 15.0,
-        				withdrawDistDamaged: 40.0,
-						withdrawAnimation: "idle",
-
-						animationSpeed: 1.0,
-						alarmHerd: true
+						"code":"engageentity",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter"
+						],
+						"priority":2.5,
+						"priorityForCancel":2.5,
+						"mincooldown":0,
+						"maxcooldown":0,
+						"pursueSpeed":0.048,
+						"pursueRange":22,
+						"pursueAnimation":"sprint",
+						"engageSpeed":0.035,
+						"engageRange":4,
+						"engageAnimation":"sprint",
+						"withdrawIfNoPath":true,
+						"withdrawDist":15.0,
+						"withdrawDistDamaged":40.0,
+						"withdrawAnimation":"idle",
+						"animationSpeed":1.0,
+						"alarmHerd":true
 					},
 					{
-						code: "stayclosetoherd",
-						priority: 1.1,
-						movespeed: 0.04,
-						animationSpeed: 1.0,
-						maxDistance: 20,
-						arriveDistance: 8,
-						searchRange: 25,
-						allowStrayFromHerdInCombat: true,
-						allowHerdConsolidation: true,
-						consolidationRange: 40,
-						consolidationEntityCodes: ["yeoman-archer", "bandit-*"],
-						animation: "sprint"
+						"code":"stayclosetoherd",
+						"priority":1.1,
+						"movespeed":0.04,
+						"animationSpeed":1.0,
+						"maxDistance":20,
+						"arriveDistance":8,
+						"searchRange":25,
+						"allowStrayFromHerdInCombat":true,
+						"allowHerdConsolidation":true,
+						"consolidationRange":40,
+						"consolidationEntityCodes":[
+							"yeoman-archer",
+							"bandit-*"
+						],
+						"animation":"sprint"
 					},
 					{
-						code: "wander", 
-						priority: 1.0, 
-						priorityForCancel: 1.35,
-						movespeed: 0.006,
-						animation: "walk",
-						preferredLightLevel: 20
+						"code":"wander",
+						"priority":1.0,
+						"priorityForCancel":1.35,
+						"movespeed":0.006,
+						"animation":"walk",
+						"preferredLightLevel":20
 					}
 				]
 			}
-		],
+		]
 	},
-	sounds: {
-		idle: "creature/bandit/idle1",
-		hurt: "creature/bandit/hurt",
-		death: "creature/bandit/die2",
-		melee: "creature/bandit/attack",
-		fleeentity: "creature/bandit/flee",
-		morale: "creature/bandit/flee",
-		seekentity: "creature/bandit/givemegold",
-		engageentity: "creature/bandit/givemegold",
+	"sounds":{
+		"idle":"creature/bandit/idle1",
+		"hurt":"creature/bandit/hurt",
+		"death":"creature/bandit/die2",
+		"melee":"creature/bandit/attack",
+		"fleeentity":"creature/bandit/flee",
+		"morale":"creature/bandit/flee",
+		"seekentity":"creature/bandit/givemegold",
+		"engageentity":"creature/bandit/givemegold"
 	},
-	idleSoundChance: 0.08
+	"idleSoundChance":0.08
 }

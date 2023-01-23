@@ -1,356 +1,550 @@
 {
-	code: "yeoman-archer",
-	class: "EntityOutlaw",
-	canClimb: true,
-	hitboxSize: { x: 0.6, y: 1.75 },
-	deadHitboxSize: { x: 0.75, y: 0.5 },
-	eyeHeight: 1.7,
-	attributes: { reckless: false, classicVoice: "game:sounds/voice/accordion" },
-	client: {
-		renderer: "Shape",
-		shape: { base: "entity/land/yeoman-archer" },
-		textures: {
-			"yeoman": { base: "entity/bandit/yeoman1", alternates: [ { base: "entity/bandit/yeoman2" }, { base: "entity/bandit/yeoman3" }, { base: "entity/bandit/yeoman4" } ] },
-		},
-		behaviors: [
-			{ code: "repulseagents" }, 
-			{ code: "floatupwhenstuck", onlyWhenDead: true },
-			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
-			{ code: "harvestable"},
-			{ code: "interpolateposition" }
-		],
-		animations: [
-			{
-				code: "die",
-				animation: "die", 
-				animationSpeed: 1.75,
-				weight: 10,
-				blendMode: "Average",
-				triggeredBy: { onControls: ["dead"] }
-			},
-			{
-				code: "hurt",
-				animation: "hurt", 
-				animationSpeed: 2,
-				weight: 8,
-				blendMode: "AddAverage" 
-			},
-			{ 
-				code: "wander", 
-				animation: "walk",
-				blendMode: "Average",
-				easeOutSpeed: 1
-			},
-			{ 
-				code: "sprint",
-				animation: "sprint",
-				animationSpeed: 0.6,
-				mulWithWalkSpeed: true,
-				blendMode: "Average"  
-			},
-			{ 
-				code: "melee", 
-				animation: "attack",
-				weight: 5,
-				blendMode: "AddAverage"
-			},
-			{ 
-				code: "shootatentity", 
-				animation: "bowattack",
-				weight: 10,
-				blendMode: "Add"
-			},
-			{
-				code: "look",
-				animation: "look",
-				easeOutSpeed: 1,
-				blendMode: "Add",
-				SupressDefaultAnimation: true
-			},
-			{
-				code: "walk",
-				animation: "walk",
-				SupressDefaultAnimation: true
-			},
-			{
-				code: "walkbowready",
-				animation: "walkbowready",
-				SupressDefaultAnimation: true
-			},
-			{ 
-				code: "idle", 
-				animation: "idle",
-				blendMode: "AddAverage",
-				triggeredBy: { defaultAnim: true }
-			},
-		]
+	"code":"yeoman-archer",
+	"class":"EntityOutlaw",
+	"canClimb":true,
+	"hitboxSize":{
+		"x":0.6,
+		"y":1.75
 	},
-	server: {
-		attributes: {
-			pathfinder: {
-				minTurnAnglePerSec: 960,
-				maxTurnAnglePerSec: 1920
+	"deadHitboxSize":{
+		"x":0.75,
+		"y":0.5
+	},
+	"eyeHeight":1.7,
+	"attributes":{
+		"reckless":false,
+		"classicVoice":"game:sounds/voice/accordion"
+	},
+	"client":{
+		"renderer":"Shape",
+		"shape":{
+			"base":"entity/land/yeoman-archer"
+		},
+		"textures":{
+			"yeoman":{
+				"base":"entity/bandit/yeoman1",
+				"alternates":[
+					{
+						"base":"entity/bandit/yeoman2"
+					},
+					{
+						"base":"entity/bandit/yeoman3"
+					},
+					{
+						"base":"entity/bandit/yeoman4"
+					}
+				]
 			}
 		},
-		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Yeoman Archer"], "showtagonlywhentargeted": true }, 
-			{ code: "repulseagents" }, 
-			{ code: "despawn", minPlayerDistance: 64, belowLightLevel: 8, minSeconds: 300 },
-			{ code: "controlledphysics", stepHeight: 1.1251 }, 
-			{ code: "deaddecay", hoursToDecay: 96, decayedBlock: "outlawmodredux:carcass-human" },
-			{ code: "floatupwhenstuck", onlyWhenDead: true },
-			{ code: "health", currenthealth: 12, maxhealth: 12 },
-			{ code: "harvestable", drops: [
-				{
-					type: "item",
-					code: "outlawmodredux:outlawhead-yeoman",
-					quantity: { avg: 0.2, var: 0.0 }
-				},
-				{
-					type: "block", 
-					code: "game:linen-normal-down", 
-					quantity: { avg: 0.03, var: 0.0 } 
-				},
-				{
-					type: "item",
-					code: "game:poultice-reed-horsetail",
-					quantity: { avg: 0.03, var: 0.0 }
-				},
-				{
-					type: "item",
-					code: "game:hide-raw-small",
-					quantity: { avg: 0.02, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:hide-raw-medium",
-					quantity: { avg: 0.02, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:hide-raw-large",
-					quantity: { avg: 0.02, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:bushmeat-raw",
-					quantity: { avg: 0.02, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:redmeat-raw",
-					quantity: { avg: 0.02, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:fat",
-					quantity: { avg: 0.02, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:arrow-copper",
-					quantity: { avg: 0.02, var: 0 }
-				},
-				{
-					type: "item",
-					code: "game:bow-long",
-					quantity: { avg: 0.015, var: 0 }
+		"behaviors":[
+			{
+				"code":"repulseagents"
+			},
+			{
+				"code":"floatupwhenstuck",
+				"onlyWhenDead":true
+			},
+			{
+				"code":"controlledphysics",
+				"stepHeight":1.1251
+			},
+			{
+				"code":"despawn",
+				"minPlayerDistance":64,
+				"belowLightLevel":8,
+				"minSeconds":300
+			},
+			{
+				"code":"harvestable"
+			},
+			{
+				"code":"interpolateposition"
+			}
+		],
+		"animations":[
+			{
+				"code":"die",
+				"animation":"die",
+				"animationSpeed":1.75,
+				"weight":10,
+				"blendMode":"Average",
+				"triggeredBy":{
+					"onControls":[
+						"dead"
+					]
 				}
+			},
+			{
+				"code":"hurt",
+				"animation":"hurt",
+				"animationSpeed":2,
+				"weight":8,
+				"blendMode":"AddAverage"
+			},
+			{
+				"code":"wander",
+				"animation":"walk",
+				"blendMode":"Average",
+				"easeOutSpeed":1
+			},
+			{
+				"code":"sprint",
+				"animation":"sprint",
+				"animationSpeed":0.6,
+				"mulWithWalkSpeed":true,
+				"blendMode":"Average"
+			},
+			{
+				"code":"melee",
+				"animation":"attack",
+				"weight":5,
+				"blendMode":"AddAverage"
+			},
+			{
+				"code":"shootatentity",
+				"animation":"bowattack",
+				"weight":10,
+				"blendMode":"Add"
+			},
+			{
+				"code":"look",
+				"animation":"look",
+				"easeOutSpeed":1,
+				"blendMode":"Add",
+				"SupressDefaultAnimation":true
+			},
+			{
+				"code":"walk",
+				"animation":"walk",
+				"SupressDefaultAnimation":true
+			},
+			{
+				"code":"walkbowready",
+				"animation":"walkbowready",
+				"SupressDefaultAnimation":true
+			},
+			{
+				"code":"idle",
+				"animation":"idle",
+				"blendMode":"AddAverage",
+				"triggeredBy":{
+					"defaultAnim":true
+				}
+			}
+		]
+	},
+	"server":{
+		"attributes":{
+			"pathfinder":{
+				"minTurnAnglePerSec":960,
+				"maxTurnAnglePerSec":1920
+			}
+		},
+		"behaviors":[
+			{
+				"code":"nametag",
+				"selectFromRandomName":[
+					"Yeoman Archer"
+				],
+				"showtagonlywhentargeted":true
+			},
+			{
+				"code":"repulseagents"
+			},
+			{
+				"code":"despawn",
+				"minPlayerDistance":64,
+				"belowLightLevel":8,
+				"minSeconds":300
+			},
+			{
+				"code":"controlledphysics",
+				"stepHeight":1.1251
+			},
+			{
+				"code":"deaddecay",
+				"hoursToDecay":96,
+				"decayedBlock":"outlawmodredux:carcass-human"
+			},
+			{
+				"code":"floatupwhenstuck",
+				"onlyWhenDead":true
+			},
+			{
+				"code":"health",
+				"currenthealth":12,
+				"maxhealth":12
+			},
+			{
+				"code":"harvestable",
+				"drops":[
+					{
+						"type":"item",
+						"code":"outlawmodredux:outlawhead-yeoman",
+						"quantity":{
+							"avg":0.2,
+							"var":0.0
+						}
+					},
+					{
+						"type":"block",
+						"code":"game:linen-normal-down",
+						"quantity":{
+							"avg":0.03,
+							"var":0.0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:poultice-reed-horsetail",
+						"quantity":{
+							"avg":0.03,
+							"var":0.0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:hide-raw-small",
+						"quantity":{
+							"avg":0.02,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:hide-raw-medium",
+						"quantity":{
+							"avg":0.02,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:hide-raw-large",
+						"quantity":{
+							"avg":0.02,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:bushmeat-raw",
+						"quantity":{
+							"avg":0.02,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:redmeat-raw",
+						"quantity":{
+							"avg":0.02,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:fat",
+						"quantity":{
+							"avg":0.02,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:arrow-copper",
+						"quantity":{
+							"avg":0.02,
+							"var":0
+						}
+					},
+					{
+						"type":"item",
+						"code":"game:bow-long",
+						"quantity":{
+							"avg":0.015,
+							"var":0
+						}
+					}
 				]
 			},
-			{ 
-				code: "emotionstates",
-				states: [
-					{ code: "aggressiveondamage", duration: 4, chance: 0.2, slot: 0, priority: 2, accumType: "noaccum" },
-					{ code: "fleeondamage", duration: 14, chance: 0.50, slot: 2, priority: 4, accumType: "max", whenHealthRelBelow: 0.50 }
-				],
+			{
+				"code":"emotionstates",
+				"states":[
+					{
+						"code":"aggressiveondamage",
+						"duration":4,
+						"chance":0.2,
+						"slot":0,
+						"priority":2,
+						"accumType":"noaccum"
+					},
+					{
+						"code":"fleeondamage",
+						"duration":14,
+						"chance":0.50,
+						"slot":2,
+						"priority":4,
+						"accumType":"max",
+						"whenHealthRelBelow":0.50
+					}
+				]
 			},
-			{ 
-				code: "taskai",
-				aitasks: [
+			{
+				"code":"taskai",
+				"aitasks":[
 					{
-						code: "morale",
-						priority: 5.0,
-						movespeed: 0.040,
-						cancelOnHurt: false,
-						routDistance: 60,
-						rallyTimeAfterRoutMs: 10000,
-						minMorale: 0.7,
-						maxMorale: 0.9,
-						moraleRange: 15,
-						useGroupMorale: true,
-						deathsImpactMorale: true,
-						canRoutFromAnyEnemy: true,
-
-						entitySourcesOfFear: [
-							{ code: "player", fearWeight: 0.1},
-							{ code: "looter", fearWeight: 0.05},
-							{ code: "hound-feral", fearWeight: 0.05},
-							{ code: "yeoman-*", fearWeight: -0.1},
+						"code":"morale",
+						"priority":5.0,
+						"movespeed":0.040,
+						"cancelOnHurt":false,
+						"routDistance":60,
+						"rallyTimeAfterRoutMs":10000,
+						"minMorale":0.7,
+						"maxMorale":0.9,
+						"moraleRange":15,
+						"useGroupMorale":true,
+						"deathsImpactMorale":true,
+						"canRoutFromAnyEnemy":true,
+						"entitySourcesOfFear":[
+							{
+								"code":"player",
+								"fearWeight":0.1
+							},
+							{
+								"code":"looter",
+								"fearWeight":0.05
+							},
+							{
+								"code":"hound-feral",
+								"fearWeight":0.05
+							},
+							{
+								"code":"yeoman-*",
+								"fearWeight":-0.1
+							}
 						],
-
-						itemStackSourcesOfFear: [
-							{ code: "outlawhead-*", fearWeight: 0.2},
-							{ code: "headonspear-*", fearWeight: 0.2},
+						"itemStackSourcesOfFear":[
+							{
+								"code":"outlawhead-*",
+								"fearWeight":0.2
+							},
+							{
+								"code":"headonspear-*",
+								"fearWeight":0.2
+							}
 						],
-
-						poiSourcesOfFear: [
-							{ poiType: "outlawSpawnBlocker", fearWeight: 0.2}
+						"poiSourcesOfFear":[
+							{
+								"poiType":"outlawSpawnBlocker",
+								"fearWeight":0.2
+							}
 						],
-
-						animation: "sprint",
-						animationSpeed: 1,
+						"animation":"sprint",
+						"animationSpeed":1
 					},
 					{
-						code: "melee",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral" ],
-						priority: 4.0,
-						damage: 1.5,
-						damageTier: 1,
-						damageType: "BluntAttack",
-						slot: 1,
-						mincooldown: 500, 
-						maxcooldown: 1500, 
-						attackDurationMs: 450,
-						damagePlayerAtMs: 300,
-						animation: "attack",
-						animationSpeed: 1,
+						"code":"melee",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter",
+							"hound-feral"
+						],
+						"priority":4.0,
+						"damage":1.5,
+						"damageTier":1,
+						"damageType":"BluntAttack",
+						"slot":1,
+						"mincooldown":500,
+						"maxcooldown":1500,
+						"attackDurationMs":450,
+						"damagePlayerAtMs":300,
+						"animation":"attack",
+						"animationSpeed":1
 					},
 					{
-						code: "fleeentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
-						priority: 3.8,
-						movespeed: 0.040,
-						seekingRange: 6,
-						cancelOnHurt: false,
-						fleeingDistance: 32,
-						fleeDurationMs: 9999999,
-						animation: "sprint",
-						animationSpeed: 1,
-						executionChance: 1.0,
+						"code":"fleeentity",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter",
+							"hound-feral"
+						],
+						"priority":3.8,
+						"movespeed":0.040,
+						"seekingRange":6,
+						"cancelOnHurt":false,
+						"fleeingDistance":32,
+						"fleeDurationMs":9999999,
+						"animation":"sprint",
+						"animationSpeed":1,
+						"executionChance":1.0
 					},
 					{
-						code: "shootatentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter", "hound-feral"],
-						priority: 3.75,
-						priorityForCancel: 9,
-						mincooldown: 1000, 
-						maxcooldown: 1500, 
-						minDist: 4,
-						maxDist: 40,
-						maxVertDist: 30,
-						minRangeDistOffTarget: 0.35,
-						maxRangeDistOffTarget: 0.75,
-						maxVelocity: 0.9,
-						newTargetDistOffTarget: 0.75,
-						newTargetZeroingTime: 5.0,
-						damage: 4.0,
-						damageFalloffPercent: 0.66,
-						damageFalloffStartDist: 18,
-						damageFalloffEndDist: 28,
-						projectileItem: "arrow-copper",
-						dummyProjectile: "dummyarrow-copper",
-						projectileRemainsInWorld: true,
-						projectileBreakOnImpactChance: 0.90,
-						stopIfPredictFriendlyFire: true,
-
-						leadTarget: true,
-            			arcShots: true,
-
-						durationMs: 2000,
-						releaseAtMs: 1000,
-						animationSpeed: 1.0,
-						animation: "bowattack"
+						"code":"shootatentity",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter",
+							"hound-feral"
+						],
+						"priority":3.75,
+						"priorityForCancel":9,
+						"mincooldown":1000,
+						"maxcooldown":1500,
+						"minDist":4,
+						"maxDist":40,
+						"maxVertDist":30,
+						"minRangeDistOffTarget":0.35,
+						"maxRangeDistOffTarget":0.75,
+						"maxVelocity":0.9,
+						"newTargetDistOffTarget":0.75,
+						"newTargetZeroingTime":5.0,
+						"damage":4.0,
+						"damageFalloffPercent":0.66,
+						"damageFalloffStartDist":18,
+						"damageFalloffEndDist":28,
+						"projectileItem":"arrow-copper",
+						"dummyProjectile":"dummyarrow-copper",
+						"projectileRemainsInWorld":true,
+						"projectileBreakOnImpactChance":0.90,
+						"stopIfPredictFriendlyFire":true,
+						"leadTarget":true,
+						"arcShots":true,
+						"durationMs":2000,
+						"releaseAtMs":1000,
+						"animationSpeed":1.0,
+						"animation":"bowattack"
 					},
 					{
-						code: "getoutofwater",
-						priority: 2,
-						movespeed: 0.040,
-						animation: "swim",
-						animationSpeed: 0.3
+						"code":"getoutofwater",
+						"priority":2,
+						"movespeed":0.040,
+						"animation":"swim",
+						"animationSpeed":0.3
 					},
 					{
-						code: "engageentity",
-						entityCodes: ["player", "drifter-*", "wolf-male", "wolf-female", "hyena-male", "hyena-female", "locust-*", "bear-*", "looter" ],
-						priority: 1.5,
-						priorityForCancel: 3.0,
-						mincooldown: 0, 
-						maxcooldown: 0, 
-						pursueSpeed: 0.040,
-						pursueRange: 40,
-						pursueAnimation: "sprint",
-						engageSpeed: 0.006,
-						engageRange: 34,
-						engageAnimation: "walkbowready",
-						arriveRange: 20,
-						arriveVerticalRange: 20,
-						withdrawIfNoPath: true,
-       					withdrawDist: 20.0,
-        				withdrawDistDamaged: 30.0,
-						withdrawAnimation: "idle",
-						animationSpeed: 1.0,
-						alarmHerd: true
+						"code":"engageentity",
+						"entityCodes":[
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
+							"looter"
+						],
+						"priority":1.5,
+						"priorityForCancel":3.0,
+						"mincooldown":0,
+						"maxcooldown":0,
+						"pursueSpeed":0.040,
+						"pursueRange":40,
+						"pursueAnimation":"sprint",
+						"engageSpeed":0.006,
+						"engageRange":34,
+						"engageAnimation":"walkbowready",
+						"arriveRange":20,
+						"arriveVerticalRange":20,
+						"withdrawIfNoPath":true,
+						"withdrawDist":20.0,
+						"withdrawDistDamaged":30.0,
+						"withdrawAnimation":"idle",
+						"animationSpeed":1.0,
+						"alarmHerd":true
 					},
 					{
-						code: "stayclosetoherd",
-						priority: 1.1,
-						movespeed: 0.04,
-						animationSpeed: 1.0,
-						maxDistance: 15,
-						arriveDistance: 8,
-						searchRange: 25,
-						allowStrayFromHerdInCombat: false,
-						allowHerdConsolidation: true,
-						consolidationRange: 40,
-						consolidationEntityCodes: ["yeoman-archer", "bandit-*"],
-						animation: "sprint"
+						"code":"stayclosetoherd",
+						"priority":1.1,
+						"movespeed":0.04,
+						"animationSpeed":1.0,
+						"maxDistance":15,
+						"arriveDistance":8,
+						"searchRange":25,
+						"allowStrayFromHerdInCombat":false,
+						"allowHerdConsolidation":true,
+						"consolidationRange":40,
+						"consolidationEntityCodes":[
+							"yeoman-archer",
+							"bandit-*"
+						],
+						"animation":"sprint"
 					},
 					{
-						code: "wander", 
-						priority: 0.5, 
-						priorityForCancel: 1.35,
-						movespeed: 0.006,
-						minduration: 2500,
-						maxduration: 5000,
-						mincooldown: 5000,
-						maxcooldown: 10000,
-						animation: "walkbowready",
-						preferredLightLevel: 20,
-						whenNotInEmotionState: "fleeondamage",
-						whenNotInEmotionState: "aggressiveondamage"
+						"code":"wander",
+						"priority":0.5,
+						"priorityForCancel":1.35,
+						"movespeed":0.006,
+						"minduration":2500,
+						"maxduration":5000,
+						"mincooldown":5000,
+						"maxcooldown":10000,
+						"animation":"walkbowready",
+						"preferredLightLevel":20,
+						"whenNotInEmotionState":"aggressiveondamage"
 					}
 				]
 			}
 		],
-		spawnconditions: {
-			runtime: {
-				group: "hostile",
-				tryOnlySurface: true,
-				chance: 0.00015,
-				maxQuantity: 8,
-				"__comment": "Make them spawn away from artifical light and only at night/as the sun sets",
-				maxLightLevel: 5,
-				lightLevelType: "onlyBlockLight",					
-				groupSize: { dist: "stronginvexp", avg: 2, var: 4 },
-				insideBlockCodes: ["game:air", "game:tallgrass-*","game:snowlayer-1"],
-				minTemp: -15,
-				maxTemp: 28,
-				minRain: 0,
-				minForestOrShrubs: 0.25,
-				MinDistanceToPlayer: 50,
-				companions: []
+		"spawnconditions":{
+			"runtime":{
+				"group":"hostile",
+				"tryOnlySurface":true,
+				"chance":0.00015,
+				"maxQuantity":8,
+				"__comment":"Make them spawn away from artifical light and only at night/as the sun sets",
+				"maxLightLevel":5,
+				"lightLevelType":"onlyBlockLight",
+				"groupSize":{
+					"dist":"stronginvexp",
+					"avg":2,
+					"var":4
+				},
+				"insideBlockCodes":[
+					"game:air",
+					"game:tallgrass-*",
+					"game:snowlayer-1"
+				],
+				"minTemp":-15,
+				"maxTemp":28,
+				"minRain":0,
+				"minForestOrShrubs":0.25,
+				"MinDistanceToPlayer":50,
+				"companions":[
+					
+				]
 			}
 		}
 	},
-	sounds: {
-		idle: "creature/bandit/idle1",
-		hurt: "creature/bandit/hurt",
-		death: "creature/bandit/die2",
-		melee: "creature/bandit/attack",
-		fleeentity: "creature/bandit/flee",
-		morale: "creature/bandit/flee",
-		seekentity: "creature/bandit/youdead",
+	"sounds":{
+		"idle":"creature/bandit/idle1",
+		"hurt":"creature/bandit/hurt",
+		"death":"creature/bandit/die2",
+		"melee":"creature/bandit/attack",
+		"fleeentity":"creature/bandit/flee",
+		"morale":"creature/bandit/flee",
+		"seekentity":"creature/bandit/youdead"
 	},
-	idleSoundChance: 0.08
+	"idleSoundChance":0.08
 }
