@@ -32,8 +32,12 @@ namespace OutlawModRedux
 
         public static bool CanSpawnOutlaw( Vec3d position, AssetLocation code )
         {
-            //Only run on server side, because POIs are serveside only.
-            Debug.Assert(sapi.Side == EnumAppSide.Server, "CanSpawn function is running on the client, this must only run server side.");
+            if (sapi.Side != EnumAppSide.Server)
+            {
+                //Only run on server side, because POIs are serveside only.
+                sapi.World.Logger.Error("CanSpawn function is running on the client, this must only run server side.");
+            }
+            
 
             currentSpawnTryPosition = position;
             spawnIsBlockedByBlocker = false;

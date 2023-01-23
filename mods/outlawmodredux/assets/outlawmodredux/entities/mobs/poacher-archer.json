@@ -631,7 +631,7 @@
 				"group":"neutral",
 				"tryOnlySurface":true,
 				"chance":0.00015,
-				"maxQuantity":1,
+				"maxQuantity":3,
 				"groupSize":{
 					"dist":"verynarrowgaussian",
 					"avg":2, "var":1
@@ -645,7 +645,7 @@
 				"insideBlockCodes":[
 					"game:air",
 					"game:tallgrass-*",
-					"snowlayer-1"
+					"game:snowlayer-1"
 				],
 				"minTemp":-15,
 				"maxTemp":28,

@@ -131,13 +131,6 @@
 		},
 		"behaviors":[
 			{
-				"code":"nametag",
-				"selectFromRandomName":[
-					"Poacher"
-				],
-				"showtagonlywhentargeted":true
-			},
-			{
 				"code":"repulseagents"
 			},
 			{
@@ -153,7 +146,7 @@
 			{
 				"code":"deaddecay",
 				"hoursToDecay":96,
-				"decayedBlock":"outlawmodredux:carcass-human"
+				"decayedBlock":"carcass-human"
 			},
 			{
 				"code":"floatupwhenstuck",
@@ -169,7 +162,7 @@
 				"drops":[
 					{
 						"type":"item",
-						"code":"outlawmodredux:outlawhead-poacher",
+						"code":"outlawhead-poacher",
 						"quantity":{
 							"avg":0.2,
 							"var":0.0
@@ -314,7 +307,7 @@
 						"canRoutFromAnyEnemy":true,
 						"entitySourcesOfFear":[
 							{
-								"code":"player",
+								"code":"game:player",
 								"fearWeight":1.0
 							},
 							{
@@ -352,27 +345,27 @@
 					{
 						"code":"melee",
 						"entityCodes":[
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
-							"chicken-rooster",
-							"chicken-hen",
-							"chicken-baby",
-							"hare-male",
-							"hare-female",
-							"fox-male",
-							"fox-female",
-							"fox-arctic-male",
-							"fox-arctic-female",
-							"pig-wild-male",
-							"pig-wild-female",
-							"raccoon-male",
-							"raccoon-female",
-							"sheep-bighorn-male",
-							"sheep-bighorn-female"
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
+							"game:chicken-rooster",
+							"game:chicken-hen",
+							"game:chicken-baby",
+							"game:hare-male",
+							"game:hare-female",
+							"game:fox-male",
+							"game:fox-female",
+							"game:fox-arctic-male",
+							"game:fox-arctic-female",
+							"game:pig-wild-male",
+							"game:pig-wild-female",
+							"game:raccoon-male",
+							"game:raccoon-female",
+							"game:sheep-bighorn-male",
+							"game:sheep-bighorn-female"
 						],
 						"priority":2.5,
 						"damage":5.0,
@@ -392,8 +385,8 @@
 					{
 						"code":"melee",
 						"entityCodes":[
-							"player",
-							"drifter-*",
+							"game:player",
+							"game:drifter-*",
 							"looter",
 							"hound-feral"
 						],
@@ -414,8 +407,8 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"player",
-							"drifter-*",
+							"game:player",
+							"game:drifter-*",
 							"looter",
 							"hound-feral"
 						],
@@ -440,8 +433,8 @@
 					{
 						"code":"fleeentity",
 						"entityCodes":[
-							"player",
-							"drifter-*",
+							"game:player",
+							"game:drifter-*",
 							"looter",
 							"hound-feral"
 						],
@@ -462,8 +455,8 @@
 					{
 						"code":"fleeentity",
 						"entityCodes":[
-							"player",
-							"drifter-*",
+							"game:player",
+							"game:drifter-*",
 							"looter",
 							"hound-feral"
 						],
@@ -481,27 +474,27 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
-							"chicken-rooster",
-							"chicken-hen",
-							"chicken-baby",
-							"hare-male",
-							"hare-female",
-							"fox-male",
-							"fox-female",
-							"fox-arctic-male",
-							"fox-arctic-female",
-							"pig-wild-male",
-							"pig-wild-female",
-							"raccoon-male",
-							"raccoon-female",
-							"sheep-bighorn-male",
-							"sheep-bighorn-female"
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
+							"game:chicken-rooster",
+							"game:chicken-hen",
+							"game:chicken-baby",
+							"game:hare-male",
+							"game:hare-female",
+							"game:fox-male",
+							"game:fox-female",
+							"game:fox-arctic-male",
+							"game:fox-arctic-female",
+							"game:pig-wild-male",
+							"game:pig-wild-female",
+							"game:raccoon-male",
+							"game:raccoon-female",
+							"game:sheep-bighorn-male",
+							"game:sheep-bighorn-female"
 						],
 						"priority":2.0,
 						"mincooldown":0,
@@ -550,14 +543,14 @@
 						"animation":"look",
 						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
-							"player",
-							"drifter-*",
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
+							"game:player",
+							"game:drifter-*",
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
 							"looter"
 						],
 						"stopRange":5
@@ -573,14 +566,14 @@
 						"animation":"idle",
 						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
-							"player",
-							"drifter-*",
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
+							"game:player",
+							"game:drifter-*",
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
 							"looter"
 						],
 						"stopRange":5
@@ -606,7 +599,7 @@
 				"group":"neutral",
 				"tryOnlySurface":true,
 				"chance":0.00015,
-				"maxQuantity":1,
+				"maxQuantity":3,
 				"groupSize":{
 					"dist":"verynarrowgaussian",
 					"avg":2, "var":1
@@ -620,7 +613,7 @@
 				"insideBlockCodes":[
 					"game:air",
 					"game:tallgrass-*",
-					"snowlayer-1"
+					"game:snowlayer-1"
 				],
 				"minTemp":-15,
 				"maxTemp":28,
