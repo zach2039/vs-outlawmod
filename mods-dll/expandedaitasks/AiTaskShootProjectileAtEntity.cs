@@ -310,8 +310,9 @@ namespace ExpandedAiTasks
 
                 float projectileDamage = GetProjectileDamageAfterFalloff( distToTargetSqr );
 
+                // FIXME: No idea what is going on here
                 int durability = 0;
-                bool survivedImpact = true;
+                bool survivedImpact = false;
                     
                 if ( projectileBreakOnImpactChance < 1.0 )
                 {
@@ -336,7 +337,7 @@ namespace ExpandedAiTasks
                     ((EntityProjectile)projectile).ProjectileStack.Attributes.SetInt("durability", durability);
                 
                 // Prevent players from farming arrows; always break on hit
-                ((EntityProjectile)projectile).DropOnImpactChance = 1.0f;
+                ((EntityProjectile)projectile).DropOnImpactChance = 0.0f;
                 ((EntityProjectile)projectile).Weight = 0.0f;
 
                 projectile.ServerPos.SetPos(firePos);
