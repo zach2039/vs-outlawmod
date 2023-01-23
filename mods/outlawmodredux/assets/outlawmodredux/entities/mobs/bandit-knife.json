@@ -125,7 +125,7 @@
 			{
 				"code":"deaddecay",
 				"hoursToDecay":96,
-				"decayedBlock":"outlawmodredux:carcass-human"
+				"decayedBlock":"carcass-human"
 			},
 			{
 				"code":"floatupwhenstuck",
@@ -141,7 +141,7 @@
 				"drops":[
 					{
 						"type":"item",
-						"code":"outlawmodredux:outlawhead-brigand",
+						"code":"outlawhead-brigand",
 						"quantity":{
 							"avg":0.2,
 							"var":0
