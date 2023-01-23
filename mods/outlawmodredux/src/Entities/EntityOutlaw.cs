@@ -102,15 +102,6 @@ namespace OutlawModRedux
             {
                 talkUtil.OnGameTick(dt);
             }
-
-            if (this.Api.World.Side == EnumAppSide.Server && dt % 75 == 0)
-            {
-                this.Api.World.Logger.Warning("Test");
-                foreach (AiTaskBase task in this.GetBehavior<EntityBehaviorTaskAI>().TaskManager.AllTasks)
-                {
-                    this.Api.World.Logger.Warning(task.Id);
-                }
-            }
         }
 
         public override void OnReceivedServerPacket(int packetid, byte[] data)

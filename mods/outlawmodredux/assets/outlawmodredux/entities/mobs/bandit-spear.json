@@ -235,7 +235,7 @@
 						"canRoutFromAnyEnemy":true,
 						"entitySourcesOfFear":[
 							{
-								"code":"player",
+								"code":"game:player",
 								"fearWeight":0.1
 							},
 							{
@@ -273,14 +273,14 @@
 					{
 						"code":"melee",
 						"entityCodes":[
-							"player",
-							"drifter-*",
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
+							"game:player",
+							"game:drifter-*",
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
 							"looter",
 							"hound-feral"
 						],
@@ -301,14 +301,14 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"player",
-							"drifter-*",
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
+							"game:player",
+							"game:drifter-*",
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
 							"looter",
 							"hound-feral"
 						],
@@ -341,14 +341,14 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"player",
-							"drifter-*",
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
+							"game:player",
+							"game:drifter-*",
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
 							"looter"
 						],
 						"priority":1.5,
@@ -397,14 +397,14 @@
 						"animation":"look",
 						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
-							"player",
-							"drifter-*",
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
+							"game:player",
+							"game:drifter-*",
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
 							"looter",
 							"hound-feral"
 						],
@@ -421,14 +421,14 @@
 						"animation":"idle",
 						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
-							"player",
-							"drifter-*",
-							"wolf-male",
-							"wolf-female",
-							"hyena-male",
-							"hyena-female",
-							"locust-*",
-							"bear-*",
+							"game:player",
+							"game:drifter-*",
+							"game:wolf-male",
+							"game:wolf-female",
+							"game:hyena-male",
+							"game:hyena-female",
+							"game:locust-*",
+							"game:bear-*",
 							"looter"
 						],
 						"stopRange":5
