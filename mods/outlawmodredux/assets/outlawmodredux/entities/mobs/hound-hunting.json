@@ -396,7 +396,7 @@
 						"code":"getoutofwater",
 						"priority":1.4,
 						"movespeed":0.015,
-						"animation":"Walk",
+						"animation":"walk",
 						"animationSpeed":2.2
 					},
 					{
@@ -429,7 +429,7 @@
 						"priority":1.0,
 						"priorityForCancel":1.35,
 						"movespeed":0.006,
-						"animation":"Walk",
+						"animation":"walk",
 						"preferredLightLevel":20
 					},
 					{

@@ -481,7 +481,7 @@
 						"priority":0.5,
 						"priorityForCancel":1.0,
 						"movespeed":0.006,
-						"animation":"Walk",
+						"animation":"walk",
 						"preferredLightLevel":20
 					}
 				]
