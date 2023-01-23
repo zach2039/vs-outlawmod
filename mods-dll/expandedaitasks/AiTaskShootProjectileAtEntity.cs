@@ -331,14 +331,14 @@ namespace ExpandedAiTasks
                 Entity projectile = entity.World.ClassRegistry.CreateEntity(dummyType);
                 ((EntityProjectile)projectile).FiredBy = entity;
                 ((EntityProjectile)projectile).Damage = projectileDamage;
-                // FIXME: Need to prevent pickup if wanted.
-                //((EntityProjectile)projectile).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation(projectileItem)));
+                ((EntityProjectile)projectile).ProjectileStack = new ItemStack(entity.World.GetItem(new AssetLocation(projectileItem)));
 
                 if ( durability == 0 )
                     ((EntityProjectile)projectile).ProjectileStack.Attributes.SetInt("durability", durability);
 
                 // Prevent players from farming arrows; always break on hit
                 ((EntityProjectile)projectile).DropOnImpactChance = 0.0f;
+                ((EntityProjectile)projectile).DamageStackOnImpact = true;
                 ((EntityProjectile)projectile).Weight = 0.0f;
 
                 projectile.ServerPos.SetPos(firePos);

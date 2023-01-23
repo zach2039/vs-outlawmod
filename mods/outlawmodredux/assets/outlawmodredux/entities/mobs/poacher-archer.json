@@ -385,7 +385,7 @@
 						"damageFalloffPercent":0.66,
 						"damageFalloffStartDist":18,
 						"damageFalloffEndDist":28,
-						"projectileItem":"game:arrow-copper",
+						"projectileItem":"game:arrow-crude",
 						"dummyProjectile":"outlawmodredux:dummyarrow-copper",
 						"projectileRemainsInWorld":false,
 						"projectileBreakOnImpactChance":1.0,
