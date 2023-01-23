@@ -241,7 +241,7 @@
 						"canRoutFromAnyEnemy":true,
 						"entitySourcesOfFear":[
 							{
-								"code":"game:player",
+								"code":"player",
 								"fearWeight":0.1
 							},
 							{
@@ -289,13 +289,13 @@
 					{
 						"code":"melee",
 						"entityCodes":[
-							"game:player",
-							"game:chicken-*",
-							"game:hare-*",
-							"game:fox-*",
-							"game:pig-*",
-							"game:raccoon-*",
-							"game:sheep-*",
+							"player",
+							"chicken-*",
+							"hare-*",
+							"fox-*",
+							"pig-*",
+							"raccoon-*",
+							"sheep-*",
 							"bandit-*",
 							"yeoman-*",
 							"looter",
@@ -317,13 +317,13 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"game:player",
-							"game:chicken-*",
-							"game:hare-*",
-							"game:fox-*",
-							"game:pig-*",
-							"game:raccoon-*",
-							"game:sheep-*",
+							"player",
+							"chicken-*",
+							"hare-*",
+							"fox-*",
+							"pig-*",
+							"raccoon-*",
+							"sheep-*",
 							"bandit-*",
 							"yeoman-*",
 							"looter",
@@ -384,7 +384,7 @@
 							}
 						],
 						"stopOnNearbyEntityCodes":[
-							"game:player",
+							"player",
 							"bandit-*",
 							"yeoman-*",
 							"looter"
@@ -443,7 +443,7 @@
 						"animation":"Sit",
 						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
-							"game:player"
+							"player"
 						],
 						"stopRange":5
 					},

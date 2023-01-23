@@ -240,7 +240,7 @@
 						"canRoutFromAnyEnemy":true,
 						"entitySourcesOfFear":[
 							{
-								"code":"game:player",
+								"code":"player",
 								"fearWeight":0.1
 							},
 							{
@@ -277,15 +277,15 @@
 						"canRoutFromAnyEnemy":true,
 						"itemStackSourcesOfFear":[
 							{
-								"code":"game:torch-crude-lit-*",
+								"code":"torch-crude-lit-*",
 								"fearWeight":2.0
 							},
 							{
-								"code":"game:torch-basic-lit-*",
+								"code":"torch-basic-lit-*",
 								"fearWeight":2.0
 							},
 							{
-								"code":"game:torch-cloth-lit-*",
+								"code":"torch-cloth-lit-*",
 								"fearWeight":2.0
 							}
 						],
@@ -295,13 +295,13 @@
 					{
 						"code":"melee",
 						"entityCodes":[
-							"game:player",
-							"game:chicken-*",
-							"game:hare-*",
-							"game:fox-*",
-							"game:pig-*",
-							"game:raccoon-*",
-							"game:sheep-*",
+							"player",
+							"chicken-*",
+							"hare-*",
+							"fox-*",
+							"pig-*",
+							"raccoon-*",
+							"sheep-*",
 							"bandit-*",
 							"poacher-*",
 							"yeoman-*",
@@ -324,7 +324,7 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"game:player",
+							"player",
 							"bandit-*",
 							"poacher-*",
 							"yeoman-*",
@@ -349,13 +349,13 @@
 					{
 						"code":"eatdead",
 						"entityCodes":[
-							"game:player",
-							"game:chicken-*",
-							"game:hare-*",
-							"game:fox-*",
-							"game:pig-*",
-							"game:raccoon-*",
-							"game:sheep-*",
+							"player",
+							"chicken-*",
+							"hare-*",
+							"fox-*",
+							"pig-*",
+							"raccoon-*",
+							"sheep-*",
 							"bandit-*",
 							"poacher-*",
 							"yeoman-*",
@@ -378,13 +378,13 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"game:player",
-							"game:chicken-*",
-							"game:hare-*",
-							"game:fox-*",
-							"game:pig-*",
-							"game:raccoon-*",
-							"game:sheep-*",
+							"player",
+							"chicken-*",
+							"hare-*",
+							"fox-*",
+							"pig-*",
+							"raccoon-*",
+							"sheep-*",
 							"bandit-*",
 							"poacher-*",
 							"yeoman-*",
@@ -443,7 +443,7 @@
 							}
 						],
 						"stopOnNearbyEntityCodes":[
-							"game:player",
+							"player",
 							"bandit-*",
 							"poacher-*",
 							"yeoman-*",
@@ -503,7 +503,7 @@
 						"animation":"Sit",
 						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
-							"game:player"
+							"player"
 						],
 						"stopRange":5
 					},

@@ -222,7 +222,7 @@
 						"canRoutFromAnyEnemy":true,
 						"entitySourcesOfFear":[
 							{
-								"code":"game:player",
+								"code":"player",
 								"fearWeight":0.1
 							},
 							{
@@ -260,14 +260,14 @@
 					{
 						"code":"melee",
 						"entityCodes":[
-							"game:player",
-							"game:drifter-*",
-							"game:wolf-male",
-							"game:wolf-female",
-							"game:hyena-male",
-							"game:hyena-female",
-							"game:locust-*",
-							"game:bear-*",
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
 							"looter",
 							"hound-feral"
 						],
@@ -288,14 +288,14 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"game:player",
-							"game:drifter-*",
-							"game:wolf-male",
-							"game:wolf-female",
-							"game:hyena-male",
-							"game:hyena-female",
-							"game:locust-*",
-							"game:bear-*",
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
 							"looter",
 							"hound-feral"
 						],
@@ -326,14 +326,14 @@
 					{
 						"code":"engageentity",
 						"entityCodes":[
-							"game:player",
-							"game:drifter-*",
-							"game:wolf-male",
-							"game:wolf-female",
-							"game:hyena-male",
-							"game:hyena-female",
-							"game:locust-*",
-							"game:bear-*",
+							"player",
+							"drifter-*",
+							"wolf-male",
+							"wolf-female",
+							"hyena-male",
+							"hyena-female",
+							"locust-*",
+							"bear-*",
 							"looter"
 						],
 						"priority":1.5,
