@@ -14,7 +14,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 using ExpandedAiTasks;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     ////////////////////////////////////////////////////////////////
     /// PATCHING HARVESTABLE BEHAVIOR FOR CAUSE OF DEATH EVICENCE///

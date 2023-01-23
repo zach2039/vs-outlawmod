@@ -60,7 +60,6 @@
 	},
 	server: {
 		behaviors: [
-			{ code: "nametag", selectFromRandomName: ["Hunting Hound"], "showtagonlywhentargeted": true }, 
 			{ code: "repulseagents" }, 
 			{ code: "controlledphysics", stepHeight: 1.5 },
 			{ code: "despawn", minPlayerDistance: 8, belowLightLevel: 8, minSeconds: 300 },

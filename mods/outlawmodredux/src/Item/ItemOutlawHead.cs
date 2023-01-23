@@ -1,6 +1,6 @@
 ﻿using Vintagestory.API.Common;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     public class ItemOutlawHead : Item
     {

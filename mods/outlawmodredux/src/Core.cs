@@ -11,7 +11,7 @@ using Vintagestory.GameContent;
 using Vintagestory.API.Config;
 using ExpandedAiTasks;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     [ProtoContract]
     public class OutlawModConfig
@@ -87,7 +87,7 @@ namespace OutlawMod
 
             base.Start(api);              
 
-            harmony = new Harmony("com.grifthegnome.outlawmod.causeofdeath");
+            harmony = new Harmony("com.zach2039.outlawmodredux.causeofdeath");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             //Deploy Expanded Ai Tasks

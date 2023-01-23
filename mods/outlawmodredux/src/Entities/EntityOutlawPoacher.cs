@@ -8,7 +8,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 using ExpandedAiTasks;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     public class EntityOutlawPoacher : EntityOutlaw
     {
@@ -34,19 +34,24 @@ namespace OutlawMod
 
         protected void AttemptSpawnHuntingHound(float dt)
         {
-            if( Api.Side == EnumAppSide.Server)
+            if ( Api.Side == EnumAppSide.Server)
             {
+
                 //Don't spawn hounds if hounds are disabled.
                 if (!Api.World.Config.GetBool("enableHuntingHounds", true))
                     return;
 
-                AssetLocation code = new AssetLocation("hound-hunting");
+                AssetLocation code = new AssetLocation("outlawmodredux", "hound-hunting");
                 if (code == null)
                     return;
 
-                EntityProperties houndProperties = this.World.GetEntityType(code);
+                EntityProperties houndProperties = this.Api.World.GetEntityType(code);
 
-                Debug.Assert(houndProperties != null, "Hound Properties are null");
+                if (houndProperties != null)
+                {
+                    this.Api.World.Logger.Error("Unable to find entity properties for {0} when attempting to spawn companions for {1}", code.ToString(), this.Code.ToString());
+                    return;
+                }
 
                 Cuboidf collisionBox = houndProperties.SpawnCollisionBox;
 

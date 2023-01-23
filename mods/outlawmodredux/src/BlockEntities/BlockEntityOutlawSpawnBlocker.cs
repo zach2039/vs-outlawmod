@@ -5,7 +5,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     public class BlockEntityOutlawSpawnBlocker : BlockEntity, IOutlawSpawnBlocker
     {

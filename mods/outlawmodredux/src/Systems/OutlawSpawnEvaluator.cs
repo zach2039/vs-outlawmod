@@ -8,7 +8,7 @@ using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     public static class OutlawSpawnEvaluator
     {
@@ -65,8 +65,12 @@ namespace OutlawMod
 
         public static bool CanSpawnHound(Vec3d position, AssetLocation code)
         {
-            //Only run on server side, because POIs are serveside only.
-            Debug.Assert(sapi.Side == EnumAppSide.Server, "CanSpawn function is running on the client, this must only run server side.");
+            if (sapi.Side != EnumAppSide.Server)
+            {
+                //Only run on server side, because POIs are serveside only.
+                sapi.World.Logger.Error("CanSpawn function is running on the client, this must only run server side.");
+                return false;
+            }
 
             currentSpawnTryPosition = position;
             spawnIsBlockedByBlocker = false;

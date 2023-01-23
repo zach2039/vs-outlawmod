@@ -5,7 +5,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
 
     public class CustomSpawnConditions : ModSystem

@@ -1,6 +1,6 @@
 ﻿
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     public class OMGlobalConstants
     {

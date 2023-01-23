@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Vintagestory.GameContent;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     public interface IOutlawSpawnBlocker : IPointOfInterest
     {

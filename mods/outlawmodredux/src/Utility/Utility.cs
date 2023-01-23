@@ -9,7 +9,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 using Vintagestory.ServerMods;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
     static class Utility
     {

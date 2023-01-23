@@ -8,7 +8,7 @@ using Vintagestory.API.Util;
 using Vintagestory.API.Datastructures;
 using Vintagestory.GameContent;
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
 
     public class EntityOutlaw: EntityHumanoid

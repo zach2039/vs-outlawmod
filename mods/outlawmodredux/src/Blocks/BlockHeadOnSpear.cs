@@ -5,7 +5,7 @@ using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
 
-namespace OutlawMod
+namespace OutlawModRedux
 {
      public class BlockHeadOnSpear : Block
      {

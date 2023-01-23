@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>..\..\obj\Debug\outlawmodredux\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -95,8 +95,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(OutPath)" "$(ProjectDir)" 
-copy "$(OutDir)\$(TargetName).pdb" "$(ProjectDir)" 
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)" 
+copy "$(TargetDir)\$(TargetName).pdb" "$(ProjectDir)" 
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
