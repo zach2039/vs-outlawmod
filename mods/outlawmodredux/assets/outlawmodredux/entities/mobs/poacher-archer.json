@@ -573,7 +573,7 @@
 						"maxcooldown":120000,
 						"priorityForCancel":1.33,
 						"animation":"look",
-						"whenNotInEmotionState":"aggressiveondamage"
+						"whenNotInEmotionState":"aggressiveondamage",
 						"stopOnNearbyEntityCodes":[
 							"player",
 							"drifter-*",
