@@ -1,3 +1,9 @@
+### v1.17.10-1.2.2
+
+ - Json cleanup
+ - Fix error vomit during feral hound spawn
+ - Remove assertions and fix project build settings
+
 ### v1.17.10-1.2.1
 
  - Greatly nerf spawn rates to be slightly less than vanilla wolf chance
